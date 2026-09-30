@@ -1,0 +1,6 @@
+# Never commit keys or local helper files
+riot_key.txt
+*.key
+.env
+*.tmp
+__pycache__/

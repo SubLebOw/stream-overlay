@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<!--
+  Queue / between-games scene (1920x1080). Same engine as overlay.html with layout=queue:
+  status title (+ optional timer), webcam frame, rank, song, Twitch/schedule card, socials,
+  verse of the day and a big chat panel.
+  Any URL params you add here are forwarded to overlay.html, e.g.
+    queue.html?status=champ&timer=1
+  Web version: all paths are relative, so it works from any https host (GitHub Pages / Netlify).
+-->
+<html lang="en"><head><meta charset="utf-8"><title>Trynd Queue Scene</title><meta name="robots" content="noindex"><link rel="icon" href="data:,">
+<style>html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:transparent}
+iframe{border:0;width:1920px;height:1080px;display:block;background:transparent}</style></head>
+<body><iframe id="f" allowtransparency="true"></iframe>
+<script>
+  const q = new URLSearchParams(location.search);
+  if (!q.has("layout")) q.set("layout", "queue");
+  const f = document.getElementById("f");
+  f.src = "overlay.html?" + q.toString();
+  // OBS fires this when the scene with this source goes live -> restart the queue timer
+  window.addEventListener("obsSourceActiveChanged", (e) => {
+    try { f.contentWindow.postMessage({ type: "obsActive", active: !!(e.detail && e.detail.active) }, "*"); } catch (err) {}
+  });
+</script></body></html>

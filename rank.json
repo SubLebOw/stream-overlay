@@ -1,0 +1,11 @@
+{
+  "example": true,
+  "_note": "PLACEHOLDER - not Caleb's real rank. The GitHub Actions workflow (update-rank.yml) overwrites this file with real Riot API data and sets example=false once the RIOT_API_KEY secret is added.",
+  "label": "Tryndamere OTP",
+  "tier": "DIAMOND",
+  "division": "IV",
+  "lp": 0,
+  "wins_today": 0,
+  "losses_today": 0,
+  "show_today": true
+}

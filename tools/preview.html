@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<!-- Preview harness: fake LoL-style layout (grey boxes, no game art) with the overlay on top.
+     Open from the site: tools/preview.html?src=../overlay.html%3Fdemo%3D1 -->
+<html><head><meta charset="utf-8"><style>
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;font-family:"Barlow Semi Condensed",Arial,sans-serif}
+.game{position:absolute;inset:0;background:
+  radial-gradient(ellipse at 45% 45%, #3a4a3a 0%, #243024 45%, #161d18 100%);}
+.game::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,.025) 0 30px,transparent 30px 60px)}
+.box{position:absolute;background:rgba(90,96,104,.55);border:2px dashed rgba(220,225,230,.55);color:#e6e9ec;
+  font-size:22px;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;text-align:center;z-index:1}
+.lane{position:absolute;left:0;right:0;top:520px;height:120px;background:rgba(120,110,80,.18);transform:rotate(-18deg);z-index:0}
+.champ{position:absolute;left:900px;top:470px;width:80px;height:80px;border-radius:50%;background:#7a2a2a;border:3px solid #c44;z-index:1;
+  color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center}
+iframe{position:absolute;inset:0;width:1920px;height:1080px;border:0;background:transparent;z-index:5}
+</style></head><body>
+<div class="game"></div><div class="lane"></div>
+<div class="champ">YOU</div>
+<div class="box" style="left:1560px;top:0;width:360px;height:28px;font-size:14px">scoreboard / KDA / time</div>
+<div class="box" style="left:1640px;top:800px;width:280px;height:280px">minimap</div>
+<div class="box" style="left:660px;top:915px;width:600px;height:165px">champion HUD<br>(abilities / items)</div>
+<div class="box" style="left:0;top:760px;width:500px;height:170px">in-game chat</div>
+<iframe id="ov" allowtransparency="true"></iframe>
+<script>
+const q=new URLSearchParams(location.search);
+document.getElementById('ov').src=q.get('src')||'../overlay.html?demo=1';
+</script></body></html>

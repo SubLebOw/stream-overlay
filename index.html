@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><link rel="icon" href="data:,">
+<title>Trynd OTP overlay (web)</title>
+<style>
+body{font:16px system-ui,"Segoe UI",sans-serif;background:radial-gradient(ellipse at 15% 110%,rgba(122,10,16,.45),transparent 55%),linear-gradient(160deg,#0c1118,#06080c 70%);color:#eef3f8;min-height:100vh;margin:0}
+main{max-width:860px;margin:0 auto;padding:28px 18px}
+h1{font-family:Georgia,serif;letter-spacing:.12em;color:#cfe3f2;margin:0 0 4px}h1+p{color:#ff3b30;letter-spacing:.2em;text-transform:uppercase;font-size:13px;margin:0 0 22px}
+h2{font-size:15px;letter-spacing:.2em;color:#8fa6b9;text-transform:uppercase;border-bottom:1px solid #2b3646;padding-bottom:6px;margin-top:28px}
+a{color:#7fc4ea}code{display:block;background:#07090d;border:1px solid #2b3646;border-left:3px solid #d4141f;border-radius:6px;padding:9px 11px;margin:6px 0 12px;word-break:break-all;color:#cfe3f2;font-size:14px}
+li{margin:6px 0}.small{color:#8fa6b9;font-size:14px}
+</style></head><body><main>
+<h1>TRYND OTP OVERLAY</h1><p>web version · calebgcameron</p>
+
+<h2>Set up OBS in one step</h2>
+<ul>
+ <li><a href="tools/make-scenes.html"><b>Make the OBS scene file</b></a> (Game + Queue scenes) → download → OBS <i>Scene Collection → Import</i>.</li>
+ <li><a href="tools/make-url.html">Build a single Browser Source URL</a></li>
+</ul>
+
+<h2>Browser Source URLs (1920 × 1080)</h2>
+<div class="small">In-game overlay (chat + rank + song)</div><code id="u1"></code>
+<div class="small">Queue scene with timer</div><code id="u2"></code>
+
+<h2>Change the song</h2>
+<p class="small">Edit <b>song.json</b> on GitHub (works on a phone browser), set <code style="display:inline;padding:2px 6px">"song": "Artist - Title"</code>, commit. Empty text hides the strip.</p>
+<p id="edit" class="small"></p>
+
+<h2>Previews</h2>
+<ul>
+ <li><a href="tools/preview.html?src=../overlay.html%3Fdemo%3D1">In-game overlay (demo data, mock HUD)</a></li>
+ <li><a href="queue.html?demo=1&timer=1">Queue scene (demo data)</a></li>
+ <li><a href="overlay.html?debug=1">Overlay with connection status (debug)</a></li>
+</ul>
+</main>
+<script>
+const base = new URL("./", location.href).href;
+document.getElementById("u1").textContent = base + "overlay.html?channel=calebgcameron";
+document.getElementById("u2").textContent = base + "queue.html?timer=1";
+// On GitHub Pages (NAME.github.io/REPO/), link straight to the song.json editor
+const m = /^([a-z0-9-]+)\.github\.io$/i.exec(location.hostname);
+if (m) {
+  const repo = location.pathname.split("/").filter(Boolean)[0] || (m[1] + ".github.io");
+  const url = `https://github.com/${m[1]}/${repo}/edit/main/song.json`;
+  const a = document.createElement("a"); a.href = url; a.textContent = "Open the song.json editor"; a.rel = "noopener";
+  const e = document.getElementById("edit"); e.append(a, " (bookmark this on your phone)");
+}
+</script></body></html>

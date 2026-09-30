@@ -1,0 +1,15 @@
+# Netlify (alternative to GitHub Pages). Static site, no build command, publish the repo root.
+# Netlify's free plan only includes ~20 production deploys a month (300 credits, 15 per deploy),
+# so commits that ONLY change rank.json / rank_state.json / song.json are NOT deployed.
+# Instead the overlay reads those two files straight from GitHub: set "data" in site-config.js to
+#   https://raw.githubusercontent.com/YOUR-GITHUB-NAME/YOUR-REPO/main/
+# (raw.githubusercontent.com caches for up to 5 minutes, so changes can take up to ~5 min to show).
+[build]
+  publish = "."
+  command = ""
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- . ':(exclude)rank.json' ':(exclude)rank_state.json' ':(exclude)song.json'"
+
+[[headers]]
+  for = "/*.json"
+  [headers.values]
+    Cache-Control = "no-cache"

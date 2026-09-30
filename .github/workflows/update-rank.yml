@@ -1,0 +1,50 @@
+# Updates rank.json from the Riot API about every 15 minutes and commits it if it changed.
+# The key comes from the repository secret RIOT_API_KEY (Settings -> Secrets and variables -> Actions).
+# It is only ever an environment variable inside this job: it is never written to the repo or the website.
+name: Update rank
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"   # GitHub may start scheduled runs a few minutes late; that's normal
+  workflow_dispatch: {}      # "Run workflow" button in the Actions tab (handy to test the key)
+
+permissions:
+  contents: write            # commit rank.json
+  actions: write             # start the GitHub Pages deploy after a change
+
+concurrency:
+  group: update-rank
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Fetch rank from the Riot API
+        id: rank
+        env:
+          RIOT_API_KEY: ${{ secrets.RIOT_API_KEY }}
+          RIOT_ID: "Caleb Cameron#ccxx"
+          RIOT_PLATFORM: oc1
+        run: python3 scripts/update_rank.py
+
+      - name: Commit rank.json if it changed
+        if: steps.rank.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add rank.json rank_state.json
+          git commit -m "Update rank.json (automatic)"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+
+      # Pushes made by this workflow don't trigger other workflows, so start the Pages deploy explicitly.
+      # (If you host on Netlify instead, delete deploy-pages.yml and this step is skipped.)
+      - name: Redeploy the GitHub Pages site
+        if: steps.rank.outputs.rank_changed == 'true' && hashFiles('.github/workflows/deploy-pages.yml') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-pages.yml --ref "${GITHUB_REF_NAME}"

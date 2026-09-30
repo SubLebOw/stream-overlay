@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<!-- OBS scene-collection maker. Works offline (double-click from a USB stick) or from the hosted site.
+     It only rewrites the overlay base URL inside the scene file; nothing is uploaded or sent anywhere. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><link rel="icon" href="data:,">
+<title>Trynd overlay – OBS scene file maker</title>
+<style>
+body{font:16px system-ui,"Segoe UI",sans-serif;background:#0e131b;color:#eef3f8;max-width:860px;margin:28px auto;padding:0 16px}
+h2{font-family:Georgia,serif;letter-spacing:.08em;color:#cfe3f2;border-bottom:2px solid #d4141f;padding-bottom:8px}
+label{display:block;margin:14px 0 4px;color:#8fa6b9}
+input,select{width:100%;box-sizing:border-box;padding:9px;background:#1a222e;color:#fff;border:1px solid #2b3646;border-radius:6px;font-size:15px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.chk{display:flex;gap:8px;align-items:center;margin-top:14px;color:#cfe3f2}.chk input{width:auto}
+button{margin:16px 10px 0 0;padding:10px 16px;background:#d4141f;color:#fff;border:0;border-radius:6px;cursor:pointer;font-size:15px;font-weight:600}
+button.alt{background:#2b3646}
+pre{white-space:pre-wrap;word-break:break-all;background:#07090d;color:#7fc4ea;border:1px solid #2b3646;border-radius:6px;padding:10px;font-size:13px}
+.warn{color:#f2c14e}.ok{color:#6fd49a}.small{font-size:14px;color:#8fa6b9}
+ol li{margin:4px 0}
+</style></head><body>
+<h2>Trynd overlay – OBS scene file maker</h2>
+<p class="small">Makes the <b>Trynd Web Overlay</b> scene collection (scenes <b>Game</b> + <b>Queue</b>) pointing at your site.
+Then in OBS: <b>Scene Collection → Import</b> → pick the downloaded file → tick it → <b>Import</b>, then choose it under <b>Scene Collection</b>.</p>
+
+<label for="base">Your overlay site address (ends with /)</label>
+<input id="base" placeholder="https://yourname.github.io/trynd-overlay/" autocomplete="off" spellcheck="false">
+<div id="basemsg" class="small"></div>
+
+<div class="row">
+  <div><label for="chat">Chat</label><select id="chat"><option value="twitch">Twitch chat (built-in, anonymous)</option><option value="restream">Restream combined chat (embed URL)</option></select></div>
+  <div><label for="channel">Twitch channel</label><input id="channel" value="calebgcameron" spellcheck="false"></div>
+</div>
+<div id="rsbox" style="display:none">
+  <label for="rs">Restream Chat "Embed in stream" URL (treat it like a password)</label>
+  <input id="rs" placeholder="https://chat.restream.io/embed?token=..." autocomplete="off" spellcheck="false">
+</div>
+<div class="row">
+  <div><label for="status">Queue scene title</label><select id="status"><option value="queue">IN QUEUE</option><option value="champ">CHAMP SELECT</option><option value="back">BACK SOON</option><option value="starting">STARTING SOON</option></select></div>
+  <div><label for="cname">Scene collection name</label><input id="cname" value="Trynd Web Overlay"></div>
+</div>
+<label class="chk"><input type="checkbox" id="timer" checked> Count-up timer in the Queue scene</label>
+
+<button id="dl">Download scene file (.json)</button><button id="cp" class="alt">Copy JSON</button>
+<div id="msg" class="small"></div>
+
+<label>Overlay URLs in this file</label>
+<pre id="urls"></pre>
+
+<p class="small">After importing: double-click <b>Game Capture</b> and check it shows League (window: <i>League of Legends.exe</i>).
+If it stays black (common on cafe PCs), hide Game Capture and show <b>Display Capture</b>, then pick the monitor in its properties.
+Set <b>Settings → Video → Base (Canvas) Resolution</b> to 1920×1080.</p>
+
+<script>
+const TEMPLATE = /*TEMPLATE*/{"DesktopAudioDevice1":{"prev_ver":503447555,"name":"Desktop Audio","uuid":"af0ab2f8-113b-562c-a3dd-927dbad8c281","id":"wasapi_output_capture","versioned_id":"wasapi_output_capture","settings":{"device_id":"default"},"mixers":255,"sync":0,"flags":0,"volume":1.0,"balance":0.5,"enabled":true,"muted":false,"push-to-mute":false,"push-to-mute-delay":0,"push-to-talk":false,"push-to-talk-delay":0,"hotkeys":{},"deinterlace_mode":0,"deinterlace_field_order":0,"monitoring_type":0,"private_settings":{}},"AuxAudioDevice1":{"prev_ver":503447555,"name":"Mic/Aux","uuid":"b788a512-e296-5da3-970d-48e21ab423bc","id":"wasapi_input_capture","versioned_id":"wasapi_input_capture","settings":{"device_id":"default"},"mixers":255,"sync":0,"flags":0,"volume":1.0,"balance":0.5,"enabled":true,"muted":false,"push-to-mute":false,"push-to-mute-delay":0,"push-to-talk":false,"push-to-talk-delay":0,"hotkeys":{},"deinterlace_mode":0,"deinterlace_field_order":0,"monitoring_type":0,"private_settings":{}},"current_scene":"Game","current_program_scene":"Game","scene_order":[{"name":"Game"},{"name":"Queue"}],"name":"Trynd Web Overlay","sources":[{"prev_ver":503447555,"name":"Game","uuid":"cdf892f7-e216-5167-989b-6638b09343fe","id":"scene","versioned_id":"scene","settings":{"id_counter":3,"custom_size":false,"items":[{"name":"Display Capture (fallback - turn on if Game Capture is black)","source_uuid":"ede3504f-35ad-5615-886e-43a71629973b","visible":false,"locked":false,"rot":0.0,"pos":{"x":0.0,"y":0.0},"scale":{"x":1.0,"y":1.0},"align":5,"bounds_type":2,"bounds_align":0,"bounds_crop":false,"bounds":{"x":1920.0,"y":1080.0},"crop_left":0,"crop_top":0,"crop_right":0,"crop_bottom":0,"id":1,"group_item_backup":false,"scale_filter":"disable","blend_method":"default","blend_type":"normal","show_transition":{"duration":0},"hide_transition":{"duration":0},"private_settings":{}},{"name":"Game Capture (League of Legends)","source_uuid":"9a8f3418-9e32-5f77-ada2-91bec2e8e6fa","visible":true,"locked":false,"rot":0.0,"pos":{"x":0.0,"y":0.0},"scale":{"x":1.0,"y":1.0},"align":5,"bounds_type":2,"bounds_align":0,"bounds_crop":false,"bounds":{"x":1920.0,"y":1080.0},"crop_left":0,"crop_top":0,"crop_right":0,"crop_bottom":0,"id":2,"group_item_backup":false,"scale_filter":"disable","blend_method":"default","blend_type":"normal","show_transition":{"duration":0},"hide_transition":{"duration":0},"private_settings":{}},{"name":"Trynd Overlay (chat + rank + song)","source_uuid":"d49aabf0-8448-5e38-8c47-26fbd3d7ac59","visible":true,"locked":true,"rot":0.0,"pos":{"x":0.0,"y":0.0},"scale":{"x":1.0,"y":1.0},"align":5,"bounds_type":0,"bounds_align":0,"bounds_crop":false,"bounds":{"x":0.0,"y":0.0},"crop_left":0,"crop_top":0,"crop_right":0,"crop_bottom":0,"id":3,"group_item_backup":false,"scale_filter":"disable","blend_method":"default","blend_type":"normal","show_transition":{"duration":0},"hide_transition":{"duration":0},"private_settings":{}}]},"mixers":0,"sync":0,"flags":0,"volume":1.0,"balance":0.5,"enabled":true,"muted":false,"push-to-mute":false,"push-to-mute-delay":0,"push-to-talk":false,"push-to-talk-delay":0,"hotkeys":{},"deinterlace_mode":0,"deinterlace_field_order":0,"monitoring_type":0,"private_settings":{}},{"prev_ver":503447555,"name":"Queue","uuid":"474c8185-0e07-50ff-a592-793e91638c15","id":"scene","versioned_id":"scene","settings":{"id_counter":2,"custom_size":false,"items":[{"name":"Webcam (optional)","source_uuid":"f738113c-8e2e-5135-90c9-6ef935b5e035","visible":true,"locked":false,"rot":0.0,"pos":{"x":80.0,"y":222.0},"scale":{"x":1.0,"y":1.0},"align":5,"bounds_type":2,"bounds_align":0,"bounds_crop":false,"bounds":{"x":640.0,"y":360.0},"crop_left":0,"crop_top":0,"crop_right":0,"crop_bottom":0,"id":1,"group_item_backup":false,"scale_filter":"disable","blend_method":"default","blend_type":"normal","show_transition":{"duration":0},"hide_transition":{"duration":0},"private_settings":{}},{"name":"Trynd Queue Scene","source_uuid":"75cc84ba-3f09-5394-b76e-3d6d5085fe00","visible":true,"locked":true,"rot":0.0,"pos":{"x":0.0,"y":0.0},"scale":{"x":1.0,"y":1.0},"align":5,"bounds_type":0,"bounds_align":0,"bounds_crop":false,"bounds":{"x":0.0,"y":0.0},"crop_left":0,"crop_top":0,"crop_right":0,"crop_bottom":0,"id":2,"group_item_backup":false,"scale_filter":"disable","blend_method":"default","blend_type":"normal","show_transition":{"duration":0},"hide_transition":{"duration":0},"private_settings":{}}]},"mixers":0,"sync":0,"flags":0,"volume":1.0,"balance":0.5,"enabled":true,"muted":false,"push-to-mute":false,"push-to-mute-delay":0,"push-to-talk":false,"push-to-talk-delay":0,"hotkeys":{},"deinterlace_mode":0,"deinterlace_field_order":0,"monitoring_type":0,"private_settings":{}},{"prev_ver":503447555,"name":"Display Capture (fallback - turn on if Game Capture is black)","uuid":"ede3504f-35ad-5615-886e-43a71629973b","id":"monitor_capture","versioned_id":"monitor_capture","settings":{"method":0,"capture_cursor":true,"force_sdr":false},"mixers":0,"sync":0,"flags":0,"volume":1.0,"balance":0.5,"enabled":true,"muted":false,"push-to-mute":false,"push-to-mute-delay":0,"push-to-talk":false,"push-to-talk-delay":0,"hotkeys":{},"deinterlace_mode":0,"deinterlace_field_order":0,"monitoring_type":0,"private_settings":{}},{"prev_ver":503447555,"name":"Game Capture (League of Legends)","uuid":"9a8f3418-9e32-5f77-ada2-91bec2e8e6fa","id":"game_capture","versioned_id":"game_capture","settings":{"capture_mode":"window","window":"League of Legends (TM) Client:RiotWindowClass:League of Legends.exe","priority":2,"sli_compatibility":false,"capture_cursor":true,"allow_transparency":false,"premultiplied_alpha":false,"limit_framerate":false,"capture_overlays":false,"anti_cheat_hook":true,"hook_rate":1},"mixers":255,"sync":0,"flags":0,"volume":1.0,"balance":0.5,"enabled":true,"muted":false,"push-to-mute":false,"push-to-mute-delay":0,"push-to-talk":false,"push-to-talk-delay":0,"hotkeys":{},"deinterlace_mode":0,"deinterlace_field_order":0,"monitoring_type":0,"private_settings":{}},{"prev_ver":503447555,"name":"Trynd Overlay (chat + rank + song)","uuid":"d49aabf0-8448-5e38-8c47-26fbd3d7ac59","id":"browser_source","versioned_id":"browser_source","settings":{"is_local_file":false,"url":"https://YOUR-SITE/overlay.html?channel=calebgcameron","width":1920,"height":1080,"fps_custom":false,"fps":30,"reroute_audio":false,"restart_when_active":false,"shutdown":false,"css":"body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }","webpage_control_level":1},"mixers":255,"sync":0,"flags":0,"volume":1.0,"balance":0.5,"enabled":true,"muted":false,"push-to-mute":false,"push-to-mute-delay":0,"push-to-talk":false,"push-to-talk-delay":0,"hotkeys":{},"deinterlace_mode":0,"deinterlace_field_order":0,"monitoring_type":0,"private_settings":{}},{"prev_ver":503447555,"name":"Webcam (optional)","uuid":"f738113c-8e2e-5135-90c9-6ef935b5e035","id":"dshow_input","versioned_id":"dshow_input","settings":{"video_device_id":"","active":true},"mixers":255,"sync":0,"flags":0,"volume":1.0,"balance":0.5,"enabled":true,"muted":false,"push-to-mute":false,"push-to-mute-delay":0,"push-to-talk":false,"push-to-talk-delay":0,"hotkeys":{},"deinterlace_mode":0,"deinterlace_field_order":0,"monitoring_type":0,"private_settings":{}},{"prev_ver":503447555,"name":"Trynd Queue Scene","uuid":"75cc84ba-3f09-5394-b76e-3d6d5085fe00","id":"browser_source","versioned_id":"browser_source","settings":{"is_local_file":false,"url":"https://YOUR-SITE/queue.html?timer=1","width":1920,"height":1080,"fps_custom":false,"fps":30,"reroute_audio":false,"restart_when_active":false,"shutdown":false,"css":"body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }","webpage_control_level":1},"mixers":255,"sync":0,"flags":0,"volume":1.0,"balance":0.5,"enabled":true,"muted":false,"push-to-mute":false,"push-to-mute-delay":0,"push-to-talk":false,"push-to-talk-delay":0,"hotkeys":{},"deinterlace_mode":0,"deinterlace_field_order":0,"monitoring_type":0,"private_settings":{}}],"groups":[],"quick_transitions":[{"name":"Cut","duration":300,"hotkeys":[],"id":1,"fade_to_black":false},{"name":"Fade","duration":300,"hotkeys":[],"id":2,"fade_to_black":false},{"name":"Fade","duration":300,"hotkeys":[],"id":3,"fade_to_black":true}],"transitions":[],"saved_projectors":[],"current_transition":"Fade","transition_duration":300,"preview_locked":false,"scaling_enabled":false,"scaling_level":0,"scaling_off_x":0.0,"scaling_off_y":0.0,"virtual-camera":{"type2":3},"modules":{"scripts-tool":[],"output-timer":{"streamTimerHours":0,"streamTimerMinutes":0,"streamTimerSeconds":30,"recordTimerHours":0,"recordTimerMinutes":0,"recordTimerSeconds":30,"autoStartStreamTimer":false,"autoStartRecordTimer":false,"pauseRecordTimer":true},"auto-scene-switcher":{"interval":300,"non_matching_scene":"","switch_if_not_matching":false,"active":false,"switches":[]}}}/*END*/;
+const PLACEHOLDER = "https://YOUR-SITE/";
+const $ = (id) => document.getElementById(id);
+
+// When opened from the hosted site, pre-fill its address (this page lives in /tools/)
+if (/^https?:$/.test(location.protocol)) $("base").value = new URL("../", location.href).href;
+
+function normBase(v) {
+  v = String(v || "").trim();
+  if (!v) return "";
+  if (!/^[a-z]+:\/\//i.test(v)) v = "https://" + v;
+  v = v.replace(/[?#].*$/, "").replace(/(index|overlay|queue)\.html$/i, "");
+  if (!v.endsWith("/")) v += "/";
+  return v;
+}
+function build() {
+  const base = normBase($("base").value) || PLACEHOLDER;
+  const bm = $("basemsg");
+  let okUrl = false; try { const u = new URL(base); okUrl = !!u.hostname; } catch (e) {}
+  if (base === PLACEHOLDER) { bm.className = "small warn"; bm.textContent = "Still the placeholder https://YOUR-SITE/ – type your site address above."; }
+  else if (!okUrl) { bm.className = "small warn"; bm.textContent = "That doesn't look like a web address."; }
+  else if (!base.startsWith("https://")) { bm.className = "small warn"; bm.textContent = "Tip: use https:// (GitHub Pages and Netlify both give you https)."; }
+  else { bm.className = "small ok"; bm.textContent = "OK: " + base; }
+
+  const data = JSON.parse(JSON.stringify(TEMPLATE));
+  data.name = $("cname").value.trim() || "Trynd Web Overlay";
+  const chat = $("chat").value, channel = $("channel").value.trim().toLowerCase().replace(/[^a-z0-9_]/g, "");
+  const rs = $("rs").value.trim();
+  const urls = [];
+  for (const s of data.sources) {
+    if (s.id !== "browser_source" || !s.settings || !s.settings.url) continue;
+    const rel = s.settings.url.startsWith(PLACEHOLDER) ? s.settings.url.slice(PLACEHOLDER.length) : s.settings.url;
+    const u = new URL(rel, okUrl ? base : PLACEHOLDER);
+    const q = u.searchParams;
+    if (u.pathname.endsWith("/queue.html")) {
+      if ($("status").value === "queue") q.delete("status"); else q.set("status", $("status").value);
+      if ($("timer").checked) q.set("timer", "1"); else q.delete("timer");
+    }
+    if (channel && channel !== "calebgcameron") q.set("channel", channel);
+    else if (u.pathname.endsWith("/queue.html")) q.delete("channel");
+    if (chat === "restream") { q.set("chat", "restream"); if (rs) q.set("restream_url", rs); else q.delete("restream_url"); }
+    else { q.delete("chat"); q.delete("restream_url"); }
+    s.settings.url = u.href;
+    urls.push(s.name + ":\n  " + (rs ? u.href.replace(encodeURIComponent(rs), "<your Restream URL>") : u.href));
+  }
+  $("urls").textContent = urls.join("\n\n");
+  return data;
+}
+$("chat").addEventListener("change", () => { $("rsbox").style.display = $("chat").value === "restream" ? "" : "none"; build(); });
+for (const id of ["base", "channel", "rs", "status", "cname", "timer"]) $(id).addEventListener("input", build);
+$("dl").addEventListener("click", () => {
+  const data = build();
+  const blob = new Blob([JSON.stringify(data, null, 4)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = (data.name.replace(/[^\w\- ]+/g, "").trim() || "trynd-web-scenes") + ".json";
+  document.body.appendChild(a); a.click(); a.remove();
+  $("msg").textContent = "Downloaded " + a.download + ". Import it in OBS: Scene Collection → Import.";
+});
+$("cp").addEventListener("click", async () => {
+  const txt = JSON.stringify(build(), null, 4);
+  try { await navigator.clipboard.writeText(txt); $("msg").textContent = "Copied. Paste into a new file ending in .json."; }
+  catch (e) { $("msg").textContent = "Copy blocked by the browser – use Download instead."; }
+});
+build();
+</script>
+</body></html>

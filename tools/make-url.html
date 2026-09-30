@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!-- Builds single OBS Browser Source URLs for the web overlay. Nothing is sent anywhere. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><link rel="icon" href="data:,">
+<title>Trynd overlay – OBS URL builder (web)</title>
+<style>body{font:16px system-ui,sans-serif;background:#0e131b;color:#eef3f8;max-width:820px;margin:30px auto;padding:0 16px}
+h2{font-family:Georgia,serif;letter-spacing:.06em;color:#cfe3f2;border-bottom:2px solid #d4141f;padding-bottom:8px}
+label{display:block;margin:12px 0 4px;color:#8fa6b9}input,select{width:100%;box-sizing:border-box;padding:8px;background:#1a222e;color:#fff;border:1px solid #2b3646;border-radius:6px}
+.row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}textarea{width:100%;box-sizing:border-box;height:80px;background:#07090d;color:#7fc4ea;border:1px solid #d4141f;border-radius:6px;padding:8px}
+button{margin-top:12px;padding:8px 14px;background:#d4141f;color:#fff;border:0;border-radius:6px;cursor:pointer}.small{font-size:14px;color:#8fa6b9}</style></head><body>
+<h2>Trynd overlay – OBS URL builder (web)</h2>
+<label for="base">Your overlay site address</label><input id="base" placeholder="https://yourname.github.io/trynd-overlay/" spellcheck="false">
+<div class="row">
+ <div><label for="page">Page</label><select id="page"><option>overlay.html</option><option>queue.html</option></select></div>
+ <div><label for="widgets">Widgets (overlay.html)</label><select id="widgets"><option value="">all (chat,rank,song)</option><option>chat</option><option>rank</option><option>song</option><option>rank,song</option><option>chat,rank,song,verse</option></select></div>
+ <div><label for="status">Queue status (queue.html)</label><select id="status"><option value="">IN QUEUE</option><option value="champ">CHAMP SELECT</option><option value="back">BACK SOON</option><option value="starting">STARTING SOON</option></select></div>
+</div>
+<div class="row">
+ <div><label for="chat">Chat source</label><select id="chat"><option value="twitch">Twitch (built-in)</option><option value="restream">Restream combined chat</option></select></div>
+ <div><label for="channel">Twitch channel</label><input id="channel" value="calebgcameron"></div>
+ <div><label for="font">Font size px</label><input id="font" value="23"></div>
+</div>
+<label for="rs">Restream "Embed in stream" URL (paste as-is; treat like a password)</label><input id="rs" placeholder="https://chat.restream.io/embed?token=...">
+<label for="song">Fixed song text (optional – leave empty to use song.json)</label><input id="song" placeholder="StreamBeats - Lofi Beats">
+<button id="go">Build URL</button>
+<label>Paste into the OBS Browser Source URL field (Local file unticked, 1920 × 1080):</label><textarea id="out" readonly></textarea>
+<p class="small">Want both scenes at once? Use <a href="make-scenes.html" style="color:#7fc4ea">make-scenes.html</a>.</p>
+<script>
+const $=id=>document.getElementById(id);
+if (/^https?:$/.test(location.protocol)) $('base').value = new URL('../', location.href).href;
+function build(){
+  const v=id=>$(id).value.trim();
+  let base=v('base')||'https://YOUR-SITE/'; if(!/^[a-z]+:\/\//i.test(base)) base='https://'+base; if(!base.endsWith('/')) base+='/';
+  const q=new URLSearchParams();
+  if(v('page')==='overlay.html'&&v('widgets')) q.set('widgets',v('widgets'));
+  if(v('page')==='queue.html'){ if(v('status')) q.set('status',v('status')); q.set('timer','1'); }
+  if(v('chat')==='restream'){q.set('chat','restream'); if(v('rs')) q.set('restream_url',v('rs'));}
+  else if(v('channel')&&v('channel').toLowerCase()!=='calebgcameron') q.set('channel',v('channel').toLowerCase());
+  if(v('font')&&v('font')!=='23') q.set('font',v('font'));
+  if(v('song')) q.set('song',v('song'));
+  const s=q.toString(); $('out').value=base+v('page')+(s?'?'+s:'');
+}
+$('go').addEventListener('click',build); build();
+</script></body></html>
