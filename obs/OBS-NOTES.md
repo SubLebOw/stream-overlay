@@ -6,6 +6,9 @@ The URLs inside point at the placeholder **`https://YOUR-SITE/`**. Don't edit th
 **`tools/make-scenes.html`** (on your site, or double-click it from a USB stick), type your site address,
 and click **Download**. That gives you a ready-to-import file with the real URL.
 
+**Ready-made for this site:** `obs/caleb-obs-scenes.json` already points at `https://sublebow.github.io/stream-overlay/`
+(Twitch chat, IN QUEUE title with timer). Import it directly.
+
 ## What's inside
 
 | Scene | Sources (top of the list = drawn on top) | Notes |
