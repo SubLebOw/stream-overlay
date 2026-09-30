@@ -14,6 +14,12 @@ window.SITE_CONFIG = {
   mastery: "2,600,000+",                // change the number here whenever you like
   mastery_label: "Mastery",
   mastery_show: 1,                      // 0 = hide the mastery line/strip
+  // The journey line. Style: 1 = tier ladder ("you are here" = tier from rank.json), 2 = steel plaque, 3 = minimal tag line
+  journey_show: 1,                      // 0 = hide it
+  journey_style: 1,
+  journey_from: "Bronze 5",
+  journey_to: "Challenger",
+  journey_title: "The 12 Year Journey",
   // Where rank.json / song.json are read from. "" = same site (GitHub Pages, recommended).
   // Netlify only: "https://raw.githubusercontent.com/YOUR-GITHUB-NAME/YOUR-REPO/main/"
   data: ""

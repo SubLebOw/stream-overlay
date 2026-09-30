@@ -146,6 +146,98 @@
   .mastery-strip .pips i{width:7px;height:7px;transform:rotate(45deg);background:var(--rage);box-shadow:0 0 6px rgba(255,59,48,.6);}
   .mastery-strip .pips i:nth-child(2){opacity:.6}.mastery-strip .pips i:nth-child(3){opacity:.3}
 
+  /* ---------- JOURNEY ("Bronze 5 → Challenger · The 12 Year Journey"), journey_style 1 | 2 | 3 ---------- */
+  #journey{transform-origin:top left;}
+  .jr{position:relative;box-sizing:border-box;white-space:nowrap;}
+  .rank-card + .jr{width:0;min-width:100%;}          /* game: exactly as wide as the rank card above it */
+  .jr-route{font-weight:700;letter-spacing:.03em;color:var(--text);text-shadow:0 1px 3px rgba(0,0,0,.85);}
+  .jr-route .ar{font-style:normal;color:var(--rage-hot);margin:0 .32em;text-shadow:0 0 8px rgba(255,59,48,.55);}
+  .jr-title{font-family:var(--serif);font-weight:700;color:var(--frost);letter-spacing:.12em;}
+  .jr-sep{position:relative;top:-.06em;font-weight:700;color:var(--frost-dim);margin:0 .5em;}
+  .jr-n .lb.hid{visibility:hidden;}
+  /* 1 = progress path: tier ladder with a "you are here" marker */
+  .jr1{display:flex;flex-direction:column;
+    background:linear-gradient(90deg,rgba(10,14,20,.92) 0%,rgba(14,19,27,.86) 62%,rgba(40,8,12,.84) 100%);
+    border:1px solid rgba(143,166,185,.22);border-left:3px solid var(--rage-hot);border-radius:4px 12px 12px 4px;
+    box-shadow:0 6px 18px rgba(0,0,0,.45),inset 0 1px 0 rgba(207,227,242,.07);}
+  .jr1 .jr-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;overflow:hidden;}
+  .jr1 .jr-title{color:var(--frost-dim);}
+  .jr-track{position:relative;height:calc(var(--gb) + var(--lh));margin:0 var(--pad);}
+  .jr-rail,.jr-fill,.jr-ahead{position:absolute;left:0;right:0;top:calc(var(--gb) / 2 - 1px);height:2px;}
+  .jr-rail{background:rgba(143,166,185,.16);border-radius:1px;}
+  .jr-fill{height:3px;margin-top:-.5px;border-radius:2px;background:linear-gradient(90deg,var(--rage-deep),var(--rage) 45%,var(--rage-hot) 80%,var(--now-c,#fff));box-shadow:0 0 8px rgba(255,59,48,.55);}
+  .jr-ahead{height:0;border-top:2px dashed rgba(127,196,234,.42);}
+  .jr-n{position:absolute;top:0;width:var(--gb);height:var(--gb);margin-left:calc(var(--gb) / -2);}
+  .jr-n .gm{position:absolute;left:50%;top:50%;box-sizing:border-box;width:var(--gs);height:var(--gs);
+    margin:calc(var(--gs) / -2) 0 0 calc(var(--gs) / -2);transform:rotate(45deg);
+    background:#0e131b;border:1.5px solid rgba(143,166,185,.42);}
+  .jr-n.done .gm{background:linear-gradient(135deg,#fff -20%,var(--c) 45%,#0b0e13 150%);border:1px solid rgba(0,0,0,.85);opacity:.9;}
+  .jr-n.start .gm{box-shadow:0 0 0 2px #0b0e13,0 0 0 3px var(--c);}
+  .jr-n.pre .gm{opacity:.55;}
+  .jr-n.goal .gm{border-color:#ffe08a;background:linear-gradient(135deg,rgba(255,224,138,.35),#0e131b 70%);box-shadow:0 0 10px rgba(255,224,138,.45);}
+  .jr-n.now .gm{width:var(--gn);height:var(--gn);margin:calc(var(--gn) / -2) 0 0 calc(var(--gn) / -2);
+    background:linear-gradient(135deg,#fff -10%,var(--c) 40%,#0b0e13 140%);border:1.5px solid #0b0e13;
+    box-shadow:0 0 0 2px var(--c),0 0 14px 2px var(--g);}
+  .jr-n.now::after{content:"";position:absolute;left:50%;top:0;margin-left:-4px;width:0;height:0;
+    border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--rage-hot);transform:translateY(-3px);
+    filter:drop-shadow(0 0 4px rgba(255,59,48,.8));}
+  .jr-n .lb{position:absolute;top:var(--gb);left:50%;transform:translateX(-50%);font-size:var(--lf);font-weight:700;letter-spacing:.08em;
+    color:rgba(143,166,185,.6);line-height:1;}
+  .jr-n.done .lb{color:var(--frost-dim);}
+  .jr-n.goal .lb{color:#ffe08a;}
+  .jr-n.now .lb{color:var(--c);letter-spacing:.04em;text-shadow:0 0 8px var(--g),0 1px 2px #000;}
+  .jr-n .lb.l{left:calc(var(--gb) / 2 - var(--gn) / 2);transform:none;}
+  .jr-n .lb.r{left:auto;right:calc(var(--gb) / 2 - var(--gn) / 2);transform:none;}
+  .jr1.q{height:150px;padding:18px 20px 14px 17px;justify-content:space-between;--gb:40px;--gs:15px;--gn:24px;--lf:13px;--lh:17px;--pad:12px;}
+  .jr1.q .jr-route{font-size:24px;} .jr1.q .jr-title{font-size:15px;}
+  .jr1.g{margin-top:8px;padding:6px 12px 6px 10px;gap:3px;--gb:22px;--gs:8px;--gn:13px;--lf:9px;--lh:10px;--pad:8px;}
+  .jr1.g .jr-route{font-size:15px;} .jr1.g .jr-title{font-size:10.5px;}
+  /* 2 = steel-framed engraved plaque */
+  .jr2{filter:drop-shadow(0 8px 16px rgba(0,0,0,.6));--ch:14px;}
+  .jr2 .fr,.jr2 .pl{clip-path:polygon(var(--ch) 0,calc(100% - var(--ch)) 0,100% var(--ch),100% calc(100% - var(--ch)),calc(100% - var(--ch)) 100%,var(--ch) 100%,0 calc(100% - var(--ch)),0 var(--ch));}
+  .jr2 .fr{height:100%;box-sizing:border-box;padding:3px;
+    background:linear-gradient(180deg,#e7eef4 0%,#8494a5 16%,#3a4656 46%,#1a222e 70%,#56657a 92%,#aab8c6 100%);}
+  .jr2 .pl{--ch:12px;position:relative;height:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:
+      radial-gradient(ellipse at 50% -30%,rgba(127,196,234,.16),transparent 62%),
+      radial-gradient(ellipse at 50% 140%,rgba(122,10,16,.45),transparent 60%),
+      repeating-linear-gradient(90deg,rgba(255,255,255,.022) 0 1px,transparent 1px 3px),
+      linear-gradient(180deg,#1d2632 0%,#0c1017 60%,#10090c 100%);
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.9),inset 0 2px 0 rgba(255,255,255,.06);}
+  .jr2 .rv{position:absolute;width:var(--rv);height:var(--rv);border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#f4f8fb 0%,#9aa9b8 30%,#3a4656 65%,#0b0e13 100%);box-shadow:0 1px 1px rgba(0,0,0,.9);}
+  .jr2 .rv.a{left:var(--ri);top:var(--ri)} .jr2 .rv.b{right:var(--ri);top:var(--ri)} .jr2 .rv.c{left:var(--ri);bottom:var(--ri)} .jr2 .rv.d{right:var(--ri);bottom:var(--ri)}
+  .jr2 .sg{position:absolute;top:50%;width:var(--sg);height:var(--sg);margin-top:calc(var(--sg) / -2);transform:rotate(45deg);z-index:2;
+    background:linear-gradient(135deg,#ff8a80 0%,var(--rage-hot) 35%,var(--rage-deep) 100%);border:2px solid #0b0e13;box-shadow:0 0 0 1px #8494a5,0 0 10px rgba(255,59,48,.7);}
+  .jr2 .sg.l{left:calc(var(--sg) / -2 + 1px)} .jr2 .sg.r{right:calc(var(--sg) / -2 + 1px)}
+  .jr2 .jt{font-family:var(--serif);font-weight:700;line-height:1.05;letter-spacing:.05em;color:#dfe8f0;
+    background:linear-gradient(180deg,#ffffff 0%,#dfe8f0 38%,#8fa2b5 52%,#c9d6e2 78%,#f2f6f9 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 -1px 0 rgba(0,0,0,.95)) drop-shadow(0 1px 0 rgba(255,255,255,.14)) drop-shadow(0 0 12px rgba(127,196,234,.22));}
+  .jr2 .jk{display:flex;align-items:center;gap:10px;}
+  .jr2 .jk::before,.jr2 .jk::after{content:"";height:1px;width:var(--kl);background:linear-gradient(90deg,transparent,rgba(207,227,242,.55));}
+  .jr2 .jk::after{background:linear-gradient(270deg,transparent,rgba(207,227,242,.55));}
+  .jr2 .jk > i{flex:none;width:5px;height:5px;transform:rotate(45deg);background:var(--rage-hot);box-shadow:0 0 6px var(--rage-hot);}
+  .jr2 .ju{height:2px;width:var(--ul);margin-top:var(--ug);background:linear-gradient(90deg,transparent,var(--rage) 20%,var(--rage-hot) 50%,var(--rage) 80%,transparent);box-shadow:0 0 8px rgba(255,59,48,.6);}
+  .jr2.q{height:150px;--rv:9px;--ri:11px;--sg:16px;--kl:54px;--ul:250px;--ug:9px;}
+  .jr2.q .jr-route{font-size:19px;} .jr2.q .jt{font-size:37px;margin-top:5px;}
+  .jr2.g{margin-top:8px;height:66px;--ch:10px;--rv:6px;--ri:7px;--sg:11px;--kl:30px;--ul:150px;--ug:4px;}
+  .jr2.g .pl{--ch:8px;} .jr2.g .fr{padding:2px;}
+  .jr2.g .jr-route{font-size:12.5px;} .jr2.g .jt{font-size:21px;margin-top:2px;} .jr2.g .jk{gap:7px;} .jr2.g .jk > i{width:4px;height:4px;}
+  /* 3 = minimal tag line (queue: under the subtitle; game: footer strip of the rank card) */
+  .jr3{display:flex;align-items:center;}
+  .jr3 .dm{flex:none;width:7px;height:7px;transform:rotate(45deg);background:var(--ice);box-shadow:0 0 8px rgba(127,196,234,.8);margin-right:10px;}
+  .jr3 .jr-title{color:var(--frost-dim);}
+  #status .jr3.q{width:640px;margin-top:10px;}
+  #status .jr3.q .jr-route{font-size:20px;} #status .jr3.q .jr-title{font-size:15px;letter-spacing:.16em;} #status .jr3.q .jr-sep{font-size:20px;}
+  #status .jr3.q .bar{flex:1 1 auto;width:auto;min-width:40px;margin:0 0 0 18px;height:2px;}
+  #status.has-j3 .t2{margin-top:8px;}
+  .rank-card.has-j3{border-radius:6px 14px 0 0;border-bottom-color:rgba(143,166,185,.14);}
+  .jr3.g{width:0;min-width:100%;overflow:hidden;padding:5px 14px 6px 14px;margin-top:-1px;border-radius:0 0 6px 14px;
+    background:linear-gradient(90deg,rgba(8,11,16,.94) 0%,rgba(12,16,23,.92) 60%,rgba(34,7,10,.9) 100%);
+    border:1px solid rgba(143,166,185,.28);border-top:1px solid rgba(143,166,185,.12);box-shadow:0 8px 20px rgba(0,0,0,.45);}
+  .jr3.g .jr-route{font-size:14px;} .jr3.g .jr-title{font-size:10.5px;letter-spacing:.14em;} .jr3.g .dm{width:5px;height:5px;margin-right:8px;}
+  .jr3.g .jr-sep{margin:0 .45em;font-size:14px;}
+
   /* ---------- SONG ---------- */
   #song{transform-origin:top left;transform:scale(var(--ui-scale));transition:opacity .5s ease;}
   .song-strip{display:inline-flex;align-items:center;gap:10px;max-width:520px;box-sizing:border-box;
@@ -243,6 +335,7 @@
 <div id="rframe" class="widget hidden"><div class="rhead"><i></i>CHAT</div></div>
 <div id="rank" class="widget hidden"></div>
 <div id="mastery" class="widget hidden"></div>
+<div id="journey" class="widget hidden"></div>
 <div id="song" class="widget hidden"><div class="song-strip"><span class="note">&#9834;</span><span class="st"></span></div></div>
 <div id="debug" class="hidden"></div>
 
@@ -268,9 +361,16 @@ const DEFAULTS = {
   // ---- champion icon + mastery (rank card; queue scene also gets a mastery strip) ----
   champ: "Tryndamere",       // champion name (used in the mastery text)
   champ_icon: "assets/trynd-emblem.svg",  // square icon next to the rank: stylised emblem (original art). Other options: "assets/trynd-emblem-blade.svg", "assets/tryndamere.png" (Riot portrait), "" = old gem emblem
-  mastery: "2,000,000+",     // mastery points text
+  mastery: "2,600,000+",     // mastery points text
   mastery_label: "Mastery",  // word after the points
   mastery_show: 1,           // 1 = show the mastery line/strip, 0 = hide
+  // ---- the journey ("Bronze 5 → Challenger · The 12 Year Journey") ----
+  journey_show: 1,           // 1 = show, 0 = hide
+  journey_style: 1,          // 1 = tier ladder with a "you are here" marker (tier read from rank.json)
+                             // 2 = steel-framed engraved plaque   3 = minimal tag line (under the queue subtitle / rank card footer)
+  journey_from: "Bronze 5",  // start of the path (the ladder also uses its tier word)
+  journey_to: "Challenger",  // the goal
+  journey_title: "The 12 Year Journey",
   // ---- queue scene (layout=queue / queue.html) ----
   status: "queue",           // queue | champ | back | starting   (or set title=/subtitle= yourself)
   title: "", subtitle: "",   // override the status text
@@ -295,7 +395,8 @@ const LAYOUTS = {
   // queue: x,y,w,h = the chat PANEL (messages sit inside it)
   queue: { x:1360, y:56,  w:500, h:968,  rankx:760, ranky:222, songx:760, songy:394, masteryx:760, masteryy:394, scale:1.35, max:16,
            status:{x:80, y:56}, cam:{x:80, y:222, w:640, h:360}, info:{x:760, y:470, w:540, h:112},
-           verse:{x:80, y:622, w:1220, h:320}, socials:{x:80, y:970} }
+           verse:{x:80, y:622, w:1220, h:320}, socials:{x:80, y:970},
+           journey:{x:1360, y:56, w:500, h:150} }   // journey styles 1/2: top of the chat column (chat panel then starts at y 222, level with the cam)
 };
 /* ============================================================================================= */
 // site-config.js may override any DEFAULTS key for the whole site (e.g. data, channel, schedule)
@@ -314,6 +415,15 @@ const widgets = String(P("widgets")).toLowerCase().split(/[,\s]+/).filter(Boolea
 const only = widgets.length === 1 ? widgets[0] : null;
 // position params: x,y,w,h = chat (or the single widget if only one is enabled); rankx/ranky/songx/songy explicit
 const pos = (k, dflt) => (qs.has(k) ? N(k, dflt) : dflt);
+// journey settings (DEFAULTS, site-config.js or URL params)
+const J = {
+  from: String(P("journey_from") || "").trim(), to: String(P("journey_to") || "").trim(), title: String(P("journey_title") || "").trim(),
+  style: (() => { const n = Math.round(N("journey_style", 1)); return n >= 1 && n <= 3 ? n : 1; })()
+};
+J.on = B("journey_show") && !!(J.from || J.to || J.title);
+J.panelQ = J.on && layoutName === "queue" && J.style !== 3;   // queue styles 1/2 = own panel at the top of the chat column
+if (J.panelQ && !qs.has("y") && !qs.has("h")) { const bottom = L.y + L.h; L.y = L.journey.y + L.journey.h + 16; L.h = bottom - L.y; }
+if (J.on && layoutName === "game" && J.style !== 3) L.verse = Object.assign({}, L.verse, { y: L.verse.y + 58 });   // optional game verse steps below it
 const chatBox = { x: pos("x", L.x), y: pos("y", L.y), w: pos("w", L.w), h: pos("h", L.h) };
 const rankPos = { x: pos("rankx", only === "rank" ? pos("x", L.rankx) : L.rankx), y: pos("ranky", only === "rank" ? pos("y", L.ranky) : L.ranky) };
 const songPos = { x: pos("songx", only === "song" ? pos("x", L.songx) : L.songx), y: pos("songy", only === "song" ? pos("y", L.songy) : L.songy) };
@@ -664,6 +774,96 @@ const MASTERY_LABEL = String(P("mastery_label") || "").trim();
 const SHOW_MASTERY = B("mastery_show") && !!MASTERY && !(layoutName === "queue" && widgets.includes("song"));
 const MASTERY_STRIP = SHOW_MASTERY && layoutName === "queue";
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+/* ---------------- JOURNEY ---------------- */
+const TIER_ORDER = ["IRON","BRONZE","SILVER","GOLD","PLATINUM","EMERALD","DIAMOND","MASTER","GRANDMASTER","CHALLENGER"];
+const TIER_ABBR = { IRON:"IR", BRONZE:"BR", SILVER:"SI", GOLD:"GO", PLATINUM:"PL", EMERALD:"EM", DIAMOND:"DI", MASTER:"MA", GRANDMASTER:"GM", CHALLENGER:"CH" };
+const TIER_ALIAS = { PLAT:"PLATINUM", EMER:"EMERALD", EM:"EMERALD", DIA:"DIAMOND", GM:"GRANDMASTER", GRANDM:"GRANDMASTER", CHALL:"CHALLENGER", CHALLY:"CHALLENGER", CHAL:"CHALLENGER" };
+function tierOf(text, dflt) {   // "Bronze 5" -> "BRONZE"
+  const w = String(text || "").toUpperCase().replace(/[^A-Z]/g, "");
+  const hit = TIER_ORDER.find(t => w.startsWith(t)) || Object.keys(TIER_ALIAS).sort((a, b) => b.length - a.length).filter(a => w.startsWith(a)).map(a => TIER_ALIAS[a])[0];
+  return hit || dflt;
+}
+function journeyRoute() {
+  const cf = (TIERS[tierOf(J.from, "")] || {}).c, ct = (TIERS[tierOf(J.to, "")] || {}).c;
+  const f = J.from ? `<b class="f"${cf ? ` style="color:${cf}"` : ""}>${esc(J.from)}</b>` : "";
+  const t = J.to ? `<b class="t"${ct ? ` style="color:${ct}"` : ""}>${esc(J.to)}</b>` : "";
+  return (f || t) ? `<span class="jr-route">${f}${f && t ? '<i class="ar">→</i>' : ""}${t}</span>` : "";
+}
+function journeyHTML(ctx, cur) {   // ctx "q" (queue scene) | "g" (game, under the rank card); cur = {tier, division}
+  const route = journeyRoute(), title = J.title ? `<span class="jr-title">${esc(J.title)}</span>` : "";
+  if (J.style === 2) {
+    return `<div class="jr jr2 ${ctx}"><i class="sg l"></i><i class="sg r"></i><div class="fr"><div class="pl">
+      <i class="rv a"></i><i class="rv b"></i><i class="rv c"></i><i class="rv d"></i>
+      ${route ? `<div class="jk"><i></i>${route}<i></i></div>` : ""}${J.title ? `<div class="jt">${esc(J.title)}</div>` : ""}<div class="ju"></div></div></div></div>`;
+  }
+  if (J.style === 3) {
+    return `<div class="jr jr3 ${ctx}"><i class="dm"></i>${route}${route && title ? '<span class="jr-sep">·</span>' : ""}${title}${ctx === "q" ? '<div class="bar"></div>' : ""}</div>`;
+  }
+  // style 1: tier ladder
+  const iS = Math.max(0, TIER_ORDER.indexOf(tierOf(J.from, "BRONZE")));
+  const iG = Math.max(iS, TIER_ORDER.indexOf(tierOf(J.to, "CHALLENGER")) < 0 ? TIER_ORDER.length - 1 : TIER_ORDER.indexOf(tierOf(J.to, "CHALLENGER")));
+  const iN = cur ? TIER_ORDER.indexOf(String(cur.tier || "").toUpperCase()) : -1;
+  const pct = (i) => (i / (TIER_ORDER.length - 1) * 100).toFixed(3) + "%";
+  const nowT = iN >= 0 ? TIERS[TIER_ORDER[iN]] : null;
+  let track = `<div class="jr-rail"></div>`;
+  if (iN > iS) track += `<div class="jr-fill" style="left:${pct(iS)};width:calc(${pct(iN)} - ${pct(iS)});--now-c:${nowT.c}"></div>`;
+  const aFrom = iN >= iS ? iN : iS;
+  if (aFrom < iG) track += `<div class="jr-ahead" style="left:${pct(aFrom)};width:calc(${pct(iG)} - ${pct(aFrom)})"></div>`;
+  TIER_ORDER.forEach((tn, i) => {
+    const t = TIERS[tn];
+    const st = i === iN ? "now" : i === iG ? "goal" : (i < iS ? "pre" : (iN >= 0 && i <= iN ? "done" : ""));
+    const cls = ["jr-n", st, i === iS ? "start" : "", i === iS && (iN < 0 || iN < iS) ? "done" : ""].filter(Boolean).join(" ");
+    let lb = TIER_ABBR[tn];
+    if (i === iN) lb = (tn.charAt(0) + tn.slice(1).toLowerCase()).toUpperCase() + (!APEX.has(tn) && cur.division ? " " + String(cur.division).toUpperCase() : "");
+    const al = i === iN ? (i <= 0 ? " l" : i >= TIER_ORDER.length - 1 ? " r" : "") : "";
+    track += `<div class="${cls}" style="left:${pct(i)};--c:${t.c};--g:${t.g}"><i class="gm"></i><span class="lb${al}">${esc(lb)}</span></div>`;
+  });
+  return `<div class="jr jr1 ${ctx}"><div class="jr-head">${route}${title}</div><div class="jr-track">${track}</div></div>`;
+}
+// fit long custom texts + hide ladder tier abbreviations that would touch the (longer) "you are here" label
+function fitJourney(root) {
+  // long custom texts: shrink the plaque title / header line until it fits its box
+  const fit = () => root.querySelectorAll(".jr2 .jt, .jr1 .jr-head, .jr3.g").forEach(e => {
+    const box = e.classList.contains("jt") ? e.closest(".pl") : e, pad = e.classList.contains("jt") ? 40 : 0;
+    const kids = e.querySelectorAll(".jr-route,.jr-title,.jr-sep");
+    e.style.fontSize = ""; kids.forEach(c => c.style.fontSize = "");      // start from the CSS sizes every time
+    if (!box || !box.clientWidth) return;                                   // not laid out (hidden) yet
+    let fs = parseFloat(getComputedStyle(e).fontSize) || 16, n = 0;
+    while (n++ < 30 && e.scrollWidth > box.clientWidth - pad + 1) { fs *= 0.95; e.style.fontSize = fs + "px";
+      kids.forEach(c => c.style.fontSize = (parseFloat(getComputedStyle(c).fontSize) * 0.95) + "px"); }
+  });
+  fit(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  const run = () => root.querySelectorAll(".jr-track").forEach(tr => {
+    const nodes = Array.from(tr.querySelectorAll(".jr-n")), k = nodes.findIndex(n => n.classList.contains("now"));
+    if (k < 0) return;
+    const a = nodes[k].querySelector(".lb").getBoundingClientRect();
+    for (const j of [k - 1, k + 1, k - 2, k + 2]) {
+      const lb = nodes[j] && nodes[j].querySelector(".lb"); if (!lb) continue;
+      lb.classList.remove("hid");
+      const b = lb.getBoundingClientRect();
+      if (b.left < a.right + 5 && b.right > a.left - 5) lb.classList.add("hid");
+    }
+  });
+  run(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(run);
+}
+// queue scene: styles 1/2 get their own panel, style 3 sits in the title block under the subtitle
+function renderJourneyQueue(cur) {
+  if (!J.on || layoutName !== "queue") return;
+  if (J.style === 3) {
+    const st = $("status"), old = st.querySelector(".jr");
+    if (old) return;                                   // text-only: nothing depends on the rank
+    st.querySelector(".bar").classList.add("hidden");
+    st.classList.add("has-j3");
+    st.insertAdjacentHTML("beforeend", journeyHTML("q", cur));
+    return;
+  }
+  const el = $("journey");
+  el.innerHTML = journeyHTML("q", cur);
+  const box = { x: pos("journeyx", L.journey.x), y: pos("journeyy", L.journey.y) };
+  el.style.width = L.journey.w + "px";
+  place(el, box, false);
+  fitJourney(el);
+}
 function renderRank(d) {
   const el = $("rank");
   const tier = String(d.tier || "UNRANKED").toUpperCase();
@@ -677,14 +877,18 @@ function renderRank(d) {
     ? `<div class="champ"><div class="pf"><img src="${esc(CHAMP_ICON)}" alt="${esc(CHAMP)}" onerror="this.closest('.champ').remove()"></div><i class="gem"></i>${emblemSVG(t.c, "mini")}</div>`
     : emblemSVG(t.c);
   const inCardM = SHOW_MASTERY && !MASTERY_STRIP;
-  let html = `<div class="rank-card${inCardM ? " has-m" : ""}" style="--tier-col:${t.c};--tier-glow:${t.g}">${art}<div class="rank-body">
+  const jGame = J.on && layoutName === "game";
+  let html = `<div class="rank-card${inCardM ? " has-m" : ""}${jGame && J.style === 3 ? " has-j3" : ""}" style="--tier-col:${t.c};--tier-glow:${t.g}">${art}<div class="rank-body">
     <div class="otp">${esc(label)}${d.example ? '<span class="chip">EXAMPLE</span>' : ""}</div>
     <div class="rank-line"><span class="tier">${esc(tier === "UNRANKED" ? "Unranked" : tierTxt.toUpperCase())}${div ? " " + esc(div) : ""}</span>${lp !== null && tier !== "UNRANKED" ? `<span class="dot">·</span><span class="lp">${lp} LP</span>` : ""}</div>`;
   if (lp !== null && !APEX.has(tier) && tier !== "UNRANKED") html += `<div class="rage"><b style="width:${Math.max(2, Math.min(100, lp))}%"></b></div>`;
   if (wT !== null && lT !== null && d.show_today !== false) html += `<div class="today">Today <span class="w">${wT}W</span> – <span class="l">${lT}L</span>${d.lp_today != null && Number.isFinite(+d.lp_today) ? ` · ${(+d.lp_today >= 0 ? "+" : "") + Math.round(+d.lp_today)} LP` : ""}</div>`;
   if (inCardM) html += `<div class="mastery-row">${masteryBadge(14)}<span class="mv">${esc(MASTERY)}</span><span class="ml">${esc(MASTERY_LABEL)}</span></div>`;
   html += `</div></div>`;
+  if (jGame) html += journeyHTML("g", { tier, division: div });
   el.innerHTML = html;
+  if (jGame) fitJourney(el);
+  if (layoutName === "queue" && J.on && J.style === 1) renderJourneyQueue({ tier, division: div });
 }
 function startMasteryStrip() {
   const el = $("mastery");
@@ -828,6 +1032,7 @@ if (widgets.includes("chat")) {
     if (DEMO) demoChat(); else startTwitch(P("channel"));
   }
 }
+if (layoutName === "queue") renderJourneyQueue(null);   // drawn straight away; style 1 gets its "you are here" marker once rank.json loads
 if (widgets.includes("rank")) { startRank(); if (MASTERY_STRIP) startMasteryStrip(); }
 if (widgets.includes("song")) startSong();
 if (widgets.includes("verse")) startVerse();
