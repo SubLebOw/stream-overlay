@@ -221,7 +221,7 @@ const DEFAULTS = {
   restream_url: "",          // Restream Chat "Embed in stream" URL (only for chat=restream)
   font: 23,                  // chat font size in px
   max: 8,                    // max chat messages on screen
-  fade: 45,                  // seconds before a message fades out (0 = never)
+  fade: 0,                   // seconds before a message fades out (0 = never; old ones scroll off)
   opacity: 0.74,             // chat backing opacity 0..1
   badges: 1, hidebots: 1, hidecmds: 0, emotes: 1,
   data: "",                  // where rank.json/song.json live. "" = same folder as this page (GitHub Pages).
@@ -362,7 +362,7 @@ if (layoutName === "queue") startQueueScene();
 
 /* ======================= CHAT ======================= */
 const MAX = Math.max(1, Math.round(qs.has("max") ? N("max", 8) : L.max));
-const FADE = Math.max(0, N("fade", 45));
+const FADE = Math.max(0, N("fade", 0));
 const BOTS = new Set(["nightbot","streamelements","streamlabs","moobot","fossabot","wizebot","soundalerts","sery_bot","botrixoficial","kofistreambot"]);
 const PALETTE = ["#ff4a4a","#4aa3ff","#3fd47f","#b86bff","#ff8c3a","#2ed1d1","#ff5fb2","#e8d44d","#8fa6ff","#7ee06a"];
 let chatEl = null;
