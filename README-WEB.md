@@ -166,8 +166,13 @@ These are the same as the local pack (`font`, `max`, `fade`, `opacity`, `x,y,w,h
 | `song` | Fixed song text; empty hides the strip. When set, song.json is ignored |
 | `songpoll` / `rankpoll` | Seconds between checks (default 30 / 60) |
 | `data` | Where rank.json/song.json come from (usually set in site-config.js; only for Netlify) |
+| `champ` / `champ_icon` | Champion name and square portrait on the rank card (default `Tryndamere`, `assets/tryndamere.png`; empty `champ_icon` = old gem emblem) |
+| `mastery` / `mastery_label` | Mastery text, e.g. `2,000,000+` and `Mastery` (in-game: a line inside the rank card; queue: a strip under the rank card) |
+| `mastery_show` | `0` hides the mastery line/strip |
+| `masteryx` / `masteryy` | Queue scene: position of the mastery strip (default 760, 394) |
 
-To change the socials or schedule for the whole site, edit `site-config.js` on github.com.
+To change the socials, schedule or mastery number for the whole site, edit `site-config.js` on github.com.
+The Tryndamere portrait is Riot's Data Dragon square icon (patch 16.19.1), stored in `assets/` so nothing loads from Riot at stream time.
 
 ## G. Restream Studio (streaming from the browser, no OBS)
 

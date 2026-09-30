@@ -112,6 +112,40 @@
   .today{font-size:17px;font-weight:600;color:var(--frost-dim);margin-top:3px;letter-spacing:.04em;}
   .today .w{color:#6fd49a;} .today .l{color:#ff6b6b;}
 
+  /* ---------- CHAMPION PORTRAIT + MASTERY ---------- */
+  .champ{position:relative;width:62px;height:62px;flex:0 0 62px;margin-right:2px;}
+  .champ .pf{position:absolute;inset:0;padding:2px;border-radius:5px;box-sizing:border-box;
+    background:linear-gradient(155deg,#dfeaf3 0%,#6d7d8f 34%,#2b3646 55%,var(--rage-deep) 78%,var(--rage-hot) 100%);
+    box-shadow:0 0 0 1px rgba(0,0,0,.75),0 6px 14px rgba(0,0,0,.55),0 0 12px rgba(212,20,31,.25);}
+  .champ .pf img{display:block;width:100%;height:100%;border-radius:3px;object-fit:cover;background:#0b0e13;}
+  .champ .pf::after{content:"";position:absolute;inset:2px;border-radius:3px;pointer-events:none;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.55),inset 0 -14px 16px -8px rgba(0,0,0,.65);}
+  .champ .gem{position:absolute;left:50%;top:-4px;width:7px;height:7px;margin-left:-4px;transform:rotate(45deg);
+    background:var(--rage-hot);border:1px solid #0b0e13;box-shadow:0 0 6px var(--rage-hot);z-index:2;}
+  .champ .emblem.mini{position:absolute;right:-11px;bottom:-10px;width:28px;height:28px;flex:none;z-index:3;
+    filter:drop-shadow(0 0 4px var(--tier-glow,rgba(127,196,234,.55))) drop-shadow(0 2px 2px rgba(0,0,0,.9));}
+  .mbadge{flex:none;display:block;filter:drop-shadow(0 0 5px rgba(127,196,234,.45)) drop-shadow(0 1px 1px rgba(0,0,0,.9));}
+  .mastery-row{display:flex;align-items:center;gap:6px;margin-top:4px;padding-top:4px;white-space:nowrap;line-height:1.15;
+    border-top:1px solid rgba(143,166,185,.16);}
+  .rank-card.has-m{padding-top:9px;padding-bottom:10px;}
+  .rank-card.has-m .today{margin-top:1px;}
+  .mastery-row .mv{font-size:16px;font-weight:700;letter-spacing:.03em;color:var(--frost);text-shadow:0 1px 3px rgba(0,0,0,.8);}
+  .mastery-row .ml{font-family:var(--serif);font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--frost-dim);text-transform:uppercase;padding-top:1px;}
+  #mastery{transform-origin:top left;transform:scale(var(--ui-scale));}
+  .mastery-strip{position:relative;display:flex;align-items:center;gap:12px;width:400px;box-sizing:border-box;
+    padding:4px 16px 4px 12px;border-radius:4px 12px 12px 4px;overflow:hidden;
+    background:linear-gradient(90deg,rgba(10,14,20,.9) 0%,rgba(14,19,27,.84) 62%,rgba(40,8,12,.82) 100%);
+    border:1px solid rgba(143,166,185,.22);border-left:3px solid var(--rage-hot);
+    box-shadow:0 6px 18px rgba(0,0,0,.4),inset 0 1px 0 rgba(207,227,242,.06);}
+  .mastery-strip .mt{display:flex;flex-direction:column;gap:1px;min-width:0;}
+  .mastery-strip .mk,.mastery-strip .mv{line-height:1.2;}
+  .mastery-strip .mk{font-family:var(--serif);font-weight:700;font-size:11px;letter-spacing:.22em;color:var(--rage-hot);text-transform:uppercase;white-space:nowrap;}
+  .mastery-strip .mv{font-size:22px;font-weight:700;letter-spacing:.03em;line-height:1.05;color:var(--text);white-space:nowrap;text-shadow:0 2px 6px rgba(0,0,0,.8);}
+  .mastery-strip .mv small{font-size:14px;font-weight:600;letter-spacing:.14em;color:var(--frost-dim);margin-left:7px;text-transform:uppercase;}
+  .mastery-strip .pips{margin-left:auto;display:flex;gap:6px;align-items:center;}
+  .mastery-strip .pips i{width:7px;height:7px;transform:rotate(45deg);background:var(--rage);box-shadow:0 0 6px rgba(255,59,48,.6);}
+  .mastery-strip .pips i:nth-child(2){opacity:.6}.mastery-strip .pips i:nth-child(3){opacity:.3}
+
   /* ---------- SONG ---------- */
   #song{transform-origin:top left;transform:scale(var(--ui-scale));transition:opacity .5s ease;}
   .song-strip{display:inline-flex;align-items:center;gap:10px;max-width:520px;box-sizing:border-box;
@@ -208,6 +242,7 @@
 <div id="chat" class="widget hidden"></div>
 <div id="rframe" class="widget hidden"><div class="rhead"><i></i>CHAT</div></div>
 <div id="rank" class="widget hidden"></div>
+<div id="mastery" class="widget hidden"></div>
 <div id="song" class="widget hidden"><div class="song-strip"><span class="note">&#9834;</span><span class="st"></span></div></div>
 <div id="debug" class="hidden"></div>
 
@@ -230,6 +265,12 @@ const DEFAULTS = {
   songfile: "song.json", songpoll: 30,   // song.json: {"song": "Artist - Title"} ("" = hide). Plain .txt also works.
   // song: "..."             // URL param only: ?song=Artist%20-%20Title fixes the text (empty = hidden), no polling
   scale: 1,                  // scale for rank + song widgets
+  // ---- champion portrait + mastery (rank card; queue scene also gets a mastery strip) ----
+  champ: "Tryndamere",       // champion name (used in the mastery text)
+  champ_icon: "assets/tryndamere.png",  // square portrait next to the rank (Riot Data Dragon icon, stored locally); "" = old gem emblem
+  mastery: "2,000,000+",     // mastery points text
+  mastery_label: "Mastery",  // word after the points
+  mastery_show: 1,           // 1 = show the mastery line/strip, 0 = hide
   // ---- queue scene (layout=queue / queue.html) ----
   status: "queue",           // queue | champ | back | starting   (or set title=/subtitle= yourself)
   title: "", subtitle: "",   // override the status text
@@ -252,7 +293,7 @@ const LAYOUTS = {
   game:  { x:1490, y:150, w:410, h:480,  rankx:24, ranky:24,  songx:24, songy:146, scale:1,    max:8,
            verse:{x:24, y:204, w:470, h:170} },
   // queue: x,y,w,h = the chat PANEL (messages sit inside it)
-  queue: { x:1360, y:56,  w:500, h:968,  rankx:760, ranky:222, songx:760, songy:394, scale:1.35, max:16,
+  queue: { x:1360, y:56,  w:500, h:968,  rankx:760, ranky:222, songx:760, songy:394, masteryx:760, masteryy:394, scale:1.35, max:16,
            status:{x:80, y:56}, cam:{x:80, y:222, w:640, h:360}, info:{x:760, y:470, w:540, h:112},
            verse:{x:80, y:622, w:1220, h:320}, socials:{x:80, y:970} }
 };
@@ -592,9 +633,9 @@ const TIERS = {
   UNRANKED:{c:"#8fa6b9",g:"rgba(143,166,185,.35)"}
 };
 const APEX = new Set(["MASTER","GRANDMASTER","CHALLENGER"]);
-function emblemSVG(col) {
+function emblemSVG(col, cls) {
   // simple original gem/shield glyph (not Riot artwork)
-  return `<svg class="emblem" viewBox="0 0 64 64" aria-hidden="true">
+  return `<svg class="emblem${cls ? " " + cls : ""}" viewBox="0 0 64 64" aria-hidden="true">
     <defs><linearGradient id="eg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".35" stop-color="${col}"/><stop offset="1" stop-color="#0b0e13"/></linearGradient></defs>
     <path d="M32 3 L57 20 L50 50 L32 61 L14 50 L7 20 Z" fill="#0b0e13" stroke="${col}" stroke-width="2.5"/>
     <path d="M32 12 L47 23 L42 45 L32 52 L22 45 L17 23 Z" fill="url(#eg)" opacity=".9"/>
@@ -602,6 +643,26 @@ function emblemSVG(col) {
     <path d="M26 3 L32 -1 L38 3" stroke="#d4141f" stroke-width="2" fill="none"/>
   </svg>`;
 }
+function masteryBadge(size) {
+  // original crest glyph for "mastery" (steel banner, frost chevrons, red gem; not Riot artwork)
+  return `<svg class="mbadge" width="${size}" height="${Math.round(size * 1.125)}" viewBox="0 0 32 36" aria-hidden="true">
+    <defs><linearGradient id="mbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b3646"/><stop offset="1" stop-color="#07090d"/></linearGradient>
+      <linearGradient id="mbc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#7fc4ea"/></linearGradient></defs>
+    <path d="M16 1.5 L29 7 V20.5 Q29 27 16 34.5 Q3 27 3 20.5 V7 Z" fill="url(#mbg)" stroke="#9fb4c6" stroke-width="1.6"/>
+    <path d="M16 5 L25.6 9.2 V20 Q25.6 24.8 16 30.8 Q6.4 24.8 6.4 20 V9.2 Z" fill="none" stroke="#d4141f" stroke-opacity=".75" stroke-width="1"/>
+    <path d="M9.5 15.5 L16 11.5 L22.5 15.5 M9.5 20.5 L16 16.5 L22.5 20.5 M11 25 L16 21.8 L21 25" fill="none" stroke="url(#mbc)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M16 0 L18.4 2.4 L16 4.8 L13.6 2.4 Z" fill="#ff3b30"/>
+  </svg>`;
+}
+// champion / mastery settings (DEFAULTS, site-config.js or URL params)
+const CHAMP = String(P("champ") || "").trim();
+const CHAMP_ICON = (() => { const v = String(P("champ_icon") || "").trim(); return /^(https:\/\/|[\w.\-\/]+$)/i.test(v) && !/^\/\//.test(v) ? v : ""; })();
+const MASTERY = String(P("mastery") || "").trim();
+const MASTERY_LABEL = String(P("mastery_label") || "").trim();
+// in-game: a compact line inside the rank card. Queue scene: its own strip in the gap under the rank card
+// (that gap is the old song slot, so if the song strip is turned back on in the queue scene the mastery strip steps aside)
+const SHOW_MASTERY = B("mastery_show") && !!MASTERY && !(layoutName === "queue" && widgets.includes("song"));
+const MASTERY_STRIP = SHOW_MASTERY && layoutName === "queue";
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 function renderRank(d) {
   const el = $("rank");
@@ -612,13 +673,25 @@ function renderRank(d) {
   const wT = Number.isFinite(+d.wins_today) ? +d.wins_today : null, lT = Number.isFinite(+d.losses_today) ? +d.losses_today : null;
   const label = d.label || "Tryndamere OTP";
   const tierTxt = tier.charAt(0) + tier.slice(1).toLowerCase();
-  let html = `<div class="rank-card" style="--tier-col:${t.c};--tier-glow:${t.g}">${emblemSVG(t.c)}<div class="rank-body">
+  const art = CHAMP_ICON
+    ? `<div class="champ"><div class="pf"><img src="${esc(CHAMP_ICON)}" alt="${esc(CHAMP)}" onerror="this.closest('.champ').remove()"></div><i class="gem"></i>${emblemSVG(t.c, "mini")}</div>`
+    : emblemSVG(t.c);
+  const inCardM = SHOW_MASTERY && !MASTERY_STRIP;
+  let html = `<div class="rank-card${inCardM ? " has-m" : ""}" style="--tier-col:${t.c};--tier-glow:${t.g}">${art}<div class="rank-body">
     <div class="otp">${esc(label)}${d.example ? '<span class="chip">EXAMPLE</span>' : ""}</div>
     <div class="rank-line"><span class="tier">${esc(tier === "UNRANKED" ? "Unranked" : tierTxt.toUpperCase())}${div ? " " + esc(div) : ""}</span>${lp !== null && tier !== "UNRANKED" ? `<span class="dot">·</span><span class="lp">${lp} LP</span>` : ""}</div>`;
   if (lp !== null && !APEX.has(tier) && tier !== "UNRANKED") html += `<div class="rage"><b style="width:${Math.max(2, Math.min(100, lp))}%"></b></div>`;
   if (wT !== null && lT !== null && d.show_today !== false) html += `<div class="today">Today <span class="w">${wT}W</span> – <span class="l">${lT}L</span>${d.lp_today != null && Number.isFinite(+d.lp_today) ? ` · ${(+d.lp_today >= 0 ? "+" : "") + Math.round(+d.lp_today)} LP` : ""}</div>`;
+  if (inCardM) html += `<div class="mastery-row">${masteryBadge(14)}<span class="mv">${esc(MASTERY)}</span><span class="ml">${esc(MASTERY_LABEL)}</span></div>`;
   html += `</div></div>`;
   el.innerHTML = html;
+}
+function startMasteryStrip() {
+  const el = $("mastery");
+  const key = [CHAMP, "Champion " + (MASTERY_LABEL || "Mastery")].filter(Boolean).join(" · ");
+  el.innerHTML = `<div class="mastery-strip">${masteryBadge(30)}<div class="mt"><div class="mk">${esc(key)}</div>
+    <div class="mv">${esc(MASTERY)}<small>points</small></div></div><div class="pips"><i></i><i></i><i></i></div></div>`;
+  place(el, { x: pos("masteryx", L.masteryx), y: pos("masteryy", L.masteryy) }, false);
 }
 // Resolve data files relative to the "data" base (default: this page's folder). Only http(s) bases are used.
 function dataURL(file) {
@@ -755,7 +828,7 @@ if (widgets.includes("chat")) {
     if (DEMO) demoChat(); else startTwitch(P("channel"));
   }
 }
-if (widgets.includes("rank")) startRank();
+if (widgets.includes("rank")) { startRank(); if (MASTERY_STRIP) startMasteryStrip(); }
 if (widgets.includes("song")) startSong();
 if (widgets.includes("verse")) startVerse();
 </script>
