@@ -8,9 +8,9 @@ window.SITE_CONFIG = {
   x_handle: "@calebcameron_",
   tiktok: "@calebcameron_",
   youtube: "@lebthetapdancer",
-  // Champion portrait + mastery (rank card; the queue scene also shows a mastery strip under it)
+  // Champion icon + mastery (rank card; the queue scene also shows a mastery strip under it)
   champ: "Tryndamere",
-  champ_icon: "assets/tryndamere.png",  // "" = old gem emblem instead of the portrait
+  champ_icon: "assets/trynd-emblem.svg",  // stylised emblem. Or "assets/trynd-emblem-blade.svg", "assets/tryndamere.png" (Riot portrait), "" = old gem emblem
   mastery: "2,000,000+",                // change the number here whenever you like
   mastery_label: "Mastery",
   mastery_show: 1,                      // 0 = hide the mastery line/strip

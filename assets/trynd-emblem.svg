@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128"><title>Barbarian King - stylised Tryndamere-inspired emblem (original art, not Riot artwork)</title><defs>
+  <radialGradient id="bbg" cx="64" cy="118" r="128" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#4a070c"/><stop offset=".42" stop-color="#1b1419"/><stop offset=".72" stop-color="#131a24"/><stop offset="1" stop-color="#0a0d13"/></radialGradient>
+  <linearGradient id="bfl" x1="0" y1="128" x2="0" y2="30" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#5e060b"/><stop offset=".4" stop-color="#b8101a"/><stop offset=".75" stop-color="#e5212a"/><stop offset="1" stop-color="#ff3b30" stop-opacity=".15"/></linearGradient>
+  <linearGradient id="bfc" x1="0" y1="128" x2="0" y2="62" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#ff4a36"/><stop offset=".6" stop-color="#ff3b30" stop-opacity=".85"/><stop offset="1" stop-color="#ff3b30" stop-opacity="0"/></linearGradient>
+  <linearGradient id="bbl" x1="-7" y1="0" x2="20" y2="0" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#56657a"/><stop offset=".2" stop-color="#e6eff6"/><stop offset=".48" stop-color="#a7bccd"/><stop offset=".82" stop-color="#3b4859"/><stop offset="1" stop-color="#cfe3f2"/></linearGradient>
+  <linearGradient id="bst" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#eef3f8"/><stop offset=".45" stop-color="#8fa6b9"/><stop offset="1" stop-color="#2b3646"/></linearGradient>
+  <linearGradient id="bdk" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#3a4757"/><stop offset="1" stop-color="#10151d"/></linearGradient>
+  <linearGradient id="bgm" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffc2b8"/><stop offset=".4" stop-color="#ff3b30"/><stop offset="1" stop-color="#7a0a10"/></linearGradient>
+  <filter id="bglow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+  <filter id="bblur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+  <filter id="bsh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="2" stdDeviation="1.6" flood-color="#000" flood-opacity=".85"/></filter>
+</defs>
+<rect width="128" height="128" fill="url(#bbg)"/>
+<g transform="translate(64 128) scale(0.95) translate(-64 -128)"><path d="M2.0 130 C-2.0 105.7 -12.4 92.9 10.0 66 C13.8 87.8 39.0 99.3 34.0 130 Z M26.0 130 C22.0 95.8 13.3 77.8 34.0 40 C37.6 70.6 61.0 86.8 56.0 130 Z M47.0 130 C43.0 88.2 51.7 66.2 68.0 20 C72.1 57.4 86.0 77.2 81.0 130 Z M72.0 130 C68.0 96.6 83.3 79.0 95.0 42 C98.6 71.9 107.0 87.8 102.0 130 Z M94.0 130 C90.0 106.4 106.8 94.0 119.0 68 C122.8 89.1 131.0 100.2 126.0 130 Z M19.0 130 C15.0 113.3 27.5 104.5 36.0 86 C38.6 101.0 46.0 108.9 41.0 130 Z M87.0 130 C83.0 113.3 76.3 104.5 92.0 86 C94.6 101.0 114.0 108.9 109.0 130 Z " fill="#d4141f" opacity=".55" filter="url(#bblur)"/>
+<path d="M2.0 130 C-2.0 105.7 -12.4 92.9 10.0 66 C13.8 87.8 39.0 99.3 34.0 130 Z M26.0 130 C22.0 95.8 13.3 77.8 34.0 40 C37.6 70.6 61.0 86.8 56.0 130 Z M47.0 130 C43.0 88.2 51.7 66.2 68.0 20 C72.1 57.4 86.0 77.2 81.0 130 Z M72.0 130 C68.0 96.6 83.3 79.0 95.0 42 C98.6 71.9 107.0 87.8 102.0 130 Z M94.0 130 C90.0 106.4 106.8 94.0 119.0 68 C122.8 89.1 131.0 100.2 126.0 130 Z M19.0 130 C15.0 113.3 27.5 104.5 36.0 86 C38.6 101.0 46.0 108.9 41.0 130 Z M87.0 130 C83.0 113.3 76.3 104.5 92.0 86 C94.6 101.0 114.0 108.9 109.0 130 Z " fill="url(#bfl)"/><path d="M27.0 130 C23.0 114.8 18.1 106.8 31.0 90 C33.2 103.6 50.0 110.8 45.0 130 Z M53.0 130 C49.0 104.2 56.7 90.6 67.0 62 C69.6 85.1 80.0 97.4 75.0 130 Z M83.0 130 C79.0 114.8 91.7 106.8 98.0 90 C100.2 103.6 106.0 110.8 101.0 130 Z M43.0 130 C39.0 117.8 47.1 111.4 53.0 98 C54.7 108.9 62.0 114.6 57.0 130 Z M71.0 130 C67.0 117.8 65.5 111.4 75.0 98 C76.7 108.9 90.0 114.6 85.0 130 Z " fill="url(#bfc)" opacity=".8"/></g><path d="M24 37.8 L26.2 40 L24 42.2 L21.8 40 Z" fill="#ff3b30" opacity=".85"/><path d="M104 34 L106 36 L104 38 L102 36 Z" fill="#ff3b30" opacity=".85"/><path d="M14 58.4 L15.6 60 L14 61.6 L12.4 60 Z" fill="#ff3b30" opacity=".85"/><path d="M116 56.4 L117.6 58 L116 59.6 L114.4 58 Z" fill="#ff3b30" opacity=".85"/><path d="M92 20.6 L93.4 22 L92 23.4 L90.6 22 Z" fill="#ff3b30" opacity=".85"/><path d="M36 18.6 L37.4 20 L36 21.4 L34.6 20 Z" fill="#ff3b30" opacity=".85"/>
+<g transform="translate(0 -4)"><path d="M24 66 L19 34 L35 49 L41 20 L53 44 L64 8 L75 44 L87 20 L93 49 L109 34 L104 66 Z" fill="#ff2a22" opacity=".45" filter="url(#bglow)"/>
+<g filter="url(#bsh)">
+  <path d="M24 66 L19 34 L35 49 L41 20 L53 44 L64 8 L75 44 L87 20 L93 49 L109 34 L104 66 Z" fill="url(#bst)" stroke="#07090d" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M27 60 L24.5 42 L35 52 M41 27 L38.5 44 M87 27 L89.5 44 M101 60 L103.5 42 L93 52" fill="none" stroke="#f4fbff" stroke-opacity=".6" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M21 63 L107 63 L102 78 L26 78 Z" fill="url(#bdk)" stroke="#07090d" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M24 65.5 L104 65.5" stroke="#9fdcff" stroke-opacity=".8" stroke-width="1.2"/>
+  <path d="M38 70.5 L41.5 67 L45 70.5 L41.5 74 Z M83 70.5 L86.5 67 L90 70.5 L86.5 74 Z" fill="#ff3b30"/>
+</g></g>
+<g transform="translate(63 67.5) scale(.87)" filter="url(#bsh)"><path d="M-6 16 L-6 -34 L-11.5 -39 L-7 -43 L-7 -52 Q-7 -62 -4 -72 Q13 -62 19 -43 Q22.5 -26 15 -8 Q10 4 8.5 16 Z" fill="#ff2a22" opacity=".8" filter="url(#bglow)"/><path d="M-6 16 L-6 -34 L-11.5 -39 L-7 -43 L-7 -52 Q-7 -62 -4 -72 Q13 -62 19 -43 Q22.5 -26 15 -8 Q10 4 8.5 16 Z" fill="url(#bbl)" stroke="#07090d" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M-2.6 10 L-2.6 -44" stroke="#2b3646" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M-0.4 10 L-0.4 -42" stroke="#9fdcff" stroke-opacity=".9" stroke-width=".9" stroke-linecap="round"/>
+  <path d="M-3 -69.5 Q12 -60.5 17.8 -43 Q21 -26 14 -8.5 Q9.4 3.5 7.6 14" fill="none" stroke="#f6fcff" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M-23 9 Q-12 17 1 16 Q13 17 24 8 L20 21 Q9 25.5 1 24.5 Q-7 25.5 -19 21.5 Z" fill="url(#bst)" stroke="#07090d" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M1 15.6 L5 20.2 L1 24.8 L-3 20.2 Z" fill="url(#bgm)" stroke="#07090d" stroke-width="1.1"/>
+  <rect x="-4" y="24" width="10" height="22" rx="1.8" fill="#1a222e" stroke="#07090d" stroke-width="1.8"/>
+  <path d="M-3.2 28.5 L5.2 31.5 M-3.2 33.5 L5.2 36.5 M-3.2 38.5 L5.2 41.5" stroke="#8fa6b9" stroke-width="1.7" stroke-linecap="round"/>
+  <path d="M1 45 L7.5 51.5 L1 59 L-5.5 51.5 Z" fill="url(#bgm)" stroke="#07090d" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M1 47.8 L3.3 50.8" stroke="#ffe3dc" stroke-width="1.2" stroke-linecap="round"/></g>
+<rect x="1" y="1" width="126" height="126" fill="none" stroke="#cfe3f2" stroke-opacity=".1" stroke-width="2"/></svg>

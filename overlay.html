@@ -112,7 +112,7 @@
   .today{font-size:17px;font-weight:600;color:var(--frost-dim);margin-top:3px;letter-spacing:.04em;}
   .today .w{color:#6fd49a;} .today .l{color:#ff6b6b;}
 
-  /* ---------- CHAMPION PORTRAIT + MASTERY ---------- */
+  /* ---------- CHAMPION ICON (emblem / portrait) + MASTERY ---------- */
   .champ{position:relative;width:62px;height:62px;flex:0 0 62px;margin-right:2px;}
   .champ .pf{position:absolute;inset:0;padding:2px;border-radius:5px;box-sizing:border-box;
     background:linear-gradient(155deg,#dfeaf3 0%,#6d7d8f 34%,#2b3646 55%,var(--rage-deep) 78%,var(--rage-hot) 100%);
@@ -265,9 +265,9 @@ const DEFAULTS = {
   songfile: "song.json", songpoll: 30,   // song.json: {"song": "Artist - Title"} ("" = hide). Plain .txt also works.
   // song: "..."             // URL param only: ?song=Artist%20-%20Title fixes the text (empty = hidden), no polling
   scale: 1,                  // scale for rank + song widgets
-  // ---- champion portrait + mastery (rank card; queue scene also gets a mastery strip) ----
+  // ---- champion icon + mastery (rank card; queue scene also gets a mastery strip) ----
   champ: "Tryndamere",       // champion name (used in the mastery text)
-  champ_icon: "assets/tryndamere.png",  // square portrait next to the rank (Riot Data Dragon icon, stored locally); "" = old gem emblem
+  champ_icon: "assets/trynd-emblem.svg",  // square icon next to the rank: stylised emblem (original art). Other options: "assets/trynd-emblem-blade.svg", "assets/tryndamere.png" (Riot portrait), "" = old gem emblem
   mastery: "2,000,000+",     // mastery points text
   mastery_label: "Mastery",  // word after the points
   mastery_show: 1,           // 1 = show the mastery line/strip, 0 = hide
