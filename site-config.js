@@ -4,7 +4,7 @@
 window.SITE_CONFIG = {
   channel: "calebgcameron",          // Twitch chat to read (anonymous, read-only)
   twitch: "twitch.tv/CalebGCameron",
-  schedule: "Live Mon · Wed · Fri · Sat · 7:30pm Sydney time",
+  schedule: "Live Tue · Wed · Thu · Fri · Sat · 12pm Sydney time",
   x_handle: "@calebcameron_",
   tiktok: "@calebcameron_",
   youtube: "@lebthetapdancer",
