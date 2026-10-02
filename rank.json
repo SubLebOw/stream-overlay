@@ -1,11 +1,11 @@
 {
   "example": false,
-  "_note": "Set by hand (OCE Emerald IV 0 LP). The Riot updater overwrites this once RIOT_API_KEY is added.",
+  "_note": "Set by hand (OCE Emerald III). The Riot updater overwrites this once RIOT_API_KEY is added.",
   "label": "Tryndamere OTP",
   "tier": "EMERALD",
-  "division": "IV",
-  "lp": 95,
-  "wins_today": 1,
+  "division": "III",
+  "lp": 14,
+  "wins_today": 2,
   "losses_today": 0,
   "show_today": true
 }
