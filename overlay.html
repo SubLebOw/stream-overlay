@@ -404,7 +404,7 @@ const DEFAULTS = {
   verse_ref: "",             // force a specific verse, e.g. "Isaiah 40:31"
   verse_date: "",            // testing only: pretend it's this date (YYYY-MM-DD)
   verse_per_game: 1,         // 1 = a new verse after every game (games = wins_today + losses_today in rank.json), 0 = once a day
-  buddy: 1,                  // game layout: 1 = fake "webcam" (Buddy Christ) between the HUD bar and the minimap, 0 = hide
+  buddy: 1,                  // 1 = fake "webcam" (Buddy Christ), 0 = hide. Game: between the HUD bar and the minimap. Queue: beside the ladder, above the rank card
                              // move/resize with buddyx, buddyy, buddyw, buddyh (URL params)
   demo: 0, debug: 0
 };
@@ -417,7 +417,8 @@ const LAYOUTS = {
   queue: { x:1360, y:56,  w:500, h:968,  rankx:760, ranky:222, songx:760, songy:394, masteryx:760, masteryy:394, scale:1.35, max:16,
            status:{x:80, y:56}, cam:{x:80, y:222, w:640, h:360}, info:{x:760, y:470, w:540, h:112},
            verse:{x:80, y:622, w:1220, h:320}, socials:{x:80, y:970},
-           journey:{x:1360, y:56, w:500, h:150} }   // journey styles 1/2: top of the chat column (chat panel then starts at y 222, level with the cam)
+           journey:{x:1360, y:56, w:500, h:150},
+           buddy:{x:1100, y:56, w:200, h:150} }   // fake cam: beside the journey ladder, above the rank card (right edge = card's 760 + 400*1.35)   // journey styles 1/2: top of the chat column (chat panel then starts at y 222, level with the cam)
 };
 /* ============================================================================================= */
 // site-config.js may override any DEFAULTS key for the whole site (e.g. data, channel, schedule)
@@ -1061,7 +1062,7 @@ if (layoutName === "queue") renderJourneyQueue(null);   // drawn straight away; 
 if (widgets.includes("rank")) { startRank(); if (MASTERY_STRIP) startMasteryStrip(); }
 if (widgets.includes("song")) startSong();
 if (widgets.includes("verse")) startVerse();
-if (layoutName === "game" && B("buddy") && L.buddy) {
+if ((layoutName === "game" || layoutName === "queue") && B("buddy") && L.buddy) {
   place($("buddy"), { x: pos("buddyx", L.buddy.x), y: pos("buddyy", L.buddy.y), w: pos("buddyw", L.buddy.w), h: pos("buddyh", L.buddy.h) }, true);
 }
 </script>
