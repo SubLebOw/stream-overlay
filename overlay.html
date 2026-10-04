@@ -284,6 +284,22 @@
     background:repeating-linear-gradient(45deg,#232b35 0 14px,#1c232c 14px 28px);
     color:rgba(220,228,236,.75);font-size:22px;letter-spacing:.2em;text-transform:uppercase;}
 
+  /* ---------- BUDDY CAM (fake webcam, game layout only: gap between the HUD bar and the minimap) ---------- */
+  #buddy{pointer-events:none;box-sizing:border-box;border:3px solid rgba(143,166,185,.55);border-radius:4px;background:#0b0e13;
+    box-shadow:0 0 0 1px rgba(0,0,0,.7),0 10px 30px rgba(0,0,0,.55),inset 0 0 0 1px rgba(0,0,0,.5);}
+  #buddy img{display:block;width:100%;height:100%;object-fit:cover;border-radius:1px;}
+  #buddy::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 18px rgba(0,0,0,.55);}
+  #buddy .c{position:absolute;width:18px;height:18px;border:3px solid var(--rage-hot);z-index:2;}
+  #buddy .c.tl{left:-6px;top:-6px;border-right:0;border-bottom:0}
+  #buddy .c.tr{right:-6px;top:-6px;border-left:0;border-bottom:0}
+  #buddy .c.bl{left:-6px;bottom:-6px;border-right:0;border-top:0}
+  #buddy .c.br{right:-6px;bottom:-6px;border-left:0;border-top:0}
+  #buddy .tag{position:absolute;left:12px;top:-12px;z-index:3;padding:2px 8px;font-family:var(--serif);font-size:11px;font-weight:700;letter-spacing:.2em;
+    color:var(--frost);background:#0b0f15;border:1px solid rgba(143,166,185,.35);border-radius:3px;}
+  #buddy .live{position:absolute;right:8px;top:8px;z-index:3;display:flex;align-items:center;gap:5px;padding:2px 7px 2px 6px;border-radius:3px;
+    background:rgba(10,14,20,.78);border:1px solid rgba(143,166,185,.25);font-size:12px;font-weight:700;letter-spacing:.14em;color:#fff;}
+  #buddy .live i{width:8px;height:8px;border-radius:50%;background:var(--rage-hot);box-shadow:0 0 8px var(--rage-hot);animation:pulse 1.6s ease-in-out infinite;}
+
   .panel{box-sizing:border-box;border-radius:10px;
     background:linear-gradient(160deg,rgba(26,34,46,.78),rgba(10,14,20,.82));
     border:1px solid rgba(143,166,185,.22);box-shadow:0 10px 30px rgba(0,0,0,.45);}
@@ -336,6 +352,7 @@
 <div id="rank" class="widget hidden"></div>
 <div id="mastery" class="widget hidden"></div>
 <div id="journey" class="widget hidden"></div>
+<div id="buddy" class="widget hidden"><img src="assets/buddy-christ-cam.jpg" alt="" onerror="this.parentNode.classList.add('hidden')"><div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div><div class="tag">CALEB CAM</div><div class="live"><i></i>LIVE</div></div>
 <div id="song" class="widget hidden"><div class="song-strip"><span class="note">&#9834;</span><span class="st"></span></div></div>
 <div id="debug" class="hidden"></div>
 
@@ -387,12 +404,15 @@ const DEFAULTS = {
   verse_ref: "",             // force a specific verse, e.g. "Isaiah 40:31"
   verse_date: "",            // testing only: pretend it's this date (YYYY-MM-DD)
   verse_per_game: 1,         // 1 = a new verse after every game (games = wins_today + losses_today in rank.json), 0 = once a day
+  buddy: 1,                  // game layout: 1 = fake "webcam" (Buddy Christ) between the HUD bar and the minimap, 0 = hide
+                             // move/resize with buddyx, buddyy, buddyw, buddyh (URL params)
   demo: 0, debug: 0
 };
 /* Layout presets (1920x1080). Chat box = x,y,w,h. Chat stacks upward from the bottom of its box. */
 const LAYOUTS = {
   game:  { x:1490, y:150, w:410, h:480,  rankx:24, ranky:24,  songx:24, songy:146, scale:1,    max:8,
-           verse:{x:24, y:204, w:470, h:170} },
+           verse:{x:24, y:204, w:470, h:170},
+           buddy:{x:1368, y:874, w:264, h:198} },   // fake cam: right of the HUD bar (ends ~x1360), left of the minimap (starts ~x1640), 8px off the bottom
   // queue: x,y,w,h = the chat PANEL (messages sit inside it)
   queue: { x:1360, y:56,  w:500, h:968,  rankx:760, ranky:222, songx:760, songy:394, masteryx:760, masteryy:394, scale:1.35, max:16,
            status:{x:80, y:56}, cam:{x:80, y:222, w:640, h:360}, info:{x:760, y:470, w:540, h:112},
@@ -1041,6 +1061,9 @@ if (layoutName === "queue") renderJourneyQueue(null);   // drawn straight away; 
 if (widgets.includes("rank")) { startRank(); if (MASTERY_STRIP) startMasteryStrip(); }
 if (widgets.includes("song")) startSong();
 if (widgets.includes("verse")) startVerse();
+if (layoutName === "game" && B("buddy") && L.buddy) {
+  place($("buddy"), { x: pos("buddyx", L.buddy.x), y: pos("buddyy", L.buddy.y), w: pos("buddyw", L.buddy.w), h: pos("buddyh", L.buddy.h) }, true);
+}
 </script>
 </body>
 </html>
