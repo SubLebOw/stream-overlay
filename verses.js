@@ -1,5 +1,5 @@
 // Verse of the day list. Text fetched from https://bible-api.com (translation=web) on 2026-09-29.
-// World English Bible (WEB) - Public Domain. Rebuild with: python tools/build_verses.py
+// World English Bible (WEB) - Public Domain. Includes a "truth" theme (seeking truth, testing claims, honesty) added 2026-10-05. Rebuild with: python tools/build_verses.py
 window.VERSES = [
  {
   "ref": "Isaiah 40:31",
@@ -44,6 +44,12 @@ window.VERSES = [
   "theme": "strength"
  },
  {
+  "ref": "John 8:32",
+  "text": "You will know the truth, and the truth will make you free.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
   "ref": "Psalms 73:26",
   "text": "My flesh and my heart fails, but God is the strength of my heart and my portion forever.",
   "translation": "WEB",
@@ -84,6 +90,12 @@ window.VERSES = [
   "text": "I will lift up my eyes to the hills. Where does my help come from? My help comes from Yahweh, who made heaven and earth.",
   "translation": "WEB",
   "theme": "strength"
+ },
+ {
+  "ref": "Proverbs 18:17",
+  "text": "He who pleads his cause first seems right; until another comes and questions him.",
+  "translation": "WEB",
+  "theme": "truth"
  },
  {
   "ref": "2 Timothy 1:7",
@@ -128,6 +140,12 @@ window.VERSES = [
   "theme": "strength"
  },
  {
+  "ref": "Proverbs 14:15",
+  "text": "A simple man believes everything, but the prudent man carefully considers his ways.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
   "ref": "James 1:12",
   "text": "Blessed is the man who endures temptation, for when he has been approved, he will receive the crown of life, which the Lord promised to those who love him.",
   "translation": "WEB",
@@ -168,6 +186,12 @@ window.VERSES = [
   "text": "I have fought the good fight. I have finished the course. I have kept the faith.",
   "translation": "WEB",
   "theme": "perseverance"
+ },
+ {
+  "ref": "1 Thessalonians 5:21",
+  "text": "Test all things, and hold firmly that which is good.",
+  "translation": "WEB",
+  "theme": "truth"
  },
  {
   "ref": "Philippians 3:13-14",
@@ -212,6 +236,12 @@ window.VERSES = [
   "theme": "perseverance"
  },
  {
+  "ref": "Acts 17:11",
+  "text": "Now these were more noble than those in Thessalonica, in that they received the word with all readiness of mind, examining the Scriptures daily to see whether these things were so.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
   "ref": "Philippians 1:6",
   "text": "being confident of this very thing, that he who began a good work in you will complete it until the day of Jesus Christ.",
   "translation": "WEB",
@@ -252,6 +282,12 @@ window.VERSES = [
   "text": "For bodily exercise has some value, but godliness has value in all things, having the promise of the life which is now, and of that which is to come.",
   "translation": "WEB",
   "theme": "discipline"
+ },
+ {
+  "ref": "1 Corinthians 8:2",
+  "text": "But if anyone thinks that he knows anything, he doesn’t yet know as he ought to know.",
+  "translation": "WEB",
+  "theme": "truth"
  },
  {
   "ref": "Proverbs 13:4",
@@ -296,6 +332,12 @@ window.VERSES = [
   "theme": "discipline"
  },
  {
+  "ref": "1 Corinthians 13:12",
+  "text": "For now we see in a mirror, dimly, but then face to face. Now I know in part, but then I will know fully, even as I was also fully known.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
   "ref": "Proverbs 14:23",
   "text": "In all hard work there is profit, but the talk of the lips leads only to poverty.",
   "translation": "WEB",
@@ -336,6 +378,12 @@ window.VERSES = [
   "text": "Humble yourselves in the sight of the Lord, and he will exalt you.",
   "translation": "WEB",
   "theme": "humility"
+ },
+ {
+  "ref": "Proverbs 26:12",
+  "text": "Do you see a man wise in his own eyes? There is more hope for a fool than for him.",
+  "translation": "WEB",
+  "theme": "truth"
  },
  {
   "ref": "1 Peter 5:6-7",
@@ -380,6 +428,12 @@ window.VERSES = [
   "theme": "humility"
  },
  {
+  "ref": "Proverbs 3:7",
+  "text": "Don’t be wise in your own eyes. Fear Yahweh, and depart from evil.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
   "ref": "Ephesians 4:2",
   "text": "with all lowliness and humility, with patience, bearing with one another in love;",
   "translation": "WEB",
@@ -420,6 +474,12 @@ window.VERSES = [
   "text": "But Yahweh said to Samuel, “Don’t look on his face, or on the height of his stature, because I have rejected him; for I don’t see as man sees. For man looks at the outward appearance, but Yahweh looks at the heart.”",
   "translation": "WEB",
   "theme": "humility"
+ },
+ {
+  "ref": "Proverbs 19:2",
+  "text": "It isn’t good to have zeal without knowledge; nor being hasty with one’s feet and missing the way.",
+  "translation": "WEB",
+  "theme": "truth"
  },
  {
   "ref": "John 14:27",
@@ -464,6 +524,12 @@ window.VERSES = [
   "theme": "peace"
  },
  {
+  "ref": "Proverbs 23:23",
+  "text": "Buy the truth, and don’t sell it. Get wisdom, discipline, and understanding.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
   "ref": "John 16:33",
   "text": "I have told you these things, that in me you may have peace. In the world you have oppression; but cheer up! I have overcome the world.”",
   "translation": "WEB",
@@ -504,6 +570,12 @@ window.VERSES = [
   "text": "The work of righteousness will be peace; and the effect of righteousness, quietness and confidence forever.",
   "translation": "WEB",
   "theme": "peace"
+ },
+ {
+  "ref": "Proverbs 25:2",
+  "text": "It is the glory of God to conceal a thing, but the glory of kings is to search out a matter.",
+  "translation": "WEB",
+  "theme": "truth"
  },
  {
   "ref": "Matthew 11:28-30",
@@ -548,6 +620,12 @@ window.VERSES = [
   "theme": "gratitude"
  },
  {
+  "ref": "Proverbs 2:3-5",
+  "text": "Yes, if you call out for discernment, and lift up your voice for understanding; If you seek her as silver, and search for her as for hidden treasures: then you will understand the fear of Yahweh, and find the knowledge of God.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
   "ref": "Psalms 136:1",
   "text": "Give thanks to Yahweh, for he is good; for his loving kindness endures forever.",
   "translation": "WEB",
@@ -588,6 +666,12 @@ window.VERSES = [
   "text": "Let’s come before his presence with thanksgiving. Let’s extol him with songs!",
   "translation": "WEB",
   "theme": "gratitude"
+ },
+ {
+  "ref": "Psalms 51:6",
+  "text": "Behold, you desire truth in the inward parts. You teach me wisdom in the inmost place.",
+  "translation": "WEB",
+  "theme": "truth"
  },
  {
   "ref": "Psalms 126:3",
@@ -632,6 +716,12 @@ window.VERSES = [
   "theme": "grace"
  },
  {
+  "ref": "Ephesians 4:15",
+  "text": "but speaking truth in love, we may grow up in all things into him, who is the head, Christ;",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
   "ref": "John 1:16",
   "text": "From his fullness we all received grace upon grace.",
   "translation": "WEB",
@@ -672,6 +762,12 @@ window.VERSES = [
   "text": "As far as the east is from the west, so far has he removed our transgressions from us.",
   "translation": "WEB",
   "theme": "grace"
+ },
+ {
+  "ref": "Ephesians 4:25",
+  "text": "Therefore putting away falsehood, speak truth each one with his neighbor. For we are members of one another.",
+  "translation": "WEB",
+  "theme": "truth"
  },
  {
   "ref": "Micah 7:18",
@@ -716,6 +812,12 @@ window.VERSES = [
   "theme": "wisdom"
  },
  {
+  "ref": "Zechariah 8:16",
+  "text": "These are the things that you shall do: speak every man the truth with his neighbor. Execute the judgment of truth and peace in your gates,",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
   "ref": "Proverbs 4:7",
   "text": "Wisdom is supreme. Get wisdom. Yes, though it costs all your possessions, get understanding.",
   "translation": "WEB",
@@ -756,6 +858,12 @@ window.VERSES = [
   "text": "Iron sharpens iron; so a man sharpens his friend’s countenance.",
   "translation": "WEB",
   "theme": "wisdom"
+ },
+ {
+  "ref": "Matthew 5:37",
+  "text": "But let your ‘Yes’ be ‘Yes’ and your ‘No’ be ‘No.’ Whatever is more than these is of the evil one.",
+  "translation": "WEB",
+  "theme": "truth"
  },
  {
   "ref": "Proverbs 16:3",
@@ -800,6 +908,12 @@ window.VERSES = [
   "theme": "wisdom"
  },
  {
+  "ref": "Proverbs 12:22",
+  "text": "Lying lips are an abomination to Yahweh, but those who do the truth are his delight.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
   "ref": "Proverbs 4:23",
   "text": "Keep your heart with all diligence, for out of it is the wellspring of life.",
   "translation": "WEB",
@@ -840,6 +954,12 @@ window.VERSES = [
   "text": "But be doers of the word, and not only hearers, deluding your own selves.",
   "translation": "WEB",
   "theme": "wisdom"
+ },
+ {
+  "ref": "Exodus 23:2",
+  "text": "You shall not follow a crowd to do evil. You shall not testify in court to side with a multitude to pervert justice.",
+  "translation": "WEB",
+  "theme": "truth"
  },
  {
   "ref": "Psalms 119:105",
@@ -884,6 +1004,12 @@ window.VERSES = [
   "theme": "patience"
  },
  {
+  "ref": "Isaiah 5:20",
+  "text": "Woe to those who call evil good, and good evil; who put darkness for light, and light for darkness; who put bitter for sweet, and sweet for bitter!",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
   "ref": "Isaiah 30:18",
   "text": "Therefore Yahweh will wait, that he may be gracious to you; and therefore he will be exalted, that he may have mercy on you, for Yahweh is a God of justice. Blessed are all those who wait for him.",
   "translation": "WEB",
@@ -924,6 +1050,12 @@ window.VERSES = [
   "text": "For God so loved the world, that he gave his one and only Son, that whoever believes in him should not perish, but have eternal life.",
   "translation": "WEB",
   "theme": "love"
+ },
+ {
+  "ref": "2 Timothy 4:3-4",
+  "text": "For the time will come when they will not listen to the sound doctrine, but, having itching ears, will heap up for themselves teachers after their own lusts; and will turn away their ears from the truth, and turn away to fables.",
+  "translation": "WEB",
+  "theme": "truth"
  },
  {
   "ref": "1 John 4:7-8",
@@ -968,6 +1100,12 @@ window.VERSES = [
   "theme": "love"
  },
  {
+  "ref": "Proverbs 11:1",
+  "text": "A false balance is an abomination to Yahweh, but accurate weights are his delight.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
   "ref": "Colossians 3:14",
   "text": "Above all these things, walk in love, which is the bond of perfection.",
   "translation": "WEB",
@@ -1008,6 +1146,12 @@ window.VERSES = [
   "text": "My little children, let’s not love in word only, or with the tongue only, but in deed and truth.",
   "translation": "WEB",
   "theme": "love"
+ },
+ {
+  "ref": "Deuteronomy 19:15",
+  "text": "One witness shall not rise up against a man for any iniquity, or for any sin, in any sin that he sins. At the mouth of two witnesses, or at the mouth of three witnesses, shall a matter be established.",
+  "translation": "WEB",
+  "theme": "truth"
  },
  {
   "ref": "Romans 12:9-10",
@@ -1052,6 +1196,12 @@ window.VERSES = [
   "theme": "hope"
  },
  {
+  "ref": "Ecclesiastes 5:2",
+  "text": "Don’t be rash with your mouth, and don’t let your heart be hasty to utter anything before God; for God is in heaven, and you on earth. Therefore let your words be few.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
   "ref": "Romans 8:28",
   "text": "We know that all things work together for good for those who love God, to those who are called according to his purpose.",
   "translation": "WEB",
@@ -1092,6 +1242,12 @@ window.VERSES = [
   "text": "He will wipe away every tear from their eyes. Death will be no more; neither will there be mourning, nor crying, nor pain, any more. The first things have passed away.”",
   "translation": "WEB",
   "theme": "hope"
+ },
+ {
+  "ref": "Proverbs 17:28",
+  "text": "Even a fool, when he keeps silent, is counted wise. When he shuts his lips, he is thought to be discerning.",
+  "translation": "WEB",
+  "theme": "truth"
  },
  {
   "ref": "Psalms 34:18",
@@ -1136,6 +1292,12 @@ window.VERSES = [
   "theme": "trust"
  },
  {
+  "ref": "James 3:2",
+  "text": "For in many things we all stumble. If anyone doesn’t stumble in word, the same is a perfect man, able to bridle the whole body also.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
   "ref": "Isaiah 12:2",
   "text": "Behold, God is my salvation. I will trust, and will not be afraid; for Yah, Yahweh, is my strength and song; and he has become my salvation.”",
   "translation": "WEB",
@@ -1176,6 +1338,12 @@ window.VERSES = [
   "text": "But seek first God’s Kingdom, and his righteousness; and all these things will be given to you as well. Therefore don’t be anxious for tomorrow, for tomorrow will be anxious for itself. Each day’s own evil is sufficient.",
   "translation": "WEB",
   "theme": "trust"
+ },
+ {
+  "ref": "1 John 4:1",
+  "text": "Beloved, don’t believe every spirit, but test the spirits, whether they are of God, because many false prophets have gone out into the world.",
+  "translation": "WEB",
+  "theme": "truth"
  },
  {
   "ref": "Psalms 91:1-2",
@@ -1220,6 +1388,12 @@ window.VERSES = [
   "theme": "trust"
  },
  {
+  "ref": "John 17:17",
+  "text": "Sanctify them in your truth. Your word is truth.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
   "ref": "Psalms 16:8",
   "text": "I have set Yahweh always before me. Because he is at my right hand, I shall not be moved.",
   "translation": "WEB",
@@ -1260,6 +1434,12 @@ window.VERSES = [
   "text": "Rejoice in the Lord always! Again I will say, “Rejoice!”",
   "translation": "WEB",
   "theme": "purpose"
+ },
+ {
+  "ref": "John 14:6",
+  "text": "Jesus said to him, “I am the way, the truth, and the life. No one comes to the Father, except through me.”",
+  "translation": "WEB",
+  "theme": "truth"
  },
  {
   "ref": "Psalms 19:14",
@@ -1304,6 +1484,12 @@ window.VERSES = [
   "theme": "purpose"
  },
  {
+  "ref": "Proverbs 12:17",
+  "text": "He who is truthful testifies honestly, but a false witness lies.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
   "ref": "Luke 6:38",
   "text": "“Give, and it will be given to you: good measure, pressed down, shaken together, and running over, will be given to you. For with the same measure you measure it will be measured back to you.”",
   "translation": "WEB",
@@ -1344,6 +1530,12 @@ window.VERSES = [
   "text": "Again, therefore, Jesus spoke to them, saying, “I am the light of the world. He who follows me will not walk in the darkness, but will have the light of life.”",
   "translation": "WEB",
   "theme": "purpose"
+ },
+ {
+  "ref": "Proverbs 15:14",
+  "text": "The heart of one who has understanding seeks knowledge, but the mouths of fools feed on folly.",
+  "translation": "WEB",
+  "theme": "truth"
  },
  {
   "ref": "John 10:10",
