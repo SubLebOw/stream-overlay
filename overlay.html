@@ -337,6 +337,14 @@
   #verse.small .vtr{font-size:10px;}
   #verse.small .vf{margin-top:6px;}
 
+  /* ---------- PIXEL RUNNER (queue scene only: original pixel-art barbarian dashes along the bottom edge now and then) ---------- */
+  #runner{position:absolute;left:0;top:0;pointer-events:none;z-index:60;will-change:transform;}
+  #runner .rshadow{position:absolute;left:18%;right:18%;bottom:-4px;height:8px;border-radius:50%;background:rgba(0,0,0,.45);filter:blur(2px);}
+  #runner .rflip,#runner .rspin{position:absolute;inset:0;}
+  #runner .rspr{position:absolute;inset:0;background:url(assets/pixel-trynd-run.png) 0 0 no-repeat;image-rendering:pixelated;image-rendering:crisp-edges;
+    filter:drop-shadow(0 0 5px rgba(212,20,31,.45)) drop-shadow(0 3px 1px rgba(0,0,0,.55));}
+  #runner .rslash{position:absolute;left:-30%;right:-30%;top:46%;height:34%;border-radius:50%;border:4px solid var(--rage-hot);
+    box-shadow:0 0 14px var(--rage),inset 0 0 10px var(--rage);opacity:0;}
   #debug{position:absolute;left:8px;bottom:8px;font:14px monospace;color:#9fe;background:rgba(0,0,0,.7);padding:4px 8px;}
 </style>
 </head>
@@ -355,6 +363,7 @@
 <div id="journey" class="widget hidden"></div>
 <div id="buddy" class="widget hidden"><img src="assets/buddy-christ-cam.jpg" alt="" onerror="this.parentNode.classList.add('hidden')"><div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div><div class="tag">CALEB CAM</div><div class="live"><i></i>LIVE</div></div>
 <div id="song" class="widget hidden"><div class="song-strip"><span class="note">&#9834;</span><span class="st"></span></div></div>
+<div id="runner" class="hidden"><div class="rshadow"></div><div class="rslash"></div><div class="rflip"><div class="rspin"><div class="rspr"></div></div></div></div>
 <div id="debug" class="hidden"></div>
 
 <script>
@@ -409,6 +418,14 @@ const DEFAULTS = {
   verse_per_game: 1,         // 1 = a new verse after every game (games = wins_today + losses_today in rank.json), 0 = once a day
   buddy: 1,                  // 1 = fake "webcam" (Buddy Christ), 0 = hide. Game: between the HUD bar and the minimap. Queue: under the lobby window, beside the verse
                              // move/resize with buddyx, buddyy, buddyw, buddyh (URL params)
+  // ---- pixel runner (queue scene only): a little pixel-art barbarian sprints along the bottom edge now and then ----
+  runner: 1,                 // 1 = on (queue scene only; the game/end overlays never show it), 0 = off
+  runner_every: "45-90",     // seconds between runs: "min-max" (random each time) or one number (+/-25% jitter)
+  runner_first: 5,           // seconds after the scene loads before the first run
+  runner_y: 1076,            // screen y of his feet (1076 = the very bottom edge, under the verse/socials)
+  runner_speed: 8,           // seconds to cross the full 1920px screen
+  runner_scale: 3,           // pixel size (sprite is 40x40 art pixels -> 120px tall at 3)
+  runner_spin: 0.35,         // chance (0..1) of a mid-run Spinning Slash
   demo: 0, debug: 0
 };
 /* Layout presets (1920x1080). Chat box = x,y,w,h. Chat stacks upward from the bottom of its box. */
@@ -1071,6 +1088,46 @@ if (widgets.includes("verse")) startVerse();
 if ((layoutName === "game" || layoutName === "queue") && B("buddy") && L.buddy) {
   place($("buddy"), { x: pos("buddyx", L.buddy.x), y: pos("buddyy", L.buddy.y), w: pos("buddyw", L.buddy.w), h: pos("buddyh", L.buddy.h) }, true);
 }
+
+/* ======================= PIXEL RUNNER (queue scene only) ======================= */
+function startRunner() {
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) { window.__overlay.runner = "reduced-motion"; return; }
+  const el = $("runner"), flip = el.querySelector(".rflip"), spin = el.querySelector(".rspin"), spr = el.querySelector(".rspr"), slash = el.querySelector(".rslash");
+  const FW = 40, FH = 40, FRAMES = 6, FEET = 39;               // sprite sheet: 6 frames of 40x40 in one row, feet on art row 39
+  const sc = Math.max(1, N("runner_scale", 3)), w = FW * sc, h = FH * sc;
+  el.style.width = w + "px"; el.style.height = h + "px";
+  spr.style.backgroundSize = (FW * FRAMES * sc) + "px " + h + "px";
+  const top = N("runner_y", 1076) - FEET * sc;
+  const every = () => {
+    const v = String(P("runner_every")).trim(), m = v.match(/^(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)$/);
+    const lo = m ? +m[1] : (parseFloat(v) || 60) * 0.75, hi = m ? +m[2] : (parseFloat(v) || 60) * 1.25;
+    return Math.max(5, lo + Math.random() * Math.max(0, hi - lo));
+  };
+  let frame = 0, frameTimer = null, runs = 0;
+  window.__overlay.runner = { runs: 0, running: false };
+  function run() {
+    const ltr = Math.random() < 0.5, dur = Math.max(2, N("runner_speed", 8)) * 1000;
+    const from = ltr ? -w - 20 : 1920 + 20, to = ltr ? 1920 + 20 : -w - 20;
+    flip.style.transform = ltr ? "" : "scaleX(-1)";
+    el.classList.remove("hidden");
+    window.__overlay.runner.running = true; window.__overlay.runner.dir = ltr ? "ltr" : "rtl";
+    frameTimer = setInterval(() => { frame = (frame + 1) % FRAMES; spr.style.backgroundPosition = (-frame * w) + "px 0"; }, 80);
+    const anim = el.animate([{ transform: `translate(${from}px,${top}px)` }, { transform: `translate(${to}px,${top}px)` }], { duration: dur, easing: "linear" });
+    if (Math.random() < N("runner_spin", 0.35)) {               // Spinning Slash somewhere in the middle of the screen
+      setTimeout(() => {
+        spin.animate([{ transform: "scaleX(1)" }, { transform: "scaleX(-1)" }, { transform: "scaleX(1)" }, { transform: "scaleX(-1)" }, { transform: "scaleX(1)" }], { duration: 560, easing: "linear" });
+        slash.animate([{ opacity: 0, transform: "scale(.4)" }, { opacity: .95, transform: "scale(1)", offset: .3 }, { opacity: 0, transform: "scale(1.25)" }], { duration: 560, easing: "ease-out" });
+      }, dur * (0.35 + Math.random() * 0.3));
+    }
+    anim.onfinish = () => {
+      clearInterval(frameTimer); el.classList.add("hidden");
+      window.__overlay.runner.running = false; window.__overlay.runner.runs = ++runs;
+      setTimeout(run, every() * 1000);
+    };
+  }
+  setTimeout(run, Math.max(0, N("runner_first", 5)) * 1000);
+}
+if (layoutName === "queue" && B("runner")) startRunner();
 </script>
 </body>
 </html>
