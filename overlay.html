@@ -317,8 +317,9 @@
   #socials .s span{font-size:13px;font-weight:700;letter-spacing:.14em;color:#0b0e13;background:var(--frost-dim);padding:2px 6px;border-radius:3px;}
 
   #cpanel .ph{position:absolute;left:18px;top:14px;}
-  body.queue{--rank-minw:400px;}
-  body.queue .song-strip{width:400px;max-width:400px;}
+  body.queue{--rank-minw:536px;}   /* x1.35 = 724px: the full width of the queue scene's right column */
+  body.queue .song-strip{width:536px;max-width:536px;}
+  body.queue .mastery-strip{width:536px;}
 
   /* ---------- VERSE ---------- */
   #verse{display:flex;flex-direction:column;padding:18px 28px 16px;overflow:hidden;}
@@ -393,7 +394,9 @@ const DEFAULTS = {
   title: "", subtitle: "",   // override the status text
   timer: 0,                  // 1 = count-up timer next to the title (resets when the scene becomes active in OBS)
   scenebg: 1,                // 1 = dark Freljord backdrop (with a transparent webcam hole), 0 = fully transparent
-  cam: 1,                    // 1 = webcam frame (put your camera source BEHIND it, see README for coords)
+  cam: 1,                    // 1 = big 16:9 window frame with a transparent hole (put the League client / lobby capture BEHIND it:
+                             //     x 80, y 222, 1024x576). Move/resize with camx, camy, camw, camh (URL params)
+  cam_label: "LOBBY",        // tag on that frame ("" = no tag)
   twitch: "twitch.tv/CalebGCameron",
   schedule: "7:30pm Sydney time",
   x_handle: "@calebcameron_",  // empty = hidden
@@ -404,7 +407,7 @@ const DEFAULTS = {
   verse_ref: "",             // force a specific verse, e.g. "Isaiah 40:31"
   verse_date: "",            // testing only: pretend it's this date (YYYY-MM-DD)
   verse_per_game: 1,         // 1 = a new verse after every game (games = wins_today + losses_today in rank.json), 0 = once a day
-  buddy: 1,                  // 1 = fake "webcam" (Buddy Christ), 0 = hide. Game: between the HUD bar and the minimap. Queue: beside the ladder, above the rank card
+  buddy: 1,                  // 1 = fake "webcam" (Buddy Christ), 0 = hide. Game: between the HUD bar and the minimap. Queue: under the lobby window, beside the verse
                              // move/resize with buddyx, buddyy, buddyw, buddyh (URL params)
   demo: 0, debug: 0
 };
@@ -414,11 +417,13 @@ const LAYOUTS = {
            verse:{x:24, y:204, w:470, h:170},
            buddy:{x:1368, y:874, w:264, h:198} },   // fake cam: right of the HUD bar (ends ~x1360), left of the minimap (starts ~x1640), 8px off the bottom
   // queue: x,y,w,h = the chat PANEL (messages sit inside it)
-  queue: { x:1360, y:56,  w:500, h:968,  rankx:760, ranky:222, songx:760, songy:394, masteryx:760, masteryy:394, scale:1.35, max:16,
-           status:{x:80, y:56}, cam:{x:80, y:222, w:640, h:360}, info:{x:760, y:470, w:540, h:112},
-           verse:{x:80, y:622, w:1220, h:320}, socials:{x:80, y:970},
-           journey:{x:1360, y:56, w:500, h:150},
-           buddy:{x:1100, y:56, w:200, h:150} }   // fake cam: beside the journey ladder, above the rank card (right edge = card's 760 + 400*1.35)   // journey styles 1/2: top of the chat column (chat panel then starts at y 222, level with the cam)
+  // left column (x 80-1104): title, then the big 16:9 lobby window (transparent hole), then verse + Buddy cam side by side
+  // right column (x 1136-1860, 724 wide): journey ladder, rank card, mastery strip, chat panel, socials
+  queue: { x:1136, y:478, w:724, h:490,  rankx:1136, ranky:222, songx:1136, songy:398, masteryx:1136, masteryy:398, scale:1.35, max:12,
+           status:{x:80, y:56}, cam:{x:80, y:222, w:1024, h:576}, info:null,   // info: null = no Twitch/schedule card (chat gets the space)
+           verse:{x:80, y:822, w:738, h:202}, socials:{x:1136, y:984},
+           journey:{x:1136, y:56, w:724, h:150},
+           buddy:{x:834, y:822, w:270, h:202} }   // fake cam (4:3, 1.35x the old 200x150): under the lobby window's right edge, beside the verse
 };
 /* ============================================================================================= */
 // site-config.js may override any DEFAULTS key for the whole site (e.g. data, channel, schedule)
@@ -444,7 +449,7 @@ const J = {
 };
 J.on = B("journey_show") && !!(J.from || J.to || J.title);
 J.panelQ = J.on && layoutName === "queue" && J.style !== 3;   // queue styles 1/2 = own panel at the top of the chat column
-if (J.panelQ && !qs.has("y") && !qs.has("h")) { const bottom = L.y + L.h; L.y = L.journey.y + L.journey.h + 16; L.h = bottom - L.y; }
+if (J.panelQ && !qs.has("y") && !qs.has("h") && L.y < L.journey.y + L.journey.h + 16) { const bottom = L.y + L.h; L.y = L.journey.y + L.journey.h + 16; L.h = bottom - L.y; }
 if (J.on && layoutName === "game" && J.style !== 3) L.verse = Object.assign({}, L.verse, { y: L.verse.y + 58 });   // optional game verse steps below it
 const chatBox = { x: pos("x", L.x), y: pos("y", L.y), w: pos("w", L.w), h: pos("h", L.h) };
 const rankPos = { x: pos("rankx", only === "rank" ? pos("x", L.rankx) : L.rankx), y: pos("ranky", only === "rank" ? pos("y", L.ranky) : L.ranky) };
@@ -503,8 +508,9 @@ function startQueueScene() {
   if (B("scenebg")) bg.classList.remove("hidden");
   if (B("cam")) {
     const c = $("cam"); place(c, cam, true);
-    const tag = document.createElement("div"); tag.className = "tag"; tag.textContent = "CALEB"; c.appendChild(tag);
-    if (DEMO) { const d = document.createElement("div"); d.className = "demo"; d.textContent = "camera source goes here"; c.prepend(d); }
+    const camLabel = String(P("cam_label") || "").trim();
+    if (camLabel) { const tag = document.createElement("div"); tag.className = "tag"; tag.textContent = camLabel; c.appendChild(tag); }
+    if (DEMO) { const d = document.createElement("div"); d.className = "demo"; d.textContent = "League client goes here"; c.prepend(d); }
     bg.classList.add("cut");
     bg.style.setProperty("--cx", cam.x + "px"); bg.style.setProperty("--cy", cam.y + "px");
     bg.style.setProperty("--cw", cam.w + "px"); bg.style.setProperty("--ch", cam.h + "px");
@@ -512,7 +518,7 @@ function startQueueScene() {
   // twitch link + schedule
   const info = $("info");
   const tw = String(P("twitch") || ""), sch = String(P("schedule") || "");
-  if (tw || sch) {
+  if ((tw || sch) && Q.info) {
     const t = info.querySelector(".tw"); t.textContent = "";
     const m = /^(.*?)([^\/]+)$/.exec(tw);
     if (m) { t.appendChild(document.createTextNode(m[1])); const bb = document.createElement("b"); bb.textContent = m[2]; t.appendChild(bb); }
