@@ -17,6 +17,9 @@ It reads `goal.json` every 30 seconds:
 2. Change `"raised"` to the new total (just the number, e.g. `"raised": 145`). Commit.
 3. The site redeploys in about a minute; the bar animates up with a "+$" pop and sparks. At 100% it turns gold.
 
+- `"tip_url"`: the tip link shown under the bar (`"streamelements.com/calebgcameron/tip"`); `""` hides it. The domain is drawn muted, the rest highlighted.
+  Optional `"tip_label"` (badge text, default `TIP`) and `"tip_cmd"` (extra text on the right, e.g. `"!tip"`).
+  Queue scene: the strip grows 44px and the chat panel moves down 44px while the link is shown.
 - `"show": false` hides the bar and brings the mastery strip/row back.
 - A typo in goal.json is ignored (the last good value stays on screen).
 

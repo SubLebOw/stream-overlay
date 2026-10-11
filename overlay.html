@@ -395,6 +395,17 @@
   #goal.q .g-amt{font-size:26px;} #goal.q .g-amt small{font-size:14px;}
   #goal.q .g-bar{height:12px;border-radius:6px;} #goal.q .g-bar > b{border-radius:6px;}
   #goal.q .g-pct{font-size:21px;min-width:56px;}
+  /* tip link line (goal.json "tip_url"; hidden when empty) */
+  .g-tip{display:flex;align-items:baseline;gap:8px;white-space:nowrap;overflow:hidden;line-height:1.1;}
+  .g-tip .tk{flex:none;font-size:12px;font-weight:700;letter-spacing:.14em;color:#0b0e13;background:var(--rage-hot);padding:2px 6px 1px;border-radius:3px;
+    box-shadow:0 0 8px rgba(255,59,48,.45);align-self:center;}
+  .g-tip .ta{color:var(--rage-hot);font-size:.8em;text-shadow:0 0 6px rgba(255,59,48,.6);}
+  .g-tip .tu{font-weight:600;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 3px rgba(0,0,0,.85);}
+  .g-tip .td{color:var(--frost-dim);}
+  .g-tip .tp{color:var(--text);font-weight:700;}
+  .g-tip .tc{flex:none;margin-left:auto;font-weight:700;color:var(--ice);letter-spacing:.04em;}
+  #goal.q .g-tip{margin-top:3px;padding-top:5px;border-top:1px solid rgba(143,166,185,.14);font-size:20px;}
+  #goal.q .g-tip .tk{font-size:14px;padding:3px 8px 2px;}
   /* game: a row inside the rank card, where the mastery row was */
   #goal.inrow{position:relative;}
   #goal.inrow:not(.incard){display:none !important;}
@@ -408,6 +419,8 @@
   #goal.inrow .g-row{gap:8px;}
   #goal.inrow .g-bar{height:6px;border-radius:3px;} #goal.inrow .g-bar > b{border-radius:3px;}
   #goal.inrow .g-pct{font-size:13px;min-width:32px;}
+  #goal.inrow .g-tip{margin-top:2px;font-size:13.5px;gap:6px;}
+  #goal.inrow .g-tip .tk{font-size:9.5px;padding:1px 4px 0;letter-spacing:.12em;}
   #goal.inrow .g-pop{right:0;top:-26px;font-size:20px;}
   #goal.inrow.bump .goal-card{animation:gbumprow 1.2s ease-out;}
   @keyframes gbumprow{20%{filter:drop-shadow(0 0 8px rgba(255,59,48,.9))}100%{filter:none}}
@@ -430,7 +443,7 @@
 <div id="journey" class="widget hidden"></div>
 <div id="buddy" class="widget hidden"><img src="assets/buddy-christ-cam.jpg" alt="" onerror="this.parentNode.classList.add('hidden')"><div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div><div class="tag">CALEB CAM</div><div class="live"><i></i>LIVE</div></div>
 <div id="song" class="widget hidden"><div class="song-strip"><span class="note">&#9834;</span><span class="st"></span></div></div>
-<div id="goal" class="widget hidden"><div class="goal-card"><div class="g-ic"></div><div class="g-body"><div class="g-head"><span class="g-title"></span><span class="g-amt"><b class="g-raised"></b><span class="g-sep">/</span><span class="g-goal"></span><small class="g-cur"></small></span></div><div class="g-row"><div class="g-bar"><b></b></div><span class="g-pct">0%</span></div></div></div></div>
+<div id="goal" class="widget hidden"><div class="goal-card"><div class="g-ic"></div><div class="g-body"><div class="g-head"><span class="g-title"></span><span class="g-amt"><b class="g-raised"></b><span class="g-sep">/</span><span class="g-goal"></span><small class="g-cur"></small></span></div><div class="g-row"><div class="g-bar"><b></b></div><span class="g-pct">0%</span></div><div class="g-tip hidden"></div></div></div></div>
 <div id="runner" class="hidden"><div class="rshadow"></div><div class="rslash"></div><div class="rflip"><div class="rspin"><div class="rspr"></div></div></div></div>
 <div id="debug" class="hidden"></div>
 
@@ -1100,13 +1113,42 @@ function countUp(node, from, to, ms) {
   };
   goalState.anim = requestAnimationFrame(step);
 }
+/* tip link: "TIP ▸ streamelements.com/calebgcameron/tip" (domain muted, path highlighted). goal.json tip_url ("" = hidden), tip_label, tip_cmd */
+const TIP_EXTRA_Q = 44;   // queue: the strip grows by this much and the chat panel moves down by the same amount
+function setTip(d) {
+  const t = $("goal").querySelector(".g-tip");
+  const raw = String((d && d.tip_url) || "").trim().replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/\/+$/, "");
+  t.textContent = "";
+  if (!raw) { t.classList.add("hidden"); return false; }
+  const cut = raw.indexOf("/"), dom = cut > 0 ? raw.slice(0, cut + 1) : "", path = cut > 0 ? raw.slice(cut + 1) : raw;
+  const mk = (tag, cls, txt) => { const e = document.createElement(tag); e.className = cls; e.textContent = txt; return e; };
+  t.appendChild(mk("span", "tk", String((d && d.tip_label) || "TIP").toUpperCase()));
+  t.appendChild(mk("span", "ta", "\u25B8"));
+  const u = mk("span", "tu", ""); if (dom) u.appendChild(mk("span", "td", dom)); u.appendChild(mk("span", "tp", path)); t.appendChild(u);
+  const cmd = String((d && d.tip_cmd) || "").trim(); if (cmd) t.appendChild(mk("span", "tc", cmd));
+  t.classList.remove("hidden");
+  return true;
+}
+function queueTipSpace(on) {   // queue only: grow the goal strip and push the chat panel (or Restream frame) down
+  if (layoutName !== "queue") return;
+  const g = $("goal"), extra = on ? TIP_EXTRA_Q : 0;
+  if (g.dataset.tip === String(extra)) return;
+  g.dataset.tip = String(extra);
+  g.style.height = (L.goal.h + extra) + "px";
+  if (qs.has("y") || qs.has("h")) return;   // chat moved by hand: leave it alone
+  for (const id of ["cpanel", "chat", "rframe"]) {
+    const e = $(id); if (!e || !e.style.top) continue;
+    if (!e.dataset.top) { e.dataset.top = parseFloat(e.style.top); e.dataset.h = parseFloat(e.style.height); }
+    e.style.top = (+e.dataset.top + extra) + "px"; e.style.height = (+e.dataset.h - extra) + "px";
+  }
+}
 function renderGoal(d) {
   const el = $("goal");
   const show = d && d.show !== false;
   const goal = Number.isFinite(+d.goal) && +d.goal > 0 ? +d.goal : 0;
   const raised = Number.isFinite(+d.raised) ? Math.max(0, +d.raised) : 0;
   if (!show || !goal) {
-    el.classList.add("hidden");
+    el.classList.add("hidden"); queueTipSpace(false);
     if (MASTERY_STRIP && layoutName === "queue" && widgets.includes("rank")) startMasteryStrip(true);   // goal off: the mastery strip comes back
     goalState.shown = false; goalState.raised = null; return;
   }
@@ -1118,6 +1160,7 @@ function renderGoal(d) {
   el.querySelector(".g-cur").textContent = String(d.currency || "NZD").toUpperCase().slice(0, 4);
   el.querySelector(".g-pct").textContent = pctTxt;
   el.classList.toggle("done", raised >= goal);
+  queueTipSpace(setTip(d));
   el.classList.remove("hidden");
   const fill = el.querySelector(".g-bar > b"), num = el.querySelector(".g-raised");
   const prev = goalState.raised;
@@ -1144,7 +1187,7 @@ function startGoal() {
   if (layoutName === "queue") el.classList.add("q");
   if (GOAL_IN_CARD) el.classList.add("inrow", "hidden");   // shown once renderRank moves it into the rank card
   else { const box = { x: pos("goalx", L.goal.x), y: pos("goaly", L.goal.y), w: pos("goalw", L.goal.w), h: L.goal.h }; place(el, box, true); el.classList.add("hidden"); }
-  if (DEMO) { renderGoal({ title: "STARLINK GOAL", raised: 385, goal: 1000, currency: "NZD" }); return; }
+  if (DEMO) { renderGoal({ title: "STARLINK GOAL", raised: 385, goal: 1000, currency: "NZD", tip_url: "streamelements.com/calebgcameron/tip" }); return; }
   let last = "";
   const tick = async () => {
     try {
