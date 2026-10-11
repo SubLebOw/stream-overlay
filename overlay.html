@@ -389,12 +389,28 @@
   #goal.done .g-bar > b{background:linear-gradient(90deg,#b8860b,#f2c14e 60%,#ffe08a);box-shadow:0 0 12px rgba(255,224,138,.8);}
   #goal.done .g-title{color:#ffe08a;}
   /* queue scene: full width of the right column */
-  #goal.q .goal-card{padding:10px 22px 11px 12px;gap:16px;}
-  #goal.q .g-ic{width:52px;height:52px;}
+  #goal.q .goal-card{padding:6px 22px 7px 14px;gap:16px;}
+  #goal.q .g-ic{width:46px;height:46px;}
   #goal.q .g-title{font-size:15px;}
-  #goal.q .g-amt{font-size:28px;} #goal.q .g-amt small{font-size:14px;}
-  #goal.q .g-bar{height:13px;border-radius:7px;} #goal.q .g-bar > b{border-radius:7px;}
-  #goal.q .g-pct{font-size:22px;min-width:58px;}
+  #goal.q .g-amt{font-size:26px;} #goal.q .g-amt small{font-size:14px;}
+  #goal.q .g-bar{height:12px;border-radius:6px;} #goal.q .g-bar > b{border-radius:6px;}
+  #goal.q .g-pct{font-size:21px;min-width:56px;}
+  /* game: a row inside the rank card, where the mastery row was */
+  #goal.inrow{position:relative;}
+  #goal.inrow:not(.incard){display:none !important;}
+  #goal.inrow .goal-card{display:block;height:auto;padding:4px 0 0;margin-top:4px;border:0;border-top:1px solid rgba(143,166,185,.16);border-radius:0;background:none;box-shadow:none;overflow:visible;}
+  #goal.inrow .goal-card::after{display:none;}
+  #goal.inrow .g-ic{display:none;}
+  #goal.inrow .g-body{gap:3px;}
+  #goal.inrow .g-head{gap:8px;}
+  #goal.inrow .g-title{font-size:10.5px;letter-spacing:.2em;}
+  #goal.inrow .g-amt{font-size:15px;} #goal.inrow .g-amt small{font-size:9.5px;margin-left:4px;}
+  #goal.inrow .g-row{gap:8px;}
+  #goal.inrow .g-bar{height:6px;border-radius:3px;} #goal.inrow .g-bar > b{border-radius:3px;}
+  #goal.inrow .g-pct{font-size:13px;min-width:32px;}
+  #goal.inrow .g-pop{right:0;top:-26px;font-size:20px;}
+  #goal.inrow.bump .goal-card{animation:gbumprow 1.2s ease-out;}
+  @keyframes gbumprow{20%{filter:drop-shadow(0 0 8px rgba(255,59,48,.9))}100%{filter:none}}
   #goal.q .g-pop{font-size:28px;top:-36px;}
   #debug{position:absolute;left:8px;bottom:8px;font:14px monospace;color:#9fe;background:rgba(0,0,0,.7);padding:4px 8px;}
 </style>
@@ -511,10 +527,12 @@ const B = (k) => { const v = String(P(k)); return v === "1" || v === "true" || v
 
 const layoutName = (P("layout") === "queue") ? "queue" : "game";
 const L = Object.assign({}, LAYOUTS[layoutName]);
-/* Donation goal bar position per layout (x,y,w,h). Layouts not listed here never show it. */
+/* Donation goal bar: it takes the champion-mastery slot. Layouts not listed here never show it.
+   game:  inside the rank card, in place of the mastery row (top-left stack, rank at 24,24)
+   queue: the mastery strip slot under the rank card (right column, 1136,398; 724 wide = the strip at 1.35x) */
 const GOAL_LAYOUTS = {
-  game:  { x:1490, y:646, w:410, h:66 },    // right under the chat box (chat ends y630), well above the minimap (~y805) and the Buddy cam (y874)
-  queue: { x:1136, y:478, w:724, h:80 }     // right column, between the mastery strip and the chat panel (the chat panel moves down 94px while it's shown)
+  game:  { incard: true },
+  queue: { x:1136, y:398, w:724, h:62 }
 };
 L.goal = GOAL_LAYOUTS[layoutName] || null;
 const widgets = String(P("widgets")).toLowerCase().split(/[,\s]+/).filter(Boolean);
@@ -531,10 +549,8 @@ J.panelQ = J.on && layoutName === "queue" && J.style !== 3;   // queue styles 1/
 if (J.panelQ && !qs.has("y") && !qs.has("h") && L.y < L.journey.y + L.journey.h + 16) { const bottom = L.y + L.h; L.y = L.journey.y + L.journey.h + 16; L.h = bottom - L.y; }
 if (J.on && layoutName === "game" && J.style !== 3) L.verse = Object.assign({}, L.verse, { y: L.verse.y + 58 });   // optional game verse steps below it
 const GOAL_ON = B("goal") && !!L.goal;
-const GOAL_GAP = 14;
-// queue: make room for the goal bar at the top of the chat panel (undone if goal.json says show:false)
-const goalShift = (GOAL_ON && layoutName === "queue" && !qs.has("y") && !qs.has("h")) ? L.goal.h + GOAL_GAP : 0;
-const chatBox = { x: pos("x", L.x), y: pos("y", L.y) + goalShift, w: pos("w", L.w), h: pos("h", L.h) - goalShift };
+const GOAL_IN_CARD = GOAL_ON && !!L.goal.incard;   // game: goal row replaces the mastery row in the rank card
+const chatBox = { x: pos("x", L.x), y: pos("y", L.y), w: pos("w", L.w), h: pos("h", L.h) };
 const rankPos = { x: pos("rankx", only === "rank" ? pos("x", L.rankx) : L.rankx), y: pos("ranky", only === "rank" ? pos("y", L.ranky) : L.ranky) };
 const songPos = { x: pos("songx", only === "song" ? pos("x", L.songx) : L.songx), y: pos("songy", only === "song" ? pos("y", L.songy) : L.songy) };
 
@@ -987,7 +1003,7 @@ function renderRank(d) {
   const art = CHAMP_ICON
     ? `<div class="champ"><div class="pf"><img src="${esc(CHAMP_ICON)}" alt="${esc(CHAMP)}" onerror="this.closest('.champ').remove()"></div><i class="gem"></i>${emblemSVG(t.c, "mini")}</div>`
     : emblemSVG(t.c);
-  const inCardM = SHOW_MASTERY && !MASTERY_STRIP;
+  const inCardM = SHOW_MASTERY && !MASTERY_STRIP && !GOAL_IN_CARD;
   const jGame = J.on && layoutName === "game";
   let html = `<div class="rank-card${inCardM ? " has-m" : ""}${jGame && J.style === 3 ? " has-j3" : ""}" style="--tier-col:${t.c};--tier-glow:${t.g}">${art}<div class="rank-body">
     <div class="otp">${esc(label)}${d.example ? '<span class="chip">EXAMPLE</span>' : ""}</div>
@@ -997,13 +1013,17 @@ function renderRank(d) {
   if (inCardM) html += `<div class="mastery-row">${masteryBadge(14)}<span class="mv">${esc(MASTERY)}</span><span class="ml">${esc(MASTERY_LABEL)}</span></div>`;
   html += `</div></div>`;
   if (jGame) html += journeyHTML("g", { tier, division: div });
+  const goalEl = GOAL_IN_CARD ? $("goal") : null;
+  if (goalEl && goalEl.parentNode !== document.body) document.body.appendChild(goalEl);   // keep it alive while the card is rebuilt
   el.innerHTML = html;
+  if (goalEl) { el.querySelector(".rank-body").appendChild(goalEl); goalEl.classList.add("incard"); el.querySelector(".rank-card").classList.add("has-m"); }
   if (jGame) fitJourney(el);
   if (layoutName === "queue" && J.on && J.style === 1) renderJourneyQueue({ tier, division: div });
   if (wT !== null && lT !== null && typeof window.__onGames === "function") window.__onGames(wT + lT);
 }
-function startMasteryStrip() {
+function startMasteryStrip(force) {
   const el = $("mastery");
+  if (GOAL_ON && layoutName === "queue" && !force) { el.classList.add("hidden"); return; }   // the goal bar sits in this slot
   const key = [CHAMP, "Champion " + (MASTERY_LABEL || "Mastery")].filter(Boolean).join(" · ");
   el.innerHTML = `<div class="mastery-strip">${masteryBadge(30)}<div class="mt"><div class="mk">${esc(key)}</div>
     <div class="mv">${esc(MASTERY)}<small>points</small></div></div><div class="pips"><i></i><i></i><i></i></div></div>`;
@@ -1038,13 +1058,6 @@ function startRank() {
 }
 
 /* ======================= DONATION GOAL (goal.json) ======================= */
-function placeChat(box) {
-  if (!chatEl) return;
-  if (layoutName === "queue") {
-    place($("cpanel"), box, true);
-    place(chatEl, { x: box.x + 14, y: box.y + 46, w: box.w - 28, h: box.h - 60 }, true);
-  } else place(chatEl, box, true);
-}
 const SAT_SVG = `<svg viewBox="0 0 48 48" aria-hidden="true">
   <defs><linearGradient id="gsp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dfeaf3"/><stop offset=".5" stop-color="#7fc4ea"/><stop offset="1" stop-color="#2b3646"/></linearGradient></defs>
   <g transform="rotate(-35 24 24)">
@@ -1094,10 +1107,10 @@ function renderGoal(d) {
   const raised = Number.isFinite(+d.raised) ? Math.max(0, +d.raised) : 0;
   if (!show || !goal) {
     el.classList.add("hidden");
-    if (goalShift && goalState.shown !== false) placeChat({ x: chatBox.x, y: chatBox.y - goalShift, w: chatBox.w, h: chatBox.h + goalShift });
+    if (MASTERY_STRIP && layoutName === "queue" && widgets.includes("rank")) startMasteryStrip(true);   // goal off: the mastery strip comes back
     goalState.shown = false; goalState.raised = null; return;
   }
-  if (goalState.shown === false && goalShift) placeChat(chatBox);   // shown again: give the bar its space back
+  if (layoutName === "queue") $("mastery").classList.add("hidden");
   const pct = Math.min(100, (raised / goal) * 100);
   const pctTxt = (pct > 0 && pct < 1) ? "<1%" : Math.floor(pct) + "%";
   el.querySelector(".g-title").textContent = String(d.title || "STARLINK GOAL");
@@ -1129,8 +1142,8 @@ function startGoal() {
   const bar = el.querySelector(".g-bar");
   for (const t of [25, 50, 75]) { const k = document.createElement("i"); k.className = "g-tick"; k.style.left = t + "%"; bar.appendChild(k); }
   if (layoutName === "queue") el.classList.add("q");
-  const box = { x: pos("goalx", L.goal.x), y: pos("goaly", L.goal.y), w: pos("goalw", L.goal.w), h: L.goal.h };
-  place(el, box, true); el.classList.add("hidden");
+  if (GOAL_IN_CARD) el.classList.add("inrow", "hidden");   // shown once renderRank moves it into the rank card
+  else { const box = { x: pos("goalx", L.goal.x), y: pos("goaly", L.goal.y), w: pos("goalw", L.goal.w), h: L.goal.h }; place(el, box, true); el.classList.add("hidden"); }
   if (DEMO) { renderGoal({ title: "STARLINK GOAL", raised: 385, goal: 1000, currency: "NZD" }); return; }
   let last = "";
   const tick = async () => {
@@ -1246,7 +1259,10 @@ if (widgets.includes("chat")) {
   if (mode === "restream") startRestream(P("restream_url"));
   else {
     chatEl = $("chat");
-    placeChat(chatBox);
+    if (layoutName === "queue") {
+      place($("cpanel"), chatBox, true);
+      place(chatEl, { x: chatBox.x + 14, y: chatBox.y + 46, w: chatBox.w - 28, h: chatBox.h - 60 }, true);
+    } else place(chatEl, chatBox, true);
     if (DEMO) demoChat(); else startTwitch(P("channel"));
   }
 }
