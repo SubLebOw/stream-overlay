@@ -1156,7 +1156,7 @@ function setTipCta(d, on) {
   const raw = String((d && d.tip_url) || "").trim().replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/\/+$/, "");
   if (layoutName !== "queue" || !on || !raw || !B("tipcta")) { el.classList.add("hidden"); return; }
   const cut = raw.indexOf("/");
-  el.querySelector(".ckt").textContent = String((d && d.tip_cta) || "TIP TOWARD STARLINK").toUpperCase();
+  el.querySelector(".ckt").textContent = String((d && d.tip_cta) || "STARLINK").toUpperCase();
   el.querySelector(".cd").textContent = cut > 0 ? raw.slice(0, cut + 1) : "";
   el.querySelector(".cpt").textContent = cut > 0 ? raw.slice(cut + 1) : raw;
   place(el, { x: pos("tipctax", TIPCTA_BOX.x), y: pos("tipctay", TIPCTA_BOX.y), w: pos("tipctaw", TIPCTA_BOX.w), h: TIPCTA_BOX.h }, true);
