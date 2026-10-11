@@ -395,6 +395,22 @@
   #goal.q .g-amt{font-size:26px;} #goal.q .g-amt small{font-size:14px;}
   #goal.q .g-bar{height:12px;border-radius:6px;} #goal.q .g-bar > b{border-radius:6px;}
   #goal.q .g-pct{font-size:21px;min-width:56px;}
+  /* big tip call-to-action (queue only): right of the IN QUEUE title, above the lobby frame */
+  #tipcta{box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:4px;padding:10px 16px 11px 16px;overflow:hidden;
+    border-radius:4px 14px 4px 14px;
+    background:linear-gradient(135deg,rgba(26,34,46,.94) 0%,rgba(10,14,20,.92) 55%,rgba(58,10,14,.9) 100%);
+    border:1px solid rgba(242,193,78,.45);border-left:4px solid var(--rage-hot);
+    box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 18px rgba(212,20,31,.25),inset 0 1px 0 rgba(255,224,138,.12);}
+  #tipcta .ck{display:flex;align-items:center;gap:8px;font-family:var(--serif);font-weight:700;font-size:16px;letter-spacing:.16em;color:#f2c14e;white-space:nowrap;
+    text-shadow:0 0 10px rgba(242,193,78,.35);}
+  #tipcta .ck i{flex:none;width:8px;height:8px;transform:rotate(45deg);background:var(--rage-hot);box-shadow:0 0 8px var(--rage-hot);}
+  #tipcta .cd{font-size:22px;font-weight:600;color:var(--frost-dim);line-height:1;white-space:nowrap;letter-spacing:.02em;}
+  #tipcta .cp{font-size:34px;font-weight:700;color:#fff;line-height:1.05;white-space:nowrap;letter-spacing:.01em;text-shadow:0 2px 8px rgba(0,0,0,.85),0 0 14px rgba(255,59,48,.35);}
+  #tipcta .cp b{color:var(--rage-hot);font-weight:700;margin-right:6px;}
+  #tipcta.pulse{animation:ctapulse 1.6s ease-out;}
+  @keyframes ctapulse{0%{box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 0 0 rgba(242,193,78,0)}
+    25%{box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 0 3px rgba(242,193,78,.85),0 0 36px rgba(255,59,48,.7);transform:scale(1.03)}
+    100%{box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 18px rgba(212,20,31,.25);transform:none}}
   /* tip link line (goal.json "tip_url"; hidden when empty) */
   .g-tip{display:flex;align-items:baseline;gap:8px;white-space:nowrap;overflow:hidden;line-height:1.1;}
   .g-tip .tk{flex:none;font-size:12px;font-weight:700;letter-spacing:.14em;color:#0b0e13;background:var(--rage-hot);padding:2px 6px 1px;border-radius:3px;
@@ -443,6 +459,7 @@
 <div id="journey" class="widget hidden"></div>
 <div id="buddy" class="widget hidden"><img src="assets/buddy-christ-cam.jpg" alt="" onerror="this.parentNode.classList.add('hidden')"><div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div><div class="tag">CALEB CAM</div><div class="live"><i></i>LIVE</div></div>
 <div id="song" class="widget hidden"><div class="song-strip"><span class="note">&#9834;</span><span class="st"></span></div></div>
+<div id="tipcta" class="widget hidden"><div class="ck"><i></i><span class="ckt"></span></div><div class="cd"></div><div class="cp"><b>&#9656;</b><span class="cpt"></span></div></div>
 <div id="goal" class="widget hidden"><div class="goal-card"><div class="g-ic"></div><div class="g-body"><div class="g-head"><span class="g-title"></span><span class="g-amt"><b class="g-raised"></b><span class="g-sep">/</span><span class="g-goal"></span><small class="g-cur"></small></span></div><div class="g-row"><div class="g-bar"><b></b></div><span class="g-pct">0%</span></div><div class="g-tip hidden"></div></div></div></div>
 <div id="runner" class="hidden"><div class="rshadow"></div><div class="rslash"></div><div class="rflip"><div class="rspin"><div class="rspr"></div></div></div></div>
 <div id="debug" class="hidden"></div>
@@ -467,6 +484,8 @@ const DEFAULTS = {
   // song: "..."             // URL param only: ?song=Artist%20-%20Title fixes the text (empty = hidden), no polling
   scale: 1,                  // scale for rank + song widgets
   // ---- donation goal bar (game + queue). Data: goal.json {"title","raised","goal","currency","show"} ----
+  tipcta: 1,                 // queue: big "TIP TOWARD STARLINK" card right of the title (tip_url from goal.json). 0 = hide. tipcta_pulse = seconds between pulses (0 = off)
+  tipcta_pulse: 45,
   goal: 1,                   // 1 = show the goal bar, 0 = hide it (URL: ?goal=0). goal.json "show": false also hides it
   goalfile: "goal.json", goalpoll: 30,   // goal.json is edited on github.com (or by a future tips workflow)
   // move it with goalx, goaly, goalw (URL params)
@@ -1129,6 +1148,24 @@ function setTip(d) {
   t.classList.remove("hidden");
   return true;
 }
+/* queue only: big "TIP TOWARD STARLINK" card in the free space right of the title (status block ends x794; lobby frame starts y222) */
+const TIPCTA_BOX = { x: 820, y: 56, w: 284, h: 148 };
+let ctaPulse = null;
+function setTipCta(d, on) {
+  const el = $("tipcta");
+  const raw = String((d && d.tip_url) || "").trim().replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/\/+$/, "");
+  if (layoutName !== "queue" || !on || !raw || !B("tipcta")) { el.classList.add("hidden"); return; }
+  const cut = raw.indexOf("/");
+  el.querySelector(".ckt").textContent = String((d && d.tip_cta) || "TIP TOWARD STARLINK").toUpperCase();
+  el.querySelector(".cd").textContent = cut > 0 ? raw.slice(0, cut + 1) : "";
+  el.querySelector(".cpt").textContent = cut > 0 ? raw.slice(cut + 1) : raw;
+  place(el, { x: pos("tipctax", TIPCTA_BOX.x), y: pos("tipctay", TIPCTA_BOX.y), w: pos("tipctaw", TIPCTA_BOX.w), h: TIPCTA_BOX.h }, true);
+  const cp = el.querySelector(".cp"); cp.style.fontSize = ""; let fs = 34;
+  while (fs > 20 && cp.scrollWidth > cp.clientWidth) { fs -= 1; cp.style.fontSize = fs + "px"; }   // long links shrink to fit
+  const every = N("tipcta_pulse", 45);
+  if (!ctaPulse && every > 0 && !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches))
+    ctaPulse = setInterval(() => { el.classList.remove("pulse"); void el.offsetWidth; el.classList.add("pulse"); }, Math.max(10, every) * 1000);
+}
 function queueTipSpace(on) {   // queue only: grow the goal strip and push the chat panel (or Restream frame) down
   if (layoutName !== "queue") return;
   const g = $("goal"), extra = on ? TIP_EXTRA_Q : 0;
@@ -1148,7 +1185,7 @@ function renderGoal(d) {
   const goal = Number.isFinite(+d.goal) && +d.goal > 0 ? +d.goal : 0;
   const raised = Number.isFinite(+d.raised) ? Math.max(0, +d.raised) : 0;
   if (!show || !goal) {
-    el.classList.add("hidden"); queueTipSpace(false);
+    el.classList.add("hidden"); queueTipSpace(false); setTipCta(d, false);
     if (MASTERY_STRIP && layoutName === "queue" && widgets.includes("rank")) startMasteryStrip(true);   // goal off: the mastery strip comes back
     goalState.shown = false; goalState.raised = null; return;
   }
@@ -1160,7 +1197,7 @@ function renderGoal(d) {
   el.querySelector(".g-cur").textContent = String(d.currency || "NZD").toUpperCase().slice(0, 4);
   el.querySelector(".g-pct").textContent = pctTxt;
   el.classList.toggle("done", raised >= goal);
-  queueTipSpace(setTip(d));
+  queueTipSpace(setTip(d)); setTipCta(d, true);
   el.classList.remove("hidden");
   const fill = el.querySelector(".g-bar > b"), num = el.querySelector(".g-raised");
   const prev = goalState.raised;

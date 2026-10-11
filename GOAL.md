@@ -20,6 +20,8 @@ It reads `goal.json` every 30 seconds:
 - `"tip_url"`: the tip link shown under the bar (`"streamelements.com/calebgcameron/tip"`); `""` hides it. The domain is drawn muted, the rest highlighted.
   Optional `"tip_label"` (badge text, default `TIP`) and `"tip_cmd"` (extra text on the right, e.g. `"!tip"`).
   Queue scene: the strip grows 44px and the chat panel moves down 44px while the link is shown.
+- Queue scene also shows a big **TIP TOWARD STARLINK** card right of the IN QUEUE title (820,56, 284x148) using the same `tip_url`; it pulses every 45 s.
+  `"tip_cta"` in goal.json changes its heading; URL `?tipcta=0` hides it, `?tipcta_pulse=0` stops the pulse.
 - `"show": false` hides the bar and brings the mastery strip/row back.
 - A typo in goal.json is ignored (the last good value stays on screen).
 
