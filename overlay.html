@@ -341,7 +341,7 @@
   #runner{position:absolute;left:0;top:0;pointer-events:none;z-index:60;will-change:transform;}
   #runner .rshadow{position:absolute;left:18%;right:18%;bottom:-4px;height:8px;border-radius:50%;background:rgba(0,0,0,.45);filter:blur(2px);}
   #runner .rflip,#runner .rspin{position:absolute;inset:0;}
-  #runner .rspr{position:absolute;inset:0;background:url(assets/pixel-trynd-run.png) 0 0 no-repeat;image-rendering:pixelated;image-rendering:crisp-edges;
+  #runner .rspr{position:absolute;inset:0;background:url(assets/pixel-trynd-run.png) 0 0 no-repeat;image-rendering:crisp-edges;image-rendering:pixelated;
     filter:drop-shadow(0 0 5px rgba(212,20,31,.45)) drop-shadow(0 3px 1px rgba(0,0,0,.55));}
   #runner .rslash{position:absolute;left:-30%;right:-30%;top:46%;height:34%;border-radius:50%;border:4px solid var(--rage-hot);
     box-shadow:0 0 14px var(--rage),inset 0 0 10px var(--rage);opacity:0;}
@@ -1094,7 +1094,7 @@ function startRunner() {
   if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) { window.__overlay.runner = "reduced-motion"; return; }
   const el = $("runner"), flip = el.querySelector(".rflip"), spin = el.querySelector(".rspin"), spr = el.querySelector(".rspr"), slash = el.querySelector(".rslash");
   const FW = 40, FH = 40, FRAMES = 6, FEET = 39;               // sprite sheet: 6 frames of 40x40 in one row, feet on art row 39
-  const sc = Math.max(1, N("runner_scale", 3)), w = FW * sc, h = FH * sc;
+  const sc = Math.max(1, Math.round(N("runner_scale", 3))), w = FW * sc, h = FH * sc;
   el.style.width = w + "px"; el.style.height = h + "px";
   spr.style.backgroundSize = (FW * FRAMES * sc) + "px " + h + "px";
   const top = N("runner_y", 1076) - FEET * sc;
