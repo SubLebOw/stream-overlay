@@ -345,6 +345,57 @@
     filter:drop-shadow(0 0 5px rgba(212,20,31,.45)) drop-shadow(0 3px 1px rgba(0,0,0,.55));}
   #runner .rslash{position:absolute;left:-30%;right:-30%;top:46%;height:34%;border-radius:50%;border:4px solid var(--rage-hot);
     box-shadow:0 0 14px var(--rage),inset 0 0 10px var(--rage);opacity:0;}
+
+  /* ---------- DONATION GOAL (goal.json: title, raised, goal, currency, show) ---------- */
+  #goal{transition:opacity .5s ease;}
+  .goal-card{position:relative;display:flex;align-items:center;gap:12px;box-sizing:border-box;width:100%;height:100%;
+    padding:8px 16px 9px 10px;border-radius:4px 12px 12px 4px;overflow:hidden;
+    background:linear-gradient(90deg,rgba(10,14,20,.92) 0%,rgba(14,19,27,.86) 62%,rgba(40,8,12,.84) 100%);
+    border:1px solid rgba(143,166,185,.22);border-left:3px solid var(--rage-hot);
+    box-shadow:0 6px 18px rgba(0,0,0,.45),inset 0 1px 0 rgba(207,227,242,.07);}
+  .goal-card::after{content:"";position:absolute;left:14px;right:14px;top:-1px;height:1px;background:linear-gradient(90deg,transparent,rgba(207,227,242,.45),transparent);}
+  .g-ic{flex:none;width:40px;height:40px;filter:drop-shadow(0 0 6px rgba(127,196,234,.45)) drop-shadow(0 1px 1px rgba(0,0,0,.9));}
+  .g-ic svg{display:block;width:100%;height:100%;}
+  .g-ic .sig{animation:gsig 2.4s ease-in-out infinite;transform-origin:30% 30%;}
+  .g-ic .sig.b{animation-delay:.4s}
+  @keyframes gsig{0%,100%{opacity:.25}50%{opacity:1}}
+  .g-body{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:3px;}
+  .g-head{display:flex;align-items:baseline;gap:10px;white-space:nowrap;}
+  .g-title{font-family:var(--serif);font-weight:700;font-size:12px;letter-spacing:.22em;color:var(--rage-hot);text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;}
+  .g-amt{margin-left:auto;font-size:21px;font-weight:700;letter-spacing:.02em;color:var(--text);text-shadow:0 2px 6px rgba(0,0,0,.8);font-variant-numeric:tabular-nums;}
+  .g-amt .g-sep{color:var(--frost-dim);margin:0 .28em;font-weight:600;}
+  .g-amt .g-goal{color:var(--frost);}
+  .g-amt small{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--frost-dim);margin-left:6px;}
+  .g-row{display:flex;align-items:center;gap:10px;}
+  .g-bar{position:relative;flex:1 1 auto;height:10px;border-radius:5px;background:rgba(0,0,0,.6);border:1px solid rgba(0,0,0,.7);
+    box-shadow:inset 0 1px 2px rgba(0,0,0,.8),0 0 0 1px rgba(143,166,185,.12);overflow:hidden;}
+  .g-bar > b{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:5px;
+    background:linear-gradient(90deg,var(--rage-deep),var(--rage) 55%,var(--rage-hot));box-shadow:0 0 10px var(--rage-hot);
+    transition:width 1.6s cubic-bezier(.22,1,.36,1);}
+  .g-bar > b::after{content:"";position:absolute;inset:0;border-radius:5px;
+    background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,.0) 35%,rgba(255,255,255,.45) 50%,rgba(255,255,255,0) 65%,transparent 100%);
+    background-size:220% 100%;animation:gshine 3.2s linear infinite;}
+  @keyframes gshine{from{background-position:120% 0}to{background-position:-120% 0}}
+  .g-bar .g-tick{position:absolute;top:0;bottom:0;width:1px;background:rgba(207,227,242,.14);}
+  .g-pct{flex:none;min-width:44px;text-align:right;font-size:17px;font-weight:700;letter-spacing:.04em;color:var(--frost);font-variant-numeric:tabular-nums;}
+  .g-pop{position:absolute;right:16px;top:-30px;font-size:22px;font-weight:700;color:#ffe08a;text-shadow:0 0 10px rgba(255,59,48,.9),0 2px 3px #000;
+    pointer-events:none;opacity:0;white-space:nowrap;z-index:5;}
+  .g-spark{position:absolute;width:6px;height:6px;transform:rotate(45deg);background:var(--rage-hot);box-shadow:0 0 8px var(--rage-hot);pointer-events:none;z-index:4;}
+  #goal.bump .goal-card{animation:gbump 1.2s ease-out;}
+  @keyframes gbump{0%{box-shadow:0 6px 18px rgba(0,0,0,.45),0 0 0 0 rgba(255,59,48,.0)}
+    20%{box-shadow:0 6px 18px rgba(0,0,0,.45),0 0 0 3px rgba(255,59,48,.85),0 0 34px rgba(255,59,48,.75);transform:scale(1.025)}
+    100%{box-shadow:0 6px 18px rgba(0,0,0,.45),0 0 0 0 rgba(255,59,48,0);transform:none}}
+  #goal.done .goal-card{border-left-color:#ffe08a;}
+  #goal.done .g-bar > b{background:linear-gradient(90deg,#b8860b,#f2c14e 60%,#ffe08a);box-shadow:0 0 12px rgba(255,224,138,.8);}
+  #goal.done .g-title{color:#ffe08a;}
+  /* queue scene: full width of the right column */
+  #goal.q .goal-card{padding:10px 22px 11px 12px;gap:16px;}
+  #goal.q .g-ic{width:52px;height:52px;}
+  #goal.q .g-title{font-size:15px;}
+  #goal.q .g-amt{font-size:28px;} #goal.q .g-amt small{font-size:14px;}
+  #goal.q .g-bar{height:13px;border-radius:7px;} #goal.q .g-bar > b{border-radius:7px;}
+  #goal.q .g-pct{font-size:22px;min-width:58px;}
+  #goal.q .g-pop{font-size:28px;top:-36px;}
   #debug{position:absolute;left:8px;bottom:8px;font:14px monospace;color:#9fe;background:rgba(0,0,0,.7);padding:4px 8px;}
 </style>
 </head>
@@ -363,6 +414,7 @@
 <div id="journey" class="widget hidden"></div>
 <div id="buddy" class="widget hidden"><img src="assets/buddy-christ-cam.jpg" alt="" onerror="this.parentNode.classList.add('hidden')"><div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div><div class="tag">CALEB CAM</div><div class="live"><i></i>LIVE</div></div>
 <div id="song" class="widget hidden"><div class="song-strip"><span class="note">&#9834;</span><span class="st"></span></div></div>
+<div id="goal" class="widget hidden"><div class="goal-card"><div class="g-ic"></div><div class="g-body"><div class="g-head"><span class="g-title"></span><span class="g-amt"><b class="g-raised"></b><span class="g-sep">/</span><span class="g-goal"></span><small class="g-cur"></small></span></div><div class="g-row"><div class="g-bar"><b></b></div><span class="g-pct">0%</span></div></div></div></div>
 <div id="runner" class="hidden"><div class="rshadow"></div><div class="rslash"></div><div class="rflip"><div class="rspin"><div class="rspr"></div></div></div></div>
 <div id="debug" class="hidden"></div>
 
@@ -385,6 +437,10 @@ const DEFAULTS = {
   songfile: "song.json", songpoll: 30,   // song.json: {"song": "Artist - Title"} ("" = hide). Plain .txt also works.
   // song: "..."             // URL param only: ?song=Artist%20-%20Title fixes the text (empty = hidden), no polling
   scale: 1,                  // scale for rank + song widgets
+  // ---- donation goal bar (game + queue). Data: goal.json {"title","raised","goal","currency","show"} ----
+  goal: 1,                   // 1 = show the goal bar, 0 = hide it (URL: ?goal=0). goal.json "show": false also hides it
+  goalfile: "goal.json", goalpoll: 30,   // goal.json is edited on github.com (or by a future tips workflow)
+  // move it with goalx, goaly, goalw (URL params)
   // ---- champion icon + mastery (rank card; queue scene also gets a mastery strip) ----
   champ: "Tryndamere",       // champion name (used in the mastery text)
   champ_icon: "assets/trynd-emblem.svg",  // square icon next to the rank: stylised emblem (original art). Other options: "assets/trynd-emblem-blade.svg", "assets/tryndamere.png" (Riot portrait), "" = old gem emblem
@@ -455,6 +511,12 @@ const B = (k) => { const v = String(P(k)); return v === "1" || v === "true" || v
 
 const layoutName = (P("layout") === "queue") ? "queue" : "game";
 const L = Object.assign({}, LAYOUTS[layoutName]);
+/* Donation goal bar position per layout (x,y,w,h). Layouts not listed here never show it. */
+const GOAL_LAYOUTS = {
+  game:  { x:1490, y:646, w:410, h:66 },    // right under the chat box (chat ends y630), well above the minimap (~y805) and the Buddy cam (y874)
+  queue: { x:1136, y:478, w:724, h:80 }     // right column, between the mastery strip and the chat panel (the chat panel moves down 94px while it's shown)
+};
+L.goal = GOAL_LAYOUTS[layoutName] || null;
 const widgets = String(P("widgets")).toLowerCase().split(/[,\s]+/).filter(Boolean);
 const only = widgets.length === 1 ? widgets[0] : null;
 // position params: x,y,w,h = chat (or the single widget if only one is enabled); rankx/ranky/songx/songy explicit
@@ -468,7 +530,11 @@ J.on = B("journey_show") && !!(J.from || J.to || J.title);
 J.panelQ = J.on && layoutName === "queue" && J.style !== 3;   // queue styles 1/2 = own panel at the top of the chat column
 if (J.panelQ && !qs.has("y") && !qs.has("h") && L.y < L.journey.y + L.journey.h + 16) { const bottom = L.y + L.h; L.y = L.journey.y + L.journey.h + 16; L.h = bottom - L.y; }
 if (J.on && layoutName === "game" && J.style !== 3) L.verse = Object.assign({}, L.verse, { y: L.verse.y + 58 });   // optional game verse steps below it
-const chatBox = { x: pos("x", L.x), y: pos("y", L.y), w: pos("w", L.w), h: pos("h", L.h) };
+const GOAL_ON = B("goal") && !!L.goal;
+const GOAL_GAP = 14;
+// queue: make room for the goal bar at the top of the chat panel (undone if goal.json says show:false)
+const goalShift = (GOAL_ON && layoutName === "queue" && !qs.has("y") && !qs.has("h")) ? L.goal.h + GOAL_GAP : 0;
+const chatBox = { x: pos("x", L.x), y: pos("y", L.y) + goalShift, w: pos("w", L.w), h: pos("h", L.h) - goalShift };
 const rankPos = { x: pos("rankx", only === "rank" ? pos("x", L.rankx) : L.rankx), y: pos("ranky", only === "rank" ? pos("y", L.ranky) : L.ranky) };
 const songPos = { x: pos("songx", only === "song" ? pos("x", L.songx) : L.songx), y: pos("songy", only === "song" ? pos("y", L.songy) : L.songy) };
 
@@ -971,6 +1037,112 @@ function startRank() {
   tick(); setInterval(tick, Math.max(10, N("rankpoll", 60)) * 1000);
 }
 
+/* ======================= DONATION GOAL (goal.json) ======================= */
+function placeChat(box) {
+  if (!chatEl) return;
+  if (layoutName === "queue") {
+    place($("cpanel"), box, true);
+    place(chatEl, { x: box.x + 14, y: box.y + 46, w: box.w - 28, h: box.h - 60 }, true);
+  } else place(chatEl, box, true);
+}
+const SAT_SVG = `<svg viewBox="0 0 48 48" aria-hidden="true">
+  <defs><linearGradient id="gsp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dfeaf3"/><stop offset=".5" stop-color="#7fc4ea"/><stop offset="1" stop-color="#2b3646"/></linearGradient></defs>
+  <g transform="rotate(-35 24 24)">
+    <rect x="3" y="19" width="13" height="10" rx="1" fill="url(#gsp)" stroke="#0b0e13" stroke-width="1.2"/>
+    <path d="M7.3 19v10M11.6 19v10M3 24h13" stroke="#0b0e13" stroke-width=".8" opacity=".7"/>
+    <rect x="32" y="19" width="13" height="10" rx="1" fill="url(#gsp)" stroke="#0b0e13" stroke-width="1.2"/>
+    <path d="M36.3 19v10M40.6 19v10M32 24h13" stroke="#0b0e13" stroke-width=".8" opacity=".7"/>
+    <path d="M16 24h4M28 24h4" stroke="#8fa6b9" stroke-width="2"/>
+    <rect x="20" y="17" width="8" height="14" rx="2" fill="#1a222e" stroke="#cfe3f2" stroke-width="1.4"/>
+    <circle cx="24" cy="21.5" r="1.6" fill="#ff3b30"/>
+  </g>
+  <path class="sig" d="M30 8a10 10 0 0 1 10 10" fill="none" stroke="#ff3b30" stroke-width="2.2" stroke-linecap="round"/>
+  <path class="sig b" d="M30 2.5a15.5 15.5 0 0 1 15.5 15.5" fill="none" stroke="#ff3b30" stroke-width="2.2" stroke-linecap="round" opacity=".6"/>
+</svg>`;
+const goalState = { raised: null, shown: null, anim: null };
+function fmtMoney(n) {
+  const cents = Math.abs(n - Math.round(n)) > 0.004;
+  return "$" + n.toLocaleString("en-NZ", { minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0 });
+}
+function goalSparks(el, pctNow) {
+  const card = el.querySelector(".goal-card"), bar = el.querySelector(".g-bar");
+  const cb = card.getBoundingClientRect(), bb = bar.getBoundingClientRect();
+  const x0 = bb.left - cb.left + bb.width * Math.min(1, pctNow / 100), y0 = bb.top - cb.top + bb.height / 2;
+  for (let i = 0; i < 14; i++) {
+    const s = document.createElement("i"); s.className = "g-spark";
+    s.style.left = x0 + "px"; s.style.top = y0 + "px"; el.appendChild(s);
+    const a = Math.random() * Math.PI * 2, d = 18 + Math.random() * 42;
+    s.animate([{ transform: "translate(-3px,-3px) rotate(45deg) scale(1)", opacity: 1 },
+               { transform: `translate(${Math.cos(a) * d - 3}px,${Math.sin(a) * d * .7 - 3}px) rotate(225deg) scale(.2)`, opacity: 0 }],
+              { duration: 700 + Math.random() * 500, easing: "cubic-bezier(.2,.8,.3,1)" }).onfinish = () => s.remove();
+  }
+}
+function countUp(node, from, to, ms) {
+  if (goalState.anim) cancelAnimationFrame(goalState.anim);
+  const t0 = performance.now();
+  const step = (t) => {
+    const k = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - k, 3);
+    node.textContent = fmtMoney(k < 1 ? Math.round(from + (to - from) * e) : to);
+    if (k < 1) goalState.anim = requestAnimationFrame(step);
+  };
+  goalState.anim = requestAnimationFrame(step);
+}
+function renderGoal(d) {
+  const el = $("goal");
+  const show = d && d.show !== false;
+  const goal = Number.isFinite(+d.goal) && +d.goal > 0 ? +d.goal : 0;
+  const raised = Number.isFinite(+d.raised) ? Math.max(0, +d.raised) : 0;
+  if (!show || !goal) {
+    el.classList.add("hidden");
+    if (goalShift && goalState.shown !== false) placeChat({ x: chatBox.x, y: chatBox.y - goalShift, w: chatBox.w, h: chatBox.h + goalShift });
+    goalState.shown = false; goalState.raised = null; return;
+  }
+  if (goalState.shown === false && goalShift) placeChat(chatBox);   // shown again: give the bar its space back
+  const pct = Math.min(100, (raised / goal) * 100);
+  const pctTxt = (pct > 0 && pct < 1) ? "<1%" : Math.floor(pct) + "%";
+  el.querySelector(".g-title").textContent = String(d.title || "STARLINK GOAL");
+  el.querySelector(".g-goal").textContent = fmtMoney(goal);
+  el.querySelector(".g-cur").textContent = String(d.currency || "NZD").toUpperCase().slice(0, 4);
+  el.querySelector(".g-pct").textContent = pctTxt;
+  el.classList.toggle("done", raised >= goal);
+  el.classList.remove("hidden");
+  const fill = el.querySelector(".g-bar > b"), num = el.querySelector(".g-raised");
+  const prev = goalState.raised;
+  fill.style.width = (raised > 0 ? Math.max(1.5, pct) : 0) + "%";
+  if (prev !== null && raised > prev) {               // money came in: count up, glow, +$ pop and sparks
+    countUp(num, prev, raised, 1400);
+    el.classList.remove("bump"); void el.offsetWidth; el.classList.add("bump");
+    const pop = document.createElement("div"); pop.className = "g-pop"; pop.textContent = "+" + fmtMoney(raised - prev);
+    el.appendChild(pop);
+    pop.animate([{ opacity: 0, transform: "translateY(14px) scale(.8)" }, { opacity: 1, transform: "translateY(0) scale(1.08)", offset: .2 },
+                 { opacity: 1, transform: "translateY(-6px) scale(1)", offset: .75 }, { opacity: 0, transform: "translateY(-18px) scale(.95)" }],
+                { duration: 2600, easing: "ease-out" }).onfinish = () => pop.remove();
+    setTimeout(() => goalSparks(el, pct), 500);
+    window.__overlay.goalBumps = (window.__overlay.goalBumps || 0) + 1;
+  } else num.textContent = fmtMoney(raised);
+  goalState.raised = raised; goalState.shown = true;
+  window.__overlay.goal = { raised, goal, pct };
+}
+function startGoal() {
+  const el = $("goal");
+  el.querySelector(".g-ic").innerHTML = SAT_SVG;
+  const bar = el.querySelector(".g-bar");
+  for (const t of [25, 50, 75]) { const k = document.createElement("i"); k.className = "g-tick"; k.style.left = t + "%"; bar.appendChild(k); }
+  if (layoutName === "queue") el.classList.add("q");
+  const box = { x: pos("goalx", L.goal.x), y: pos("goaly", L.goal.y), w: pos("goalw", L.goal.w), h: L.goal.h };
+  place(el, box, true); el.classList.add("hidden");
+  if (DEMO) { renderGoal({ title: "STARLINK GOAL", raised: 385, goal: 1000, currency: "NZD" }); return; }
+  let last = "";
+  const tick = async () => {
+    try {
+      const txt = await fetchText(P("goalfile"));
+      if (txt !== last) { const d = JSON.parse(txt); last = txt; renderGoal(d); }
+    } catch (e) { window.__overlay.errors.push("goal: " + e.message); dbg("goal.json not readable: " + e.message); }   // keeps the last good value on a typo
+  };
+  tick(); setInterval(tick, Math.max(10, N("goalpoll", 30)) * 1000);
+}
+
+
 /* ======================= SONG ======================= */
 function setSong(text) {
   const s = $("song");
@@ -1074,10 +1246,7 @@ if (widgets.includes("chat")) {
   if (mode === "restream") startRestream(P("restream_url"));
   else {
     chatEl = $("chat");
-    if (layoutName === "queue") {
-      place($("cpanel"), chatBox, true);
-      place(chatEl, { x: chatBox.x + 14, y: chatBox.y + 46, w: chatBox.w - 28, h: chatBox.h - 60 }, true);
-    } else place(chatEl, chatBox, true);
+    placeChat(chatBox);
     if (DEMO) demoChat(); else startTwitch(P("channel"));
   }
 }
@@ -1085,6 +1254,7 @@ if (layoutName === "queue") renderJourneyQueue(null);   // drawn straight away; 
 if (widgets.includes("rank")) { startRank(); if (MASTERY_STRIP) startMasteryStrip(); }
 if (widgets.includes("song")) startSong();
 if (widgets.includes("verse")) startVerse();
+if (GOAL_ON) startGoal();
 if ((layoutName === "game" || layoutName === "queue") && B("buddy") && L.buddy) {
   place($("buddy"), { x: pos("buddyx", L.buddy.x), y: pos("buddyy", L.buddy.y), w: pos("buddyw", L.buddy.w), h: pos("buddyh", L.buddy.h) }, true);
 }
