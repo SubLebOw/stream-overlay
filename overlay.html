@@ -67,6 +67,13 @@
   .colon{color:var(--frost-dim);margin-right:.34em;}
   .text.action{font-style:italic;margin-left:.3em;}
   .emote{height:1.35em;vertical-align:-.32em;margin:0 1px;}
+  /* platform badge (combined Twitch + Kick feed) */
+  .plat{display:inline-flex;align-items:center;justify-content:center;width:1.02em;height:1.02em;border-radius:3px;
+    margin-right:6px;vertical-align:-.14em;box-shadow:0 1px 2px rgba(0,0,0,.7);}
+  .plat svg{width:72%;height:72%;display:block;}
+  .plat.p-tw{background:#9146ff;} .plat.p-tw svg{fill:#fff;}
+  .plat.p-kick{background:#53fc18;} .plat.p-kick svg{fill:#0b0e13;}
+  .msg.leaving{opacity:0;transition:opacity .3s ease;}
 
   /* ---------- CHAT (Restream iframe frame) ---------- */
   #rframe{
@@ -474,7 +481,12 @@ const DEFAULTS = {
   restream_url: "",          // Restream Chat "Embed in stream" URL (only for chat=restream)
   font: 23,                  // chat font size in px
   max: 8,                    // max chat messages on screen
-  fade: 0,                   // seconds before a message fades out (0 = never; old ones scroll off)
+  fade: 0,                   // 0 = messages stay on screen (old ones scroll off the top when the box is full)
+                             // 1 = fade each message after 30s; 5+ = fade after that many seconds
+  kick: "calebgcameron",     // Kick channel slug merged into the same chat box (read-only, no login). 0 = Twitch only
+  kick_chatroom: "",         // Kick chatroom id override (skips the kick.com lookup). Known ids are built in below
+  kick_ws: "wss://ws-us2.pusher.com/app/32cbd69e4b950bf97679?protocol=7&client=js&version=8.4.0&flash=false",
+  platbadge: 1,              // 1 = small Twitch/Kick badge in front of every message, 0 = hide
   opacity: 0.74,             // chat backing opacity 0..1
   badges: 1, hidebots: 1, hidecmds: 0, emotes: 1,
   data: "",                  // where rank.json/song.json live. "" = same folder as this page (GitHub Pages).
@@ -594,7 +606,7 @@ root.setProperty("--ui-scale", qs.has("scale") ? N("scale", 1) : L.scale);
 
 const $ = (id) => document.getElementById(id);
 const dbg = (s) => { if (!DEBUG) return; const d = $("debug"); d.classList.remove("hidden"); d.textContent = s; };
-window.__overlay = { status: "init", joined: false, messages: 0, errors: [] };
+window.__overlay = { status: "init", joined: false, messages: 0, byPlat: {}, errors: [] };
 
 function place(el, p, withSize) {
   el.style.left = p.x + "px"; el.style.top = p.y + "px";
@@ -672,8 +684,12 @@ if (layoutName === "queue") startQueueScene();
 
 /* ======================= CHAT ======================= */
 const MAX = Math.max(1, Math.round(qs.has("max") ? N("max", 8) : L.max));
-const FADE = Math.max(0, N("fade", 0));
-const BOTS = new Set(["nightbot","streamelements","streamlabs","moobot","fossabot","wizebot","soundalerts","sery_bot","botrixoficial","kofistreambot"]);
+const FADE = (() => { const f = N("fade", 0); return f <= 0 ? 0 : (f < 5 ? 30 : f); })();   // ?fade=1 = 30s, ?fade=N (N>=5) = N seconds
+const BOTS = new Set(["nightbot","streamelements","streamlabs","moobot","fossabot","wizebot","soundalerts","sery_bot","botrixoficial","kofistreambot","kickbot"]);
+const PLAT_ICON = {
+  tw: '<svg viewBox="0 0 24 24"><path d="M2.15 0 .54 4.12v16.84h5.73V24h3.22l3.05-3.04h4.66L23.46 14.69V0zm19.16 13.61-3.58 3.58H12l-3.05 3.05v-3.05H4.12V2.15h17.19zM17.73 6.27v6.26h-2.15V6.27zm-5.73 0v6.26H9.85V6.27z"/></svg>',
+  kick: '<svg viewBox="0 0 24 24"><path d="M2 2h7v6h2V6h2V4h2V2h7v7h-2v2h-2v2h2v2h2v7h-7v-2h-2v-2h-2v-2H9v6H2z"/></svg>'
+};
 const PALETTE = ["#ff4a4a","#4aa3ff","#3fd47f","#b86bff","#ff8c3a","#2ed1d1","#ff5fb2","#e8d44d","#8fa6ff","#7ee06a"];
 let chatEl = null;
 
@@ -738,17 +754,34 @@ function buildText(container, text, emotesTag) {
   if (i < chars.length) container.appendChild(document.createTextNode(chars.slice(i).join("")));
 }
 
-// drop the oldest messages that no longer fit fully inside the chat box (box stacks from the bottom)
+// Trim from the top: over MAX, or no longer fully inside the box (it stacks from the bottom, newest last).
+// Trimmed messages fade out over .3s instead of vanishing; nothing below them moves when they go.
+function leave(el) { if (el.classList.contains("leaving")) return; el.classList.add("leaving"); setTimeout(() => el.remove(), 320); }
 function fitChat() {
   if (!chatEl) return;
-  while (chatEl.children.length > 1 && chatEl.firstElementChild.offsetTop < 0) chatEl.firstElementChild.remove();
+  const live = Array.from(chatEl.children).filter(c => !c.classList.contains("leaving"));
+  let extra = live.length - MAX;
+  for (let i = 0; i < live.length - 1; i++) {
+    if (extra > 0 || live[i].offsetTop < 0) { leave(live[i]); extra--; } else break;
+  }
 }
-function addMessage({ name, color, text, emotes, badges, id, userId, system }) {
+// Smooth scroll: messages already on screen glide up (FLIP) when a new one lands at the bottom.
+function glide(before) {
+  for (const [c, top] of before) {
+    if (!c.isConnected) continue;
+    const d = top - c.getBoundingClientRect().top;
+    if (Math.abs(d) > 0.5 && c.animate) c.animate([{ transform: `translateY(${d}px)` }, { transform: "none" }], { duration: 280, easing: "cubic-bezier(.2,.7,.3,1)" });
+  }
+}
+function addMessage({ name, color, text, emotes, badges, id, userId, system, plat, build }) {
   if (!chatEl) return;
+  plat = plat || "tw";
   const el = document.createElement("div");
   el.className = "msg";
-  if (id) el.dataset.id = id;
-  if (userId) el.dataset.user = userId;
+  el.dataset.plat = plat;
+  if (id) el.dataset.id = plat + ":" + id;
+  if (userId) el.dataset.user = plat + ":" + userId;
+  if (B("platbadge")) { const pb = document.createElement("span"); pb.className = "plat p-" + plat; pb.innerHTML = PLAT_ICON[plat] || ""; el.appendChild(pb); }
   const b = badges || "";
   if (/broadcaster\//.test(b)) el.classList.add("bc"); else if (/moderator\//.test(b)) el.classList.add("mod"); else if (/vip\//.test(b)) el.classList.add("vip");
   if (system) {
@@ -769,17 +802,19 @@ function addMessage({ name, color, text, emotes, badges, id, userId, system }) {
     const n = document.createElement("span"); n.className = "name"; n.textContent = name; n.style.color = safeColor(color, name); el.appendChild(n);
     if (!action) { const c = document.createElement("span"); c.className = "colon"; c.textContent = ":"; el.appendChild(c); }
     const t = document.createElement("span"); t.className = "text" + (action ? " action" : ""); if (action) t.style.color = safeColor(color, name);
-    buildText(t, text, emotes); el.appendChild(t);
+    (build || buildText)(t, text, emotes); el.appendChild(t);
   } else if (text) {
-    const t = document.createElement("span"); t.className = "text"; buildText(t, text, emotes); el.appendChild(t);
+    const t = document.createElement("span"); t.className = "text"; (build || buildText)(t, text, emotes); el.appendChild(t);
   }
+  const before = new Map(); for (const c of chatEl.children) before.set(c, c.getBoundingClientRect().top);
   chatEl.appendChild(el);
   window.__overlay.messages++;
-  while (chatEl.children.length > MAX) chatEl.firstElementChild.remove();
-  // also drop anything that overflowed the top of the box
-  fitChat(); requestAnimationFrame(fitChat); setTimeout(fitChat, 400); // after emotes/fonts settle
+  window.__overlay.byPlat[plat] = (window.__overlay.byPlat[plat] || 0) + 1;
+  fitChat(); glide(before);
+  requestAnimationFrame(fitChat); setTimeout(fitChat, 400); // after emotes/fonts settle
   if (FADE > 0) setTimeout(() => { el.classList.add("out"); setTimeout(() => el.remove(), 1000); }, FADE * 1000);
 }
+function removeMsgs(sel) { if (chatEl) chatEl.querySelectorAll(sel).forEach(leave); }
 
 function startTwitch(channel) {
   channel = String(channel || "").toLowerCase().replace(/^#/, "").replace(/[^a-z0-9_]/g, "");
@@ -822,11 +857,11 @@ function startTwitch(channel) {
           }
           case "CLEARCHAT": // ban/timeout (or full clear)
             if (!chatEl) break;
-            if (m.tags["target-user-id"]) chatEl.querySelectorAll(`.msg[data-user="${CSS.escape(m.tags["target-user-id"])}"]`).forEach(e => e.remove());
-            else chatEl.innerHTML = "";
+            if (m.tags["target-user-id"]) removeMsgs(`.msg[data-user="${CSS.escape("tw:" + m.tags["target-user-id"])}"]`);
+            else removeMsgs('.msg[data-plat="tw"]');
             break;
           case "CLEARMSG":
-            if (chatEl && m.tags["target-msg-id"]) chatEl.querySelectorAll(`.msg[data-id="${CSS.escape(m.tags["target-msg-id"])}"]`).forEach(e => e.remove());
+            if (chatEl && m.tags["target-msg-id"]) removeMsgs(`.msg[data-id="${CSS.escape("tw:" + m.tags["target-msg-id"])}"]`);
             break;
           case "RECONNECT": try { ws.close(); } catch (e) {} break;
           case "NOTICE": window.__overlay.errors.push(m.trailing); dbg("NOTICE: " + m.trailing); break;
@@ -843,6 +878,100 @@ function startTwitch(channel) {
   connect();
   // watchdog: Twitch PINGs ~every 5 min; if nothing for 7 min, force reconnect
   pingTimer = setInterval(() => { if (Date.now() - lastData > 420000 && ws) { try { ws.close(); } catch (e) {} } }, 30000);
+}
+
+/* ---------------- KICK (read-only, no login) ----------------
+   Kick chat runs on Pusher. Public channel "chatrooms.<chatroomId>.v2", events App\Events\ChatMessageEvent etc.
+   chatroomId: ?kick_chatroom= / site-config > built-in KICK_ROOMS > cached lookup > https://kick.com/api/v2/channels/<slug>
+   (the lookup is behind Cloudflare and may be blocked for browsers, hence the built-in id). */
+const KICK_ROOMS = { calebgcameron: 95824000 };
+async function kickRoomId(slug) {
+  const forced = parseInt(P("kick_chatroom"), 10);
+  if (forced > 0) return forced;
+  if (KICK_ROOMS[slug]) return KICK_ROOMS[slug];
+  const key = "kickroom:" + slug;
+  try { const c = parseInt(localStorage.getItem(key), 10); if (c > 0) return c; } catch (e) {}
+  for (const u of [`https://kick.com/api/v2/channels/${slug}/chatroom`, `https://kick.com/api/v2/channels/${slug}`]) {
+    try {
+      const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 6000);
+      const r = await fetch(u, { headers: { Accept: "application/json" }, signal: ctl.signal }); clearTimeout(to);
+      if (!r.ok) continue;
+      const d = await r.json(); const id = (d && d.chatroom && d.chatroom.id) || (d && d.chatable_id === undefined && d.id);
+      if (id > 0) { try { localStorage.setItem(key, String(id)); } catch (e) {} return id; }
+    } catch (e) { dbg("kick lookup failed: " + (e && e.message)); }
+  }
+  return 0;
+}
+// "[emote:37226:KEKW] hi" -> <img> + text (DOM nodes only)
+function kickText(container, text) {
+  const re = /\[emote:(\d+):([^\]]*)\]/g; let i = 0, m;
+  while ((m = re.exec(text))) {
+    if (m.index > i) container.appendChild(document.createTextNode(text.slice(i, m.index)));
+    if (B("emotes")) {
+      const img = document.createElement("img"); img.className = "emote"; img.alt = m[2];
+      img.src = `https://files.kick.com/emotes/${m[1]}/fullsize`;
+      img.onerror = () => img.replaceWith(document.createTextNode(img.alt));
+      container.appendChild(img);
+    } else container.appendChild(document.createTextNode(m[2]));
+    i = re.lastIndex;
+  }
+  if (i < text.length) container.appendChild(document.createTextNode(text.slice(i)));
+}
+const KICK_BADGE = { broadcaster: "broadcaster", moderator: "moderator", vip: "vip", subscriber: "subscriber", founder: "founder", og: "og", staff: "staff", verified: "verified" };
+function startKick(slugRaw) {
+  const slug = String(slugRaw || "").toLowerCase().trim().replace(/[^a-z0-9_-]/g, "");
+  const K = window.__overlay.kick = { status: "init", slug, room: 0, messages: 0 };
+  if (!slug || ["0", "off", "false", "no"].includes(String(slugRaw).toLowerCase())) { K.status = "off"; return; }
+  let ws, backoff = 1000, lastData = Date.now(), room = 0, pinger = null;
+  const connect = async () => {
+    if (!room) room = K.room = await kickRoomId(slug);
+    if (!room) { K.status = "no-chatroom"; dbg("kick: no chatroom id for " + slug + " (set ?kick_chatroom=)"); setTimeout(connect, Math.min(backoff *= 2, 60000)); return; }
+    K.status = "connecting"; dbg("kick connecting " + slug + " #" + room);
+    try { ws = new WebSocket(P("kick_ws")); } catch (e) { K.status = "bad-ws"; return; }
+    ws.onmessage = (ev) => {
+      lastData = Date.now();
+      let j; try { j = JSON.parse(ev.data); } catch (e) { return; }
+      let d = j.data; if (typeof d === "string") { try { d = JSON.parse(d); } catch (e) {} }
+      switch (j.event) {
+        case "pusher:connection_established":
+          ws.send(JSON.stringify({ event: "pusher:subscribe", data: { auth: "", channel: `chatrooms.${room}.v2` } }));
+          break;
+        case "pusher_internal:subscription_succeeded": backoff = 1000; K.status = "joined"; dbg("kick joined " + slug); break;
+        case "pusher:ping": ws.send(JSON.stringify({ event: "pusher:pong", data: {} })); break;
+        case "pusher:error": window.__overlay.errors.push("kick: " + JSON.stringify(d)); dbg("kick error " + JSON.stringify(d)); break;
+        case "App\\Events\\ChatMessageEvent": {
+          if (!d || !d.sender) break;
+          const s = d.sender, idn = s.identity || {}, text = String(d.content || "");
+          const login = String(s.slug || s.username || "").toLowerCase();
+          if (B("hidebots") && BOTS.has(login)) break;
+          if (B("hidecmds") && text.startsWith("!")) break;
+          const badges = (idn.badges || []).map(b => KICK_BADGE[b && b.type]).filter(Boolean).map(t => t + "/1").join(",");
+          K.messages++;
+          addMessage({ plat: "kick", name: s.username || s.slug, color: idn.color, text, badges, id: d.id, userId: s.id, build: kickText });
+          break;
+        }
+        case "App\\Events\\MessageDeletedEvent":
+          if (d && d.message && d.message.id) removeMsgs(`.msg[data-id="${CSS.escape("kick:" + d.message.id)}"]`);
+          break;
+        case "App\\Events\\UserBannedEvent":
+          if (d && d.user && d.user.id) removeMsgs(`.msg[data-user="${CSS.escape("kick:" + d.user.id)}"]`);
+          break;
+        case "App\\Events\\ChatroomClearEvent": removeMsgs('.msg[data-plat="kick"]'); break;
+      }
+    };
+    ws.onclose = (e) => {
+      K.status = "reconnecting"; dbg("kick disconnected (" + (e && e.code) + "), retry in " + backoff / 1000 + "s");
+      setTimeout(connect, backoff); backoff = Math.min(backoff * 2, 30000);
+    };
+    ws.onerror = () => { window.__overlay.errors.push("kick ws error"); };
+  };
+  connect();
+  // keep-alive (Pusher activity_timeout is 120s) + watchdog: nothing heard for 3 min -> reconnect
+  pinger = setInterval(() => {
+    if (!ws || ws.readyState !== 1) return;
+    if (Date.now() - lastData > 180000) { try { ws.close(); } catch (e) {} return; }
+    try { ws.send(JSON.stringify({ event: "pusher:ping", data: {} })); } catch (e) {}
+  }, 60000);
 }
 
 function startRestream(url) {
@@ -877,7 +1006,9 @@ function demoChat() {
     { name: "lurker_42", color: "#8A2BE2", text: "\u0001ACTION slams the sub button\u0001", badges: "subscriber/6" },
     { name: "viewer3", color: "#FF4500", text: "ult was up for like 0.1 sec lol" },
     { name: "SteelEdge", color: "#5F9EA0", text: "split push king. they can't stop it", badges: "vip/1" },
-    { name: "viewer4", color: "#FF69B4", text: "how long have you been maining trynd?" }
+    { name: "viewer4", color: "#FF69B4", text: "how long have you been maining trynd?" },
+    { plat: "kick", name: "KickViewer", color: "#53FC18", text: "watching from kick [emote:37226:KEKW]", build: kickText },
+    { plat: "kick", name: "kick_mod", color: "#FEA0CF", text: "both chats in one box now", badges: "moderator/1", build: kickText }
   ];
   if (layoutName === "queue") S.unshift(
     { name: "early_bird", color: "#7FC4EA", text: "hello from Sydney 👋" },
@@ -1343,7 +1474,7 @@ if (widgets.includes("chat")) {
       place($("cpanel"), chatBox, true);
       place(chatEl, { x: chatBox.x + 14, y: chatBox.y + 46, w: chatBox.w - 28, h: chatBox.h - 60 }, true);
     } else place(chatEl, chatBox, true);
-    if (DEMO) demoChat(); else startTwitch(P("channel"));
+    if (DEMO) demoChat(); else { startTwitch(P("channel")); startKick(P("kick")); }
   }
 }
 if (layoutName === "queue") renderJourneyQueue(null);   // drawn straight away; style 1 gets its "you are here" marker once rank.json loads
