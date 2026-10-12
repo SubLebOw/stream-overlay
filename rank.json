@@ -1,11 +1,15 @@
 {
   "example": false,
-  "_note": "Set by hand (OCE Emerald IV). Session W/L reset for next stream (Tue). The Riot updater overwrites this once RIOT_API_KEY is added.",
   "label": "Tryndamere OTP",
   "tier": "EMERALD",
   "division": "IV",
-  "lp": 0,
+  "lp": 14,
   "wins_today": 0,
   "losses_today": 0,
-  "show_today": true
+  "lp_today": 0,
+  "season_wins": 382,
+  "season_losses": 370,
+  "show_today": true,
+  "queue": "RANKED_SOLO_5x5",
+  "updated": "2026-10-12T18:08:41+13:00"
 }
