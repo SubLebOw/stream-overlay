@@ -3,13 +3,13 @@
   "label": "Tryndamere OTP",
   "tier": "EMERALD",
   "division": "IV",
-  "lp": 0,
-  "wins_today": 0,
+  "lp": 19,
+  "wins_today": 1,
   "losses_today": 1,
-  "lp_today": -14,
-  "season_wins": 382,
+  "lp_today": 5,
+  "season_wins": 383,
   "season_losses": 371,
   "show_today": true,
   "queue": "RANKED_SOLO_5x5",
-  "updated": "2026-10-12T20:37:13+13:00"
+  "updated": "2026-10-12T22:41:11+13:00"
 }
