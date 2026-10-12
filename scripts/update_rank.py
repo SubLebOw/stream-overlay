@@ -19,7 +19,7 @@ Behaviour:
   * No key            -> prints a notice, leaves rank.json untouched (the EXAMPLE placeholder stays), exit 0.
   * Riot error        -> prints a warning, leaves rank.json untouched, exit 0 (use --strict to exit 1).
   * Nothing changed   -> files are not rewritten, so the workflow makes no commit.
-  * "Today" W/L/LP is counted from the first check after midnight SYDNEY time (Australia/Sydney),
+  * "Today" W/L/LP is counted from the first check after midnight NZ time (Pacific/Auckland),
     using rank_state.json (committed next to rank.json).
   * Writes changed=true/false, rank_changed=..., state_changed=... to $GITHUB_OUTPUT when run in Actions.
 
@@ -38,9 +38,9 @@ import urllib.request
 
 try:
     from zoneinfo import ZoneInfo
-    SYDNEY = ZoneInfo("Australia/Sydney")
+    SYDNEY = ZoneInfo("Pacific/Auckland")  # session day = NZ time (name kept for compatibility)
 except Exception:  # pragma: no cover - tzdata missing (not the case on GitHub's ubuntu runners)
-    SYDNEY = dt.timezone(dt.timedelta(hours=10))
+    SYDNEY = dt.timezone(dt.timedelta(hours=12))
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_RIOT_ID = "Caleb Cameron#ccxx"
@@ -202,7 +202,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description="Write rank.json from the Riot API (one shot)")
     ap.add_argument("--riot-id", default=os.environ.get("RIOT_ID") or DEFAULT_RIOT_ID)
     ap.add_argument("--platform", default=os.environ.get("RIOT_PLATFORM") or "oc1", help="league-v4 platform (OCE = oc1)")
-    ap.add_argument("--account-region", default="asia", choices=["americas", "asia", "europe"])
+    ap.add_argument("--account-region", default=os.environ.get("RIOT_ACCOUNT_REGION") or "americas", choices=["americas", "asia", "europe"])
     ap.add_argument("--queue", default=os.environ.get("RANK_QUEUE") or "solo", choices=list(QUEUES))
     ap.add_argument("--label", default="Tryndamere OTP")
     ap.add_argument("--out", default=os.path.join(ROOT, "rank.json"))

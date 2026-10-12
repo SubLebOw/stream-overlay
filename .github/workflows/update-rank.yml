@@ -1,11 +1,11 @@
-# Updates rank.json from the Riot API about every 15 minutes and commits it if it changed.
+# Updates rank.json from the Riot API about every 10 minutes and commits it if it changed.
 # The key comes from the repository secret RIOT_API_KEY (Settings -> Secrets and variables -> Actions).
 # It is only ever an environment variable inside this job: it is never written to the repo or the website.
 name: Update rank
 
 on:
   schedule:
-    - cron: "*/15 * * * *"   # GitHub may start scheduled runs a few minutes late; that's normal
+    - cron: "*/10 * * * *"   # GitHub may start scheduled runs a few minutes late; that's normal
   workflow_dispatch: {}      # "Run workflow" button in the Actions tab (handy to test the key)
 
 permissions:
@@ -29,6 +29,7 @@ jobs:
           RIOT_API_KEY: ${{ secrets.RIOT_API_KEY }}
           RIOT_ID: "Caleb Cameron#ccxx"
           RIOT_PLATFORM: oc1
+          RIOT_ACCOUNT_REGION: americas
         run: python3 scripts/update_rank.py
 
       - name: Commit rank.json if it changed

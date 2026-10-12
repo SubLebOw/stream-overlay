@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(
 import update_rank as ur  # noqa: E402
 
 FAKE_KEY = "RGAPI-MOCK-not-a-real-key"
-ACC_URL = "https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/Caleb%20Cameron/ccxx"
+ACC_URL = "https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/Caleb%20Cameron/ccxx"
 LEAGUE_URL = "https://oc1.api.riotgames.com/lol/league/v4/entries/by-puuid/MOCK-PUUID-123"
 ACCOUNT = {"puuid": "MOCK-PUUID-123", "gameName": "Caleb Cameron", "tagLine": "ccxx"}
 
@@ -111,7 +111,7 @@ class UpdaterTests(unittest.TestCase):
         self.assertNotIn(FAKE_KEY, read(self.out) + read(self.state))
 
     def test_today_counts_and_no_change_no_write(self):
-        t0 = dt.datetime(2026, 9, 30, 9, 0, tzinfo=dt.timezone.utc)  # 19:00 Sydney
+        t0 = dt.datetime(2026, 9, 30, 6, 0, tzinfo=dt.timezone.utc)  # 19:00 NZ
         self.main(FakeRiot({ACC_URL: [ACCOUNT], LEAGUE_URL: [[entry(lp=42, wins=10, losses=8)]]}), now=t0)
         t1 = t0 + dt.timedelta(hours=2)
         self.main(FakeRiot({ACC_URL: [ACCOUNT], LEAGUE_URL: [[entry(tier="GOLD", rank="I", lp=10, wins=13, losses=9)]]}), now=t1)
@@ -124,9 +124,9 @@ class UpdaterTests(unittest.TestCase):
         self.assertEqual(os.path.getmtime(self.out), mtime - 100, "unchanged rank must not rewrite rank.json")
         self.assertEqual(self.outputs()["changed"], "false")
 
-    def test_sydney_midnight_resets_today(self):
-        before = dt.datetime(2026, 9, 30, 13, 30, tzinfo=dt.timezone.utc)  # 23:30 Sydney 30 Sep
-        after = dt.datetime(2026, 9, 30, 14, 30, tzinfo=dt.timezone.utc)   # 00:30 Sydney 1 Oct
+    def test_nz_midnight_resets_today(self):
+        before = dt.datetime(2026, 9, 30, 10, 30, tzinfo=dt.timezone.utc)  # 23:30 NZ 30 Sep
+        after = dt.datetime(2026, 9, 30, 11, 30, tzinfo=dt.timezone.utc)   # 00:30 NZ 1 Oct
         self.main(FakeRiot({ACC_URL: [ACCOUNT], LEAGUE_URL: [[entry(wins=10, losses=8)]]}), now=before)
         self.main(FakeRiot({ACC_URL: [ACCOUNT], LEAGUE_URL: [[entry(wins=11, losses=8, lp=60)]]}), now=before + dt.timedelta(minutes=20))
         self.assertEqual(self.rank()["wins_today"], 1)
