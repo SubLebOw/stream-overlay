@@ -3,13 +3,13 @@
   "label": "Tryndamere OTP",
   "tier": "PLATINUM",
   "division": "I",
-  "lp": 77,
+  "lp": 56,
   "wins_today": 1,
-  "losses_today": 0,
-  "lp_today": 19,
+  "losses_today": 1,
+  "lp_today": -2,
   "season_wins": 389,
-  "season_losses": 379,
+  "season_losses": 380,
   "show_today": true,
   "queue": "RANKED_SOLO_5x5",
-  "updated": "2026-10-14T09:29:34+13:00"
+  "updated": "2026-10-14T10:13:09+13:00"
 }
