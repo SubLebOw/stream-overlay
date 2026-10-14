@@ -1181,7 +1181,7 @@ function renderRank(d) {
   el.innerHTML = html;
   if (goalEl) { el.querySelector(".rank-body").appendChild(goalEl); goalEl.classList.add("incard"); el.querySelector(".rank-card").classList.add("has-m"); }
   if (jGame) fitJourney(el);
-  if (layoutName === "queue" && J.on && J.style === 1) renderJourneyQueue({ tier, division: div });
+  if (layoutName === "queue" && J.on && J.style === 1) renderJourneyQueue(d.ladder_tier ? { tier: String(d.ladder_tier).toUpperCase(), division: String(d.ladder_division || "") } : { tier, division: div });
   if (wT !== null && lT !== null && typeof window.__onGames === "function") window.__onGames(wT + lT);
 }
 function startMasteryStrip(force) {

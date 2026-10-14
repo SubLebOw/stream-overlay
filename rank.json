@@ -11,5 +11,7 @@
   "season_losses": 382,
   "show_today": false,
   "queue": "RANKED_SOLO_5x5",
-  "updated": "2026-10-15T04:18:52+13:00"
+  "updated": "2026-10-15T04:18:52+13:00",
+  "ladder_tier": "DIAMOND",
+  "ladder_division": "IV"
 }
