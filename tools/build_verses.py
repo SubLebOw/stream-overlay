@@ -34,6 +34,7 @@ REFS = {
    "Luke 6:38","Galatians 6:2","Hebrews 13:5","Hebrews 13:8","Philippians 4:8","Matthew 19:26","John 8:12","John 10:10","Acts 20:35","Romans 12:21",
    "Ephesians 3:20","Colossians 3:2","1 Thessalonians 5:11","1 John 1:7","Psalm 1:1-3","Psalm 32:8","Psalm 37:4","Psalm 145:18","Proverbs 11:25",
    "Isaiah 6:8","Jeremiah 33:3","Joshua 24:15","Psalm 133:1","John 15:11","Romans 12:15","Psalm 8:3-4"],
+ "truth": ["John 8:32", "Proverbs 18:17", "Proverbs 14:15", "1 Thessalonians 5:21", "Acts 17:11", "1 Corinthians 8:2", "1 Corinthians 13:12", "Proverbs 26:12", "Proverbs 3:7", "Proverbs 19:2", "Proverbs 23:23", "Proverbs 25:2", "Proverbs 2:3-5", "Psalm 51:6", "Ephesians 4:15", "Ephesians 4:25", "Zechariah 8:16", "Matthew 5:37", "Proverbs 12:22", "Exodus 23:2", "Isaiah 5:20", "2 Timothy 4:3-4", "Proverbs 11:1", "Deuteronomy 19:15", "Ecclesiastes 5:2", "Proverbs 17:28", "James 3:2", "1 John 4:1", "John 17:17", "John 14:6", "Proverbs 12:17", "Proverbs 15:14", "Proverbs 18:2", "Proverbs 16:25", "Proverbs 21:2", "Proverbs 28:26", "Job 12:11", "John 7:24", "2 Corinthians 13:5", "Jeremiah 17:9", "Psalm 119:160", "Colossians 2:8", "Isaiah 8:20", "Proverbs 15:28"],
 }
 
 def clean(t):

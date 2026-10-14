@@ -1,5 +1,5 @@
-// Verse of the day list. Text fetched from https://bible-api.com (translation=web) on 2026-09-29.
-// World English Bible (WEB) - Public Domain. Includes a "truth" theme (seeking truth, testing claims, honesty) added 2026-10-05. Rebuild with: python tools/build_verses.py
+// Verse of the day list. Text fetched from https://bible-api.com (translation=web); truth theme extended 2026-10-15.
+// World English Bible (WEB) - Public Domain. Includes a "truth" theme (seeking truth, testing claims, honesty). Rebuild with: python tools/build_verses.py
 window.VERSES = [
  {
   "ref": "Isaiah 40:31",
@@ -1650,5 +1650,77 @@ window.VERSES = [
   "text": "When I consider your heavens, the work of your fingers, the moon and the stars, which you have ordained; what is man, that you think of him? What is the son of man, that you care for him?",
   "translation": "WEB",
   "theme": "purpose"
+ },
+ {
+  "ref": "Proverbs 18:2",
+  "text": "A fool has no delight in understanding, but only in revealing his own opinion.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
+  "ref": "Proverbs 16:25",
+  "text": "There is a way which seems right to a man, but in the end it leads to death.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
+  "ref": "Proverbs 21:2",
+  "text": "Every way of a man is right in his own eyes, but Yahweh weighs the hearts.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
+  "ref": "Proverbs 28:26",
+  "text": "One who trusts in himself is a fool; but one who walks in wisdom is kept safe.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
+  "ref": "Job 12:11",
+  "text": "Doesn’t the ear try words, even as the palate tastes its food?",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
+  "ref": "John 7:24",
+  "text": "Don’t judge according to appearance, but judge righteous judgment.”",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
+  "ref": "2 Corinthians 13:5",
+  "text": "Examine your own selves, whether you are in the faith. Test your own selves. Or don’t you know as to your own selves, that Jesus Christ is in you?—unless indeed you are disqualified.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
+  "ref": "Jeremiah 17:9",
+  "text": "The heart is deceitful above all things and it is exceedingly corrupt. Who can know it?",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
+  "ref": "Psalms 119:160",
+  "text": "All of your words are truth. Every one of your righteous ordinances endures forever.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
+  "ref": "Colossians 2:8",
+  "text": "Be careful that you don’t let anyone rob you through his philosophy and vain deceit, after the tradition of men, after the elements of the world, and not after Christ.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
+  "ref": "Isaiah 8:20",
+  "text": "Turn to the law and to the testimony! If they don’t speak according to this word, surely there is no morning for them.",
+  "translation": "WEB",
+  "theme": "truth"
+ },
+ {
+  "ref": "Proverbs 15:28",
+  "text": "The heart of the righteous weighs answers, but the mouth of the wicked gushes out evil.",
+  "translation": "WEB",
+  "theme": "truth"
  }
 ];
