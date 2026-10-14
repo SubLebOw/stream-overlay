@@ -7,30 +7,32 @@ body{background:#07090b}
  repeating-linear-gradient(60deg,rgba(255,255,255,.025) 0 2px,transparent 2px 120px),
  repeating-linear-gradient(-60deg,rgba(255,255,255,.025) 0 2px,transparent 2px 120px),
  linear-gradient(180deg,#141a1e,#07090b);}
-.core{position:absolute;left:560px;top:430px;width:260px;height:260px;border-radius:50%;transform:translate(-50%,-50%);
+.core{position:absolute;left:560px;top:390px;width:260px;height:260px;border-radius:50%;transform:translate(-50%,-50%);
  background:radial-gradient(circle,#fff6d0 0,#ffb35c 22%,#ff7a1a 45%,rgba(160,50,0,.4) 66%,transparent 72%);
  box-shadow:0 0 120px 40px rgba(255,120,30,.35);animation:core 2.4s ease-in-out infinite}
-.ring{position:absolute;left:560px;top:430px;width:420px;height:420px;border-radius:50%;transform:translate(-50%,-50%);
+.ring{position:absolute;left:560px;top:390px;width:420px;height:420px;border-radius:50%;transform:translate(-50%,-50%);
  border:14px dashed rgba(242,193,78,.55);animation:spin 30s linear infinite}
 @keyframes core{50%{box-shadow:0 0 170px 60px rgba(255,140,40,.5);filter:brightness(1.15)}}
 @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
-.title{position:absolute;left:80px;top:640px;width:960px;text-align:center}
+.title{position:absolute;left:80px;top:600px;width:960px;text-align:center}
 .title .wm{font-size:120px;line-height:1}
-.title .sub{font-size:28px;letter-spacing:.32em;color:var(--amber-h);font-weight:700;margin-top:10px}
+.title .by{font:900 36px/1 "Arial Black",sans-serif;letter-spacing:.16em;color:#fff;margin-top:14px;text-shadow:2px 2px 0 var(--amber)}
+.title .made{font-size:24px;font-weight:700;color:#e8eef0;margin-top:14px}.title .made b{color:var(--cyan)}
+.title .sub{font-size:22px!important;font-size:28px;letter-spacing:.32em;color:var(--amber-h);font-weight:700;margin-top:10px}
 .status{position:absolute;left:80px;top:70px;width:960px;text-align:center;font:900 54px/1 "Arial Black",sans-serif;letter-spacing:.14em;color:#fff;text-shadow:3px 3px 0 var(--amber)}
 .status small{display:block;font:600 22px/1.4 "Segoe UI",sans-serif;letter-spacing:.08em;color:#b9c4c8;margin-top:12px;text-shadow:none}
-.heroes{position:absolute;left:80px;top:850px;width:960px;display:flex;justify-content:center;gap:14px}
+.heroes{position:absolute;left:80px;top:900px;width:960px;display:flex;justify-content:center;gap:14px}
 .heroes span{font:900 18px/1 "Arial Black",sans-serif;letter-spacing:.16em;padding:10px 16px;border:2px solid var(--cyan);color:var(--cyan);border-radius:6px;background:rgba(7,20,22,.7)}
 .side{position:absolute;left:1160px;top:60px;width:700px;height:960px}
 .chat-head{left:1164px;top:70px;font-size:17px}
 #chat{left:1160px;top:104px;width:700px;height:560px}
 .cards{position:absolute;left:1160px;top:690px;width:668px;padding:16px;display:flex;flex-direction:column;gap:14px}
 .play .u{font-size:26px}
-.foot{position:absolute;left:80px;top:950px;width:960px;text-align:center;color:#8d9aa0;font-size:18px;font-style:italic}
+.foot{position:absolute;left:80px;top:985px;width:960px;text-align:center;color:#8d9aa0;font-size:18px;font-style:italic}
 </style></head><body>
 <div class="bg"></div><div class="ring"></div><div class="core"></div>
 <div class="status" id="status">STARTING SOON<small id="statussub">Squad's loading in · grab a drink · join the room below</small></div>
-<div class="title"><div class="wm">COREBURN</div><div class="sub">ENDLESS ARENA BRAWLER · 2–4P CO-OP</div></div>
+<div class="title"><div class="wm">COREBURN</div><div class="by">A GAME BY CALEB CAMERON</div><div class="sub">ENDLESS ARENA BRAWLER · 2–4P CO-OP</div><div class="made">I made this game. Play it free + join us: <b>sublebow.github.io/coreburn</b></div></div>
 <div class="heroes"><span>SARROW</span><span>ZALEKS</span><span>ISKRA</span><span>ORIN</span></div>
 <div class="foot">The Grindchoir sings. We end the song.</div>
 <div class="chat-head"><i></i>LIVE CHAT · TWITCH + KICK</div>
