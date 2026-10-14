@@ -1,6 +1,6 @@
 {
   "example": false,
-  "label": "Smurf \u00b7 Tryndamere OTP",
+  "label": "Tryndamere OTP",
   "tier": "UNRANKED",
   "division": "",
   "lp": null,
@@ -11,7 +11,5 @@
   "season_losses": 382,
   "show_today": true,
   "queue": "RANKED_SOLO_5x5",
-  "updated": "2026-10-15T04:18:52+13:00",
-  "ladder_tier": "DIAMOND",
-  "ladder_division": "IV"
+  "updated": "2026-10-15T04:18:52+13:00"
 }
