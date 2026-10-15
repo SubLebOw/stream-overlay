@@ -186,6 +186,9 @@ def run(args, key, now=None, getter=riot_get):
     state = load_json(args.state, {})
     data, new_state = build_rank(args, entries, state, now)
     old = load_json(args.out, {})
+    for k in ("ladder_tier", "ladder_division", "verse_bump", "label"):
+        if k in old:
+            data[k] = old[k]   # manual pins survive automatic updates
     rank_changed = strip_volatile(old) != strip_volatile(data)
     state_changed = new_state != state and bool(new_state)
     if rank_changed:
