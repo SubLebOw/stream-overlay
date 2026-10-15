@@ -1,15 +1,15 @@
 {
   "example": false,
   "label": "Tryndamere OTP",
-  "tier": "PLATINUM",
-  "division": "I",
-  "lp": 90,
-  "wins_today": 3,
+  "tier": "EMERALD",
+  "division": "IV",
+  "lp": 10,
+  "wins_today": 4,
   "losses_today": 0,
-  "lp_today": 57,
-  "season_wins": 393,
+  "lp_today": 77,
+  "season_wins": 394,
   "season_losses": 382,
   "show_today": true,
   "queue": "RANKED_SOLO_5x5",
-  "updated": "2026-10-15T14:18:30+13:00"
+  "updated": "2026-10-15T14:53:04+13:00"
 }
