@@ -457,7 +457,7 @@
 <div id="cam" class="widget hidden"><div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div></div>
 <div id="info" class="widget panel hidden"><div class="tw"></div><div class="sch"></div></div>
 <div id="socials" class="widget hidden"></div>
-<div id="verse" class="widget panel hidden"><div class="ph"><i></i><span style="text-transform:none">word between games</span></div><div class="vt"><p></p></div><div class="vf"><span class="vref"></span><span class="vtr">WEB</span></div></div>
+<div id="verse" class="widget panel hidden"><div class="ph"><i></i><span style="text-transform:none">word between games</span><span class="iam" style="display:none;margin-left:auto;text-transform:none;letter-spacing:.08em;color:var(--ice)">Yahweh = I AM</span></div><div class="vt"><p></p></div><div class="vf"><span class="vref"></span><span class="vtr">WEB</span></div></div>
 <div id="cpanel" class="widget panel hidden"><div class="ph"><i></i>LIVE CHAT</div></div>
 <div id="chat" class="widget hidden"></div>
 <div id="rframe" class="widget hidden"><div class="rhead"><i></i>CHAT</div></div>
@@ -1434,6 +1434,7 @@ function showVerse(v) {
   const el = $("verse");
   if (!v) { el.classList.add("hidden"); return; }
   el.querySelector(".vt p").textContent = v.text;
+  { const n = el.querySelector(".iam"); if (n) n.style.display = /yahweh/i.test(v.text) ? "" : "none"; }
   el.querySelector(".vref").textContent = prettyRef(v.ref).toUpperCase();
   el.querySelector(".vtr").textContent = v.translation || "WEB";
   el.classList.remove("hidden");
