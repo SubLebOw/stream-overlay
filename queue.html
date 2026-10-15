@@ -15,7 +15,7 @@ iframe{border:0;width:1920px;height:1080px;display:block;background:transparent}
   const q = new URLSearchParams(location.search);
   if (!q.has("layout")) q.set("layout", "queue");
   const f = document.getElementById("f");
-  f.src = "overlay.html?" + q.toString();
+  q.set("cb", Date.now()); f.src = "overlay.html?" + q.toString();
   // OBS fires this when the scene with this source goes live -> restart the queue timer
   window.addEventListener("obsSourceActiveChanged", (e) => {
     try { f.contentWindow.postMessage({ type: "obsActive", active: !!(e.detail && e.detail.active) }, "*"); } catch (err) {}
