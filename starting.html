@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
   Starting-soon scene (1920x1080 OBS browser source, opaque).
-  starting.html            3:00 countdown (default)
+  starting.html            15:00 countdown (default)
   starting.html?min=5      5:00 countdown
   starting.html?min=0      no countdown, "any second now"
 -->
@@ -80,7 +80,7 @@ h1 .glint{position:absolute;inset:0;color:transparent;background:linear-gradient
   <div class="eyebrow"><i></i>Tryndamere · Climb to Diamond<i></i></div>
   <h1>STREAM STARTING SHORTLY<span class="glint" aria-hidden="true">STREAM STARTING SHORTLY</span></h1>
   <div class="rule"></div>
-  <div id="count">3:00</div>
+  <div id="count">15:00</div>
   <div class="verse" id="verse"></div>
   <div class="vref">Philippians 3:14 <b>WEB</b></div>
 </div>
@@ -96,7 +96,7 @@ h1 .glint{position:absolute;inset:0;color:transparent;background:linear-gradient
 <script>
 (function(){
   var q=new URLSearchParams(location.search);
-  var min=q.has('min')?parseFloat(q.get('min')):3; if(isNaN(min))min=3;
+  var min=q.has('min')?parseFloat(q.get('min')):15; if(isNaN(min))min=15;
   var end=Date.now()+min*60000, el=document.getElementById('count');
   function tick(){var s=Math.max(0,Math.ceil((end-Date.now())/1000));
     if(s<=0){if(!el.classList.contains('now')){el.classList.add('now');el.textContent='any second now';}return;}
