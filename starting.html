@@ -1,0 +1,149 @@
+<!doctype html>
+<!--
+  Starting-soon scene (1920x1080 OBS browser source, opaque).
+  starting.html            15:00 countdown (default)
+  starting.html?min=5      5:00 countdown
+  starting.html?min=0      no countdown, "any second now"
+-->
+<html lang="en"><head><meta charset="utf-8"><link rel="icon" href="data:,"><title>Stream Starting Shortly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Cinzel:wght@600;700&family=Crimson+Pro:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+:root{
+  --steel-0:#07090d; --steel-1:#0e131b; --steel-2:#1a222e; --steel-3:#2b3646;
+  --frost:#cfe3f2; --frost-dim:#8fa6b9; --ice:#7fc4ea;
+  --rage:#d4141f; --rage-hot:#ff3b30; --rage-deep:#7a0a10;
+  --text:#eef3f8; --cream:#efe4cf;
+  --sans:"Barlow Semi Condensed","Segoe UI Semibold","Segoe UI","Roboto Condensed","Arial Narrow",Arial,sans-serif;
+  --serif:"Cinzel","Trajan Pro","Georgia",serif;
+  --book:"Crimson Pro","Georgia","Cambria","Times New Roman",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--steel-0)}
+body{font-family:var(--sans);color:var(--text);-webkit-font-smoothing:antialiased;position:relative}
+#bg{position:absolute;inset:0;background:
+  radial-gradient(ellipse 60% 50% at 50% 38%,rgba(127,196,234,.10),transparent 70%),
+  radial-gradient(ellipse 50% 40% at 88% 92%,rgba(212,20,31,.16),transparent 70%),
+  radial-gradient(ellipse 40% 35% at 8% 100%,rgba(122,10,16,.20),transparent 70%),
+  linear-gradient(180deg,#0b1017 0%,var(--steel-0) 100%)}
+#bg::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.6) 100%)}
+canvas#fx{position:absolute;inset:0;width:1920px;height:1080px}
+.wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center}
+.eyebrow{margin-top:120px;font-weight:700;font-size:22px;letter-spacing:.42em;color:var(--frost-dim);text-transform:uppercase;display:flex;align-items:center;gap:22px}
+.eyebrow i{display:block;width:90px;height:1px;background:linear-gradient(90deg,transparent,var(--ice))}
+.eyebrow i:last-child{transform:scaleX(-1)}
+h1{position:relative;margin-top:22px;font-family:var(--serif);font-weight:700;font-size:104px;letter-spacing:.06em;color:var(--cream);
+  text-shadow:0 0 26px rgba(207,227,242,.18),0 4px 0 rgba(0,0,0,.6);animation:pulse 4s ease-in-out infinite;white-space:nowrap}
+h1 .glint{position:absolute;inset:0;color:transparent;background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.95) 50%,transparent 58%) no-repeat;
+  background-size:300% 100%;background-position:150% 0;-webkit-background-clip:text;background-clip:text;animation:glint 6s ease-in-out infinite;text-shadow:none}
+@keyframes pulse{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.012);filter:brightness(1.12)}}
+@keyframes glint{0%,55%{background-position:150% 0}85%,100%{background-position:-50% 0}}
+.rule{width:520px;height:2px;margin-top:18px;background:linear-gradient(90deg,transparent,var(--rage),transparent);box-shadow:0 0 12px var(--rage)}
+#count{margin-top:26px;font-weight:700;font-size:120px;line-height:1;letter-spacing:.04em;color:var(--frost);font-variant-numeric:tabular-nums;
+  text-shadow:0 0 30px rgba(127,196,234,.35)}
+#count.now{font-family:var(--serif);font-size:64px;color:var(--ice);animation:pulse 2s ease-in-out infinite;margin-top:50px}
+.verse{margin-top:54px;width:1500px;text-align:center;font-family:var(--book);font-style:italic;font-size:38px;line-height:1.35;color:var(--text);height:52px;white-space:nowrap}
+.verse span{opacity:0;display:inline-block;transform:translateY(8px);filter:blur(4px);transition:opacity .6s,transform .6s,filter .6s}
+.verse span.on{opacity:1;transform:none;filter:none}
+.verse.out span{opacity:0;transition:opacity 1.2s}
+.vref{margin-top:16px;display:flex;gap:12px;align-items:center;font-family:var(--serif);font-size:24px;color:var(--frost-dim);letter-spacing:.08em}
+.vref b{font-family:var(--sans);font-size:13px;letter-spacing:.14em;color:#0b0e13;background:var(--ice);padding:2px 7px;border-radius:3px}
+/* journey ladder */
+#ladder{position:absolute;left:160px;right:160px;top:800px;height:120px}
+#track{position:absolute;left:0;right:0;top:64px;height:4px;border-radius:2px;background:var(--steel-3)}
+#done{position:absolute;left:0;top:64px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--rage-deep),var(--rage-hot));box-shadow:0 0 12px var(--rage)}
+.stop{position:absolute;top:58px;width:16px;height:16px;margin-left:-8px;transform:rotate(45deg);background:var(--steel-2);border:2px solid var(--steel-3)}
+.stop.past{background:var(--rage);border-color:var(--rage-hot)}
+.lab{position:absolute;top:88px;transform:translateX(-50%);font-weight:600;font-size:17px;letter-spacing:.16em;color:var(--frost-dim);text-transform:uppercase;white-space:nowrap}
+.lab.cur{color:var(--frost)}
+#crown{position:absolute;right:-24px;top:26px;width:52px;height:52px;margin-right:-26px;filter:drop-shadow(0 0 14px rgba(255,214,120,.8));animation:cg 3s ease-in-out infinite}
+@keyframes cg{0%,100%{filter:drop-shadow(0 0 8px rgba(255,214,120,.5))}50%{filter:drop-shadow(0 0 22px rgba(255,214,120,1))}}
+#runner{position:absolute;top:-16px;width:80px;height:80px;margin-left:-40px}
+#runner .spr{position:absolute;inset:0;background:url(assets/pixel-trynd-run.png) 0 0/480px 80px no-repeat;image-rendering:pixelated;
+  animation:run .6s steps(6) infinite,bob .3s ease-in-out infinite alternate;filter:drop-shadow(0 0 6px rgba(212,20,31,.5)) drop-shadow(0 3px 1px rgba(0,0,0,.6))}
+@keyframes run{to{background-position:-480px 0}}
+@keyframes bob{to{transform:translateY(-3px)}}
+#runner .sh{position:absolute;left:20%;right:20%;bottom:-2px;height:8px;border-radius:50%;background:rgba(0,0,0,.5);filter:blur(2px)}
+#runner .trail{position:absolute;right:62px;top:42px;width:140px;height:3px;background:linear-gradient(90deg,transparent,rgba(127,196,234,.6));border-radius:2px;animation:tr .6s linear infinite}
+#runner .trail.b{top:56px;width:90px;animation-delay:.3s}
+@keyframes tr{0%{opacity:0;transform:translateX(20px)}40%{opacity:1}100%{opacity:0;transform:translateX(-40px)}}
+.rank{position:absolute;top:-52px;transform:translateX(-50%);font-weight:700;font-size:20px;letter-spacing:.12em;color:var(--frost);white-space:nowrap}
+/* footer */
+.foot{position:absolute;left:0;right:0;bottom:44px;display:flex;justify-content:center;align-items:center;gap:34px;font-weight:600;font-size:26px;letter-spacing:.06em;color:var(--frost)}
+.foot .dot{width:6px;height:6px;transform:rotate(45deg);background:var(--rage)}
+.foot .every{color:var(--frost-dim);text-transform:uppercase;letter-spacing:.24em;font-size:20px}
+.foot svg{width:24px;height:24px;vertical-align:-4px;margin-right:10px}
+</style></head><body>
+<div id="bg"></div><canvas id="fx" width="1920" height="1080"></canvas>
+<div class="wrap">
+  <div class="eyebrow"><i></i>Tryndamere · Climb to Diamond<i></i></div>
+  <h1>STREAM STARTING SHORTLY<span class="glint" aria-hidden="true">STREAM STARTING SHORTLY</span></h1>
+  <div class="rule"></div>
+  <div id="count">15:00</div>
+  <div class="verse" id="verse"></div>
+  <div class="vref">Philippians 3:14 <b>WEB</b></div>
+</div>
+<div id="ladder"><div id="track"></div><div id="done"></div>
+  <svg id="crown" viewBox="0 0 64 64"><path d="M8 46 L4 18 L20 30 L32 10 L44 30 L60 18 L56 46 Z" fill="#f2c96b" stroke="#fff3cf" stroke-width="2"/><rect x="8" y="49" width="48" height="6" rx="2" fill="#f2c96b"/></svg>
+  <div id="runner"><div class="trail"></div><div class="trail b"></div><div class="sh"></div><div class="spr"></div></div>
+</div>
+<div class="foot">
+  <span><svg viewBox="0 0 24 24"><path fill="#9146ff" d="M4 2 2 6v14h5v3h3l3-3h4l5-5V2zm16 12-3 3h-5l-3 3v-3H5V4h15zM16 7h2v5h-2zm-5 0h2v5h-2z"/></svg>twitch.tv/CalebGCameron</span>
+  <span class="dot"></span><span class="every">Streaming every day</span><span class="dot"></span>
+  <span><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#53fc18"/><path fill="#0b0e13" d="M6 5h4v5h1l3-5h4l-4 7 4 7h-4l-3-5h-1v5H6z"/></svg>kick.com/CalebGCameron</span>
+</div>
+<script>
+(function(){
+  var q=new URLSearchParams(location.search);
+  var min=q.has('min')?parseFloat(q.get('min')):15; if(isNaN(min))min=15;
+  var end=Date.now()+min*60000, el=document.getElementById('count');
+  function tick(){var s=Math.max(0,Math.ceil((end-Date.now())/1000));
+    if(s<=0){if(!el.classList.contains('now')){el.classList.add('now');el.textContent='any second now';}return;}
+    el.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+  tick(); setInterval(tick,250);
+
+  // verse, word by word on a loop
+  var V="I press on toward the goal for the prize of the high calling of God in Christ Jesus.";
+  var ve=document.getElementById('verse');
+  function loop(){ve.className='verse';ve.innerHTML=V.split(' ').map(function(w){return '<span>'+w+'</span>'}).join(' ');
+    var sp=ve.querySelectorAll('span'),i=0;
+    var t=setInterval(function(){if(i<sp.length){sp[i++].classList.add('on');}else{clearInterval(t);
+      setTimeout(function(){ve.classList.add('out');setTimeout(loop,1400);},7000);}},260);}
+  loop();
+
+  // ladder
+  var T=['IRON','BRONZE','SILVER','GOLD','PLATINUM','EMERALD','DIAMOND','MASTER','GRANDMASTER','CHALLENGER'];
+  T=T.slice(1); // journey starts at Bronze
+  var lad=document.getElementById('ladder'), W=1600, n=T.length;
+  function x(i){return i/(n-1)*W;}
+  function build(tier,div,lp){
+    var ti=Math.max(0,T.indexOf(tier)); var dv={'I':3,'II':2,'III':1,'IV':0}[div]; 
+    var frac=(ti<6&&dv!=null)?(dv+(lp||0)/100)/4:0;
+    var pos=Math.min(W,x(ti)+frac*(x(1)-x(0)));
+    lad.querySelectorAll('.stop,.lab').forEach(function(e){e.remove()});
+    T.forEach(function(t,i){if(i==n-1)return;var s=document.createElement('div');s.className='stop'+(x(i)<=pos?' past':'');s.style.left=x(i)+'px';lad.appendChild(s);
+      var l=document.createElement('div');l.className='lab'+(i==ti?' cur':'');l.textContent=t=='GRANDMASTER'?'GM':t;l.style.left=x(i)+'px';lad.appendChild(l);});
+    var cl=document.createElement('div');cl.className='lab';cl.style.left=W+'px';cl.textContent='CHALLENGER';lad.appendChild(cl);
+    document.getElementById('done').style.width=pos+'px';
+    var r=document.getElementById('runner');r.style.left=pos+'px';
+    var rk=r.querySelector('.rank')||r.appendChild(Object.assign(document.createElement('div'),{className:'rank'}));
+    rk.style.left='40px';rk.textContent=tier.charAt(0)+tier.slice(1).toLowerCase()+(dv!=null&&ti<6?' '+div:'')+(lp!=null?' · '+lp+' LP':'');
+  }
+  build('EMERALD',null,null);
+  fetch('rank.json?'+Date.now()).then(function(r){return r.json()}).then(function(j){if(j&&j.tier)build(String(j.tier).toUpperCase(),j.division,j.lp);}).catch(function(){});
+
+  // embers / frost motes
+  var c=document.getElementById('fx'),g=c.getContext('2d'),P=[];
+  function mk(init){var red=Math.random()<.45;return{x:Math.random()*1920,y:init?Math.random()*1080:1090,r:Math.random()*2+.6,
+    vy:-(Math.random()*.35+.12),vx:(Math.random()-.5)*.2,ph:Math.random()*6.28,a:Math.random()*.5+.25,red:red};}
+  for(var i=0;i<90;i++)P.push(mk(true));
+  var last=performance.now();
+  function f(now){var dt=Math.min(3,(now-last)/16.67);last=now;g.clearRect(0,0,1920,1080);
+    P.forEach(function(p,i){p.y+=p.vy*dt;p.ph+=.01*dt;p.x+=(p.vx+Math.sin(p.ph)*.15)*dt;if(p.y<-10)P[i]=mk(false);
+      var al=p.a*Math.min(1,p.y/300);g.beginPath();g.fillStyle=p.red?'rgba(255,80,60,'+al+')':'rgba(190,225,245,'+al+')';
+      g.shadowColor=p.red?'#ff3b30':'#7fc4ea';g.shadowBlur=8;g.arc(p.x,p.y,p.r,0,6.283);g.fill();});
+    requestAnimationFrame(f);}
+  requestAnimationFrame(f);
+})();
+</script></body></html>
