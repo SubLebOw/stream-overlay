@@ -1,6 +1,6 @@
 /* COREBURN overlay: shared chat (Twitch + Kick, copied from overlay.html) + goal + socials. */
 const DEFAULTS = { channel:"calebgcameron", kick:"calebgcameron", kick_chatroom:"",
-  kick_ws:"wss://ws-us2.pusher.com/app/32cbd69e4b950bf97679?protocol=7&client=js&version=8.4.0&flash=false",
+  kick_ws:"wss://ws-us2.pusher.com/app/34bf7a0ff419a2a775b9?protocol=7&client=js&version=8.4.0&flash=false",
   platbadge:1, badges:1, emotes:1, hidebots:1, hidecmds:1, fade:0, max:9, goal:1, goalfile:"goal.json", goalpoll:30 };
 const qs = new URLSearchParams(location.search);
 const P = (k) => qs.has(k) ? qs.get(k) : DEFAULTS[k];
