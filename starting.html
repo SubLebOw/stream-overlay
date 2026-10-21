@@ -96,7 +96,7 @@ h1 .glint{position:absolute;inset:0;color:transparent;background:linear-gradient
 <script>
 (function(){
   var q=new URLSearchParams(location.search);
-  var min=q.has('min')?parseFloat(q.get('min')):15; if(isNaN(min))min=15;
+  var min=q.has('min')?parseFloat(q.get('min')):3; if(isNaN(min))min=3;
   var end=Date.now()+min*60000, el=document.getElementById('count');
   function tick(){var s=Math.max(0,Math.ceil((end-Date.now())/1000));
     if(s<=0){if(!el.classList.contains('now')){el.classList.add('now');el.textContent='any second now';}return;}
