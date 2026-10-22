@@ -555,7 +555,7 @@ const LAYOUTS = {
   queue: { x:1136, y:478, w:724, h:490,  rankx:1136, ranky:222, songx:1136, songy:398, masteryx:1136, masteryy:398, scale:1.35, max:12,
            status:{x:80, y:56}, cam:{x:80, y:222, w:1024, h:576}, info:null,   // info: null = no Twitch/schedule card (chat gets the space)
            verse:{x:80, y:822, w:738, h:202}, socials:{x:1136, y:984},
-           journey:{x:1136, y:56, w:724, h:150},
+           journey:{x:1250, y:56, w:610, h:130},
            buddy:{x:834, y:822, w:270, h:202} }   // fake cam (4:3, 1.35x the old 200x150): under the lobby window's right edge, beside the verse
 };
 /* ============================================================================================= */
@@ -646,7 +646,7 @@ function startQueueScene() {
     const tick = () => { const d = new Date();
       const t = d.toLocaleTimeString("en-NZ", { timeZone: tz, hour: "numeric", minute: "2-digit", hour12: true }).toUpperCase();
       const z = (new Intl.DateTimeFormat("en-NZ", { timeZone: tz, timeZoneName: "short" }).formatToParts(d).find(x => x.type === "timeZoneName") || {}).value || "";
-      tv.textContent = t + " NZ" + (z ? " (" + z + ")" : ""); };
+      tv.textContent = t + " " + (z || "NZ"); };
     tick(); setInterval(tick, 1000);
   }
   // webcam frame + transparent hole in the backdrop
@@ -1284,7 +1284,7 @@ function setTip(d) {
   return true;
 }
 /* queue only: big "TIP TOWARD STARLINK" card in the free space right of the title (status block ends x794; lobby frame starts y222) */
-const TIPCTA_BOX = { x: 820, y: 56, w: 284, h: 148 };
+const TIPCTA_BOX = { x: 944, y: 56, w: 284, h: 148 };
 let ctaPulse = null;
 function setTipCta(d, on) {
   const el = $("tipcta");
