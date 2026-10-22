@@ -642,7 +642,11 @@ function startQueueScene() {
   if (B("timer")) {
     const tm = st.querySelector(".timer"), tv = tm.querySelector(".tv"); tm.classList.remove("hidden");
     if (DEMO) timerStart = Date.now() - 272000;
-    const tick = () => { tv.textContent = fmtTime(Date.now() - timerStart); };
+    const tz = qs.get("tz") || "Pacific/Auckland";
+    const tick = () => { const d = new Date();
+      const t = d.toLocaleTimeString("en-NZ", { timeZone: tz, hour: "numeric", minute: "2-digit", hour12: true }).toUpperCase();
+      const z = (new Intl.DateTimeFormat("en-NZ", { timeZone: tz, timeZoneName: "short" }).formatToParts(d).find(x => x.type === "timeZoneName") || {}).value || "";
+      tv.textContent = t + " NZ" + (z ? " (" + z + ")" : ""); };
     tick(); setInterval(tick, 1000);
   }
   // webcam frame + transparent hole in the backdrop
