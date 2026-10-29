@@ -9,10 +9,11 @@
   "lp_today": 88,
   "season_wins": 446,
   "season_losses": 431,
-  "show_today": true,
+  "show_today": false,
   "queue": "RANKED_SOLO_5x5",
   "updated": "2026-10-29T15:50:47+13:00",
   "ladder_tier": "DIAMOND",
   "ladder_division": "IV",
-  "verse_bump": 10
+  "verse_bump": 10,
+  "smurf": true
 }

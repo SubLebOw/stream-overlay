@@ -134,6 +134,10 @@
   .mbadge{flex:none;display:block;filter:drop-shadow(0 0 5px rgba(127,196,234,.45)) drop-shadow(0 1px 1px rgba(0,0,0,.9));}
   .mastery-row{display:flex;align-items:center;gap:6px;margin-top:4px;padding-top:4px;white-space:nowrap;line-height:1.15;
     border-top:1px solid rgba(143,166,185,.16);}
+  .rank-card.smurf{position:relative;}
+  .rank-card.smurf > :not(.smurf-tag){filter:grayscale(1);opacity:.38;}
+  .rank-card.smurf .smurf-tag{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:5;
+    color:#fff;font-weight:900;letter-spacing:.18em;font-size:26px;text-shadow:0 0 10px rgba(0,0,0,.95),0 2px 3px #000;pointer-events:none;}
   .rank-card.has-m{padding-top:9px;padding-bottom:10px;}
   .rank-card.has-m .today{margin-top:1px;}
   .mastery-row .mv{font-size:16px;font-weight:700;letter-spacing:.03em;color:var(--frost);text-shadow:0 1px 3px rgba(0,0,0,.8);}
@@ -1172,7 +1176,7 @@ function renderRank(d) {
     : emblemSVG(t.c);
   const inCardM = SHOW_MASTERY && !MASTERY_STRIP && !GOAL_IN_CARD;
   const jGame = J.on && layoutName === "game";
-  let html = `<div class="rank-card${inCardM ? " has-m" : ""}${jGame && J.style === 3 ? " has-j3" : ""}" style="--tier-col:${t.c};--tier-glow:${t.g}">${art}<div class="rank-body">
+  let html = `<div class="rank-card${inCardM ? " has-m" : ""}${jGame && J.style === 3 ? " has-j3" : ""}${d.smurf ? " smurf" : ""}" style="--tier-col:${t.c};--tier-glow:${t.g}">${d.smurf ? '<div class="smurf-tag">ON SMURF</div>' : ""}${art}<div class="rank-body">
     <div class="otp">${esc(label)}${d.example ? '<span class="chip">EXAMPLE</span>' : ""}</div>
     <div class="rank-line"><span class="tier">${esc(tier === "UNRANKED" ? "Unranked" : tierTxt.toUpperCase())}${div ? " " + esc(div) : ""}</span>${lp !== null && tier !== "UNRANKED" ? `<span class="dot">·</span><span class="lp">${lp} LP</span>` : ""}</div>`;
   if (lp !== null && !APEX.has(tier) && tier !== "UNRANKED") html += `<div class="rage"><b style="width:${Math.max(2, Math.min(100, lp))}%"></b></div>`;
