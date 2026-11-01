@@ -134,6 +134,9 @@
   .mbadge{flex:none;display:block;filter:drop-shadow(0 0 5px rgba(127,196,234,.45)) drop-shadow(0 1px 1px rgba(0,0,0,.9));}
   .mastery-row{display:flex;align-items:center;gap:6px;margin-top:4px;padding-top:4px;white-space:nowrap;line-height:1.15;
     border-top:1px solid rgba(143,166,185,.16);}
+  .jr-ids{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:8px;font-size:16px;letter-spacing:.04em;color:#e8eef4;font-weight:600;white-space:nowrap;}
+  .jr-ids b{color:var(--rage,#e2463a);font-weight:800;margin-right:4px;letter-spacing:.1em;font-size:13px;}
+  .jr-ids i{color:rgba(232,238,244,.4);font-style:normal;}
   .rank-card.smurf{position:relative;}
   .rank-card.smurf > :not(.smurf-tag){filter:grayscale(1);opacity:.38;}
   .rank-card.smurf .smurf-tag{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:5;
@@ -560,7 +563,7 @@ const LAYOUTS = {
   queue: { x:1136, y:478, w:724, h:490,  rankx:1136, ranky:222, songx:1136, songy:398, masteryx:1136, masteryy:398, scale:1.35, max:12,
            status:{x:80, y:56}, cam:{x:80, y:222, w:1024, h:576}, info:null,   // info: null = no Twitch/schedule card (chat gets the space)
            verse:{x:80, y:822, w:738, h:202}, socials:{x:1136, y:984},
-           journey:{x:1250, y:56, w:610, h:130},
+           journey:{x:1250, y:56, w:610, h:150},
            buddy:{x:834, y:822, w:270, h:202} }   // fake cam (4:3, 1.35x the old 200x150): under the lobby window's right edge, beside the verse
 };
 /* ============================================================================================= */
@@ -1117,7 +1120,7 @@ function journeyHTML(ctx, cur) {   // ctx "q" (queue scene) | "g" (game, under t
     const al = i === iN ? (i <= 0 ? " l" : i >= TIER_ORDER.length - 1 ? " r" : "") : "";
     track += `<div class="${cls}" style="left:${pct(i)};--c:${t.c};--g:${t.g}"><i class="gm"></i><span class="lb${al}">${esc(lb)}</span></div>`;
   });
-  return `<div class="jr jr1 ${ctx}"><div class="jr-head">${route}${title}</div><div class="jr-track">${track}</div></div>`;
+  return `<div class="jr jr1 ${ctx}"><div class="jr-head">${route}${title}</div><div class="jr-track">${track}</div>${ctx === "q" ? '<div class="jr-ids"><span><b>OCE</b> Caleb Cameron#ccxx</span><i>·</i><span><b>EUW</b> Caleb Cameron#ccuew</span></div>' : ""}</div>`;
 }
 // fit long custom texts + hide ladder tier abbreviations that would touch the (longer) "you are here" label
 function fitJourney(root) {
