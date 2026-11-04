@@ -533,8 +533,7 @@ const DEFAULTS = {
   twitch: "twitch.tv/CalebGCameron",
   schedule: "7:30pm Sydney time",
   x_handle: "@calebcameron_",  // empty = hidden
-  tiktok: "@calebcameron_",
-  youtube: "@lebthetapdancer",
+  instagram: "caleb.cameron",
   // ---- verse of the day (always on in queue scene; add "verse" to widgets for the game overlay) ----
   verse: 1,                  // queue scene: 1 = show verse panel, 0 = hide
   verse_ref: "",             // force a specific verse, e.g. "Isaiah 40:31"
@@ -682,7 +681,7 @@ function startQueueScene() {
   }
   // socials (only the ones that are filled in; demo shows placeholders)
   const so = $("socials");
-  const list = [["X", P("x_handle")], ["TIKTOK", P("tiktok")], ["YOUTUBE", P("youtube")]]
+  const list = [["X", P("x_handle")], ["INSTAGRAM", P("instagram")]]
     .map(([k, v]) => [k, v || (DEMO ? "@your_" + k.toLowerCase() : "")]).filter(([, v]) => v);
   for (const [k, v] of list) {
     const d = document.createElement("div"); d.className = "s";
