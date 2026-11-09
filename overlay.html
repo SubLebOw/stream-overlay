@@ -141,7 +141,9 @@
   .rank-card.smurf > :not(.smurf-tag){filter:grayscale(1);opacity:.38;}
   .rank-card.smurf .smurf-tag{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:5;
     color:#fff;font-weight:900;letter-spacing:.18em;font-size:26px;text-shadow:0 0 10px rgba(0,0,0,.95),0 2px 3px #000;pointer-events:none;}
-  body.queue .rank-card.smurf .smurf-tag{justify-content:flex-end;padding-right:22px;font-size:26px;}
+  body.queue .rank-card.smurf .smurf-tag{justify-content:center;align-items:flex-end;padding-right:22px;font-size:26px;}
+  .rank-card.smurf .smurf-tag{flex-direction:column;}
+  .rank-card.smurf .smurf-tag small{display:block;margin-top:4px;font-size:.5em;letter-spacing:.08em;font-weight:800;}
   .rank-card.has-m{padding-top:9px;padding-bottom:10px;}
   .rank-card.has-m .today{margin-top:1px;}
   .mastery-row .mv{font-size:16px;font-weight:700;letter-spacing:.03em;color:var(--frost);text-shadow:0 1px 3px rgba(0,0,0,.8);}
@@ -1179,7 +1181,7 @@ function renderRank(d) {
     : emblemSVG(t.c);
   const inCardM = SHOW_MASTERY && !MASTERY_STRIP && !GOAL_IN_CARD;
   const jGame = J.on && layoutName === "game";
-  let html = `<div class="rank-card${inCardM ? " has-m" : ""}${jGame && J.style === 3 ? " has-j3" : ""}${d.smurf ? " smurf" : ""}" style="--tier-col:${t.c};--tier-glow:${t.g}">${d.smurf ? '<div class="smurf-tag">ON SMURF</div>' : ""}${art}<div class="rank-body">
+  let html = `<div class="rank-card${inCardM ? " has-m" : ""}${jGame && J.style === 3 ? " has-j3" : ""}${d.smurf ? " smurf" : ""}" style="--tier-col:${t.c};--tier-glow:${t.g}">${d.smurf ? `<div class="smurf-tag"><span>ON SMURF</span>${d.smurf_note ? `<small>${String(d.smurf_note).replace(/[<>&]/g,"")}</small>` : ""}</div>` : ""}${art}<div class="rank-body">
     <div class="otp">${esc(label)}${d.example ? '<span class="chip">EXAMPLE</span>' : ""}</div>
     <div class="rank-line"><span class="tier">${esc(tier === "UNRANKED" ? "Unranked" : tierTxt.toUpperCase())}${div ? " " + esc(div) : ""}</span>${lp !== null && tier !== "UNRANKED" ? `<span class="dot">·</span><span class="lp">${lp} LP</span>` : ""}</div>`;
   if (lp !== null && !APEX.has(tier) && tier !== "UNRANKED") html += `<div class="rage"><b style="width:${Math.max(2, Math.min(100, lp))}%"></b></div>`;
