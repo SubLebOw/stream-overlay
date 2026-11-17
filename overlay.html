@@ -347,7 +347,7 @@
   #verse .vt p::after{content:"\201D";color:var(--ice);margin-left:.04em;}
   #verse .vf{display:flex;align-items:center;gap:12px;margin-top:10px;}
   #verse .vref{font-family:var(--serif);font-weight:700;letter-spacing:.14em;color:var(--frost);font-size:20px;}
-  #verse .vtr{font-size:12px;font-weight:700;letter-spacing:.14em;color:#0b0e13;background:var(--ice);padding:2px 7px;border-radius:3px;}
+  #verse .vtr{display:none;font-size:12px;font-weight:700;letter-spacing:.14em;color:#0b0e13;background:var(--ice);padding:2px 7px;border-radius:3px;}
   #verse.small{padding:10px 16px 10px 18px;}
   #verse.small .ph{font-size:11px;}
   #verse.small .vref{font-size:14px;}
@@ -1195,6 +1195,7 @@ function renderRank(d) {
   if (goalEl) { el.querySelector(".rank-body").appendChild(goalEl); goalEl.classList.add("incard"); el.querySelector(".rank-card").classList.add("has-m"); }
   if (jGame) fitJourney(el);
   if (layoutName === "queue" && J.on && J.style === 1) renderJourneyQueue(d.ladder_tier ? { tier: String(d.ladder_tier).toUpperCase(), division: String(d.ladder_division || "") } : { tier, division: div });
+  { const h = d.verse_hold; window.__verseHold = (h && h.ref && (wT === null || wT < (+h.until_wins || 1))) ? String(h.ref) : ""; window.__verseHoldText = h && h.text ? String(h.text) : ""; }   // rank.json verse_hold {ref, until_wins}: pin a verse until wins_today reaches until_wins
   if (wT !== null && lT !== null && typeof window.__onGames === "function") window.__onGames(wT + lT + (Math.floor(+d.verse_bump) || 0));
 }
 function startMasteryStrip(force) {
@@ -1472,9 +1473,16 @@ async function startVerse() {
   }
   let key = sydneyDateKey(), games = null;
   const perGame = B("verse_per_game");
-  const refresh = () => { window.__overlay.verseKey = key; window.__overlay.verseGames = games; showVerse(pickVerse(key, perGame ? games : 0)); };
+  let held = null;
+  const refresh = () => {
+    window.__overlay.verseKey = key; window.__overlay.verseGames = games;
+    const hr = window.__verseHold || "";
+    if (hr && window.__verseHoldText) { held = hr; return showVerse({ ref: hr, text: window.__verseHoldText, translation: "WEB" }); }
+    if (hr) { const hit = (window.VERSES || []).find(v => normRef(v.ref) === normRef(hr)) || (window.VERSES || []).find(v => normRef(v.ref).startsWith(normRef(hr))); if (hit) { held = hr; return showVerse(hit); } }
+    held = null; showVerse(pickVerse(key, perGame ? games : 0));
+  };
   refresh();
-  if (perGame) window.__onGames = (n) => { if (n !== games) { games = n; refresh(); } };   // rank.json changed: new game logged
+  window.__onGames = (n) => { const hr = window.__verseHold || null; if ((perGame && n !== games) || hr !== held) { if (perGame) games = n; refresh(); } };   // rank.json changed: new game logged
   setInterval(() => { const k = sydneyDateKey(); if (k !== key) { key = k; refresh(); } }, 30000);
 }
 
