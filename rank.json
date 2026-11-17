@@ -3,21 +3,21 @@
   "label": "Tryndamere OTP",
   "tier": "EMERALD",
   "division": "III",
-  "lp": 76,
+  "lp": 57,
   "wins_today": 0,
-  "losses_today": 0,
-  "lp_today": 0,
+  "losses_today": 1,
+  "lp_today": -19,
   "season_wins": 480,
-  "season_losses": 461,
+  "season_losses": 462,
   "show_today": true,
   "queue": "RANKED_SOLO_5x5",
-  "updated": "2026-11-18T02:57:41+13:00",
+  "updated": "2026-11-18T10:59:58+13:00",
   "ladder_tier": "DIAMOND",
   "ladder_division": "IV",
   "verse_bump": 11,
   "verse_hold": {
     "ref": "Matthew 6:33",
-    "text": "But seek first God’s Kingdom, and his righteousness; and all these things will be given to you as well.",
+    "text": "But seek first God\u2019s Kingdom, and his righteousness; and all these things will be given to you as well.",
     "until_wins": 1
   }
 }
