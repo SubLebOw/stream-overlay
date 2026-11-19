@@ -363,6 +363,14 @@
   #runner .rslash{position:absolute;left:-30%;right:-30%;top:46%;height:34%;border-radius:50%;border:4px solid var(--rage-hot);
     box-shadow:0 0 14px var(--rage),inset 0 0 10px var(--rage);opacity:0;}
 
+  /* ---------- TOP DONOR (goal.json top_donor / top_donor_amount; "" hides) ---------- */
+  #topdonor{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:40;display:flex;align-items:center;gap:12px;padding:8px 20px;border-radius:8px;
+    background:linear-gradient(180deg,rgba(24,30,40,.92),rgba(12,16,22,.92));border:1px solid rgba(127,196,234,.45);box-shadow:0 6px 20px rgba(0,0,0,.55),0 0 18px rgba(127,196,234,.18);white-space:nowrap;}
+  #topdonor.hidden{display:none;}
+  #topdonor .tl{font-size:13px;font-weight:800;letter-spacing:.18em;color:var(--ice);}
+  #topdonor .tn{font-family:var(--serif);font-weight:700;font-size:26px;color:#f1f5f9;text-shadow:0 2px 6px rgba(0,0,0,.6);}
+  #topdonor .ta{font-size:18px;font-weight:800;color:#0b0e13;background:var(--ice);padding:2px 8px;border-radius:4px;}
+  #topdonor.queue{top:auto;bottom:auto;}
   /* ---------- DONATION GOAL (goal.json: title, raised, goal, currency, show) ---------- */
   #goal{transition:opacity .5s ease;}
   .goal-card{position:relative;display:flex;align-items:center;gap:12px;box-sizing:border-box;width:100%;height:100%;
@@ -477,6 +485,7 @@
 <div id="buddy" class="widget hidden"><img src="assets/buddy-christ-cam.jpg" alt="" onerror="this.parentNode.classList.add('hidden')"><div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div><div class="tag">CALEB CAM</div><div class="live"><i></i>LIVE</div></div>
 <div id="song" class="widget hidden"><div class="song-strip"><span class="note">&#9834;</span><span class="st"></span></div></div>
 <div id="tipcta" class="widget hidden"><div class="ck"><i></i><span class="ckt"></span></div><div class="cd"></div><div class="cp"><b>&#9656;</b><span class="cpt"></span></div></div>
+<div id="topdonor" class="hidden"><span class="tl">👑 TOP DONOR</span><span class="tn"></span><span class="ta"></span></div>
 <div id="goal" class="widget hidden"><div class="goal-card"><div class="g-ic"></div><div class="g-body"><div class="g-head"><span class="g-title"></span><span class="g-amt"><b class="g-raised"></b><span class="g-sep">/</span><span class="g-goal"></span><small class="g-cur"></small></span></div><div class="g-row"><div class="g-bar"><b></b></div><span class="g-pct">0%</span></div><div class="g-tip hidden"></div></div></div></div>
 <div id="runner" class="hidden"><div class="rshadow"></div><div class="rslash"></div><div class="rflip"><div class="rspin"><div class="rspr"></div></div></div></div>
 <div id="debug" class="hidden"></div>
@@ -1324,7 +1333,17 @@ function queueTipSpace(on) {   // queue only: grow the goal strip and push the c
     e.style.top = (+e.dataset.top + extra) + "px"; e.style.height = (+e.dataset.h - extra) + "px";
   }
 }
+function renderTopDonor(d) {
+  const el = $("topdonor"); if (!el) return;
+  const name = d && d.top_donor ? String(d.top_donor).trim() : "";
+  if (!name || layoutName === "queue") { el.classList.add("hidden"); return; }
+  el.querySelector(".tn").textContent = name;
+  const a = d.top_donor_amount != null && Number.isFinite(+d.top_donor_amount) ? +d.top_donor_amount : null;
+  const ta = el.querySelector(".ta"); ta.textContent = a !== null ? fmtMoney(a) : ""; ta.style.display = a !== null ? "" : "none";
+  el.classList.remove("hidden");
+}
 function renderGoal(d) {
+  renderTopDonor(d);
   const el = $("goal");
   const show = d && d.show !== false;
   const goal = Number.isFinite(+d.goal) && +d.goal > 0 ? +d.goal : 0;
