@@ -9,5 +9,6 @@
   "tip_cmd": "",
   "_note": "Edit raised (and goal) on github.com, commit; the overlay picks it up in ~1-2 min. show: false hides the bar (the mastery strip/row comes back). Goal 1000 NZD = Starlink Standard Kit ~$599 + mount ~$165 + 3 months Residential 100 Mbps at $85 = $1,019, rounded. tip_url = the tip link shown under the bar (\"\" hides it); tip_cmd = optional extra text on the right, e.g. \"!tip\".",
   "top_donor": "FromTheAshesNZ",
-  "top_donor_amount": 13.37
+  "top_donor_amount": 13.37,
+  "tipcta_style": 2
 }

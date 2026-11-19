@@ -434,6 +434,32 @@
   #tipcta .cd{font-size:22px;font-weight:600;color:var(--frost-dim);line-height:1;white-space:nowrap;letter-spacing:.02em;}
   #tipcta .cp{font-size:34px;font-weight:700;color:#fff;line-height:1.05;white-space:nowrap;letter-spacing:.01em;text-shadow:0 2px 8px rgba(0,0,0,.85),0 0 14px rgba(255,59,48,.35);}
   #tipcta .cp b{color:var(--rage-hot);font-weight:700;margin-right:6px;}
+  /* donate card layouts (?tipcta_style=1|2|3, default 1); top donor from goal.json top_donor/top_donor_amount */
+  #tipcta .dn{font-family:var(--serif);font-weight:900;color:#f2c14e;letter-spacing:.14em;white-space:nowrap;text-shadow:0 0 12px rgba(242,193,78,.45),0 2px 4px rgba(0,0,0,.8);-webkit-text-stroke:.6px #f2c14e;}
+  #tipcta .td-row{display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;flex:none;}
+  #tipcta .td-l{font-size:11px;font-weight:800;letter-spacing:.16em;color:var(--ice);}
+  #tipcta .td-n{font-family:var(--serif);font-weight:700;color:#fff;}
+  #tipcta .td-a{font-weight:800;color:#0b0e13;background:var(--ice);border-radius:3px;padding:0 5px;}
+  #tipcta.s1{gap:2px;padding:8px 14px 8px 14px;}
+  #tipcta.s1 .dn{font-size:28px;line-height:1;}
+  #tipcta.s1 .cd{font-size:16px;margin-top:2px;} #tipcta.s1 .cp{font-size:24px;}
+  #tipcta.s1 .td-row{margin-top:5px;padding-top:5px;border-top:1px solid rgba(242,193,78,.3);}
+  #tipcta.s1 .td-n{font-size:16px;} #tipcta.s1 .td-a{font-size:13px;}
+  #tipcta.s2{gap:0;padding:0;justify-content:stretch;}
+  #tipcta.s2 .band{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;gap:3px;padding:8px 14px;background:linear-gradient(90deg,rgba(212,20,31,.88),rgba(120,10,16,.62));}
+  #tipcta.s2 .band .dn{font-size:30px;line-height:1;color:#fff;-webkit-text-stroke:.8px #fff;text-shadow:0 2px 6px rgba(0,0,0,.7);}
+  #tipcta.s2 .band .lk{display:flex;flex-direction:column;line-height:1.05;white-space:nowrap;}
+  #tipcta.s2 .band .lk .ld{font-size:15px;font-weight:600;color:rgba(255,255,255,.85);text-shadow:0 1px 3px rgba(0,0,0,.8);}
+  #tipcta.s2 .band .lk .lp{font-size:24px;font-weight:800;color:#fff;text-shadow:0 2px 5px rgba(0,0,0,.9);}
+  #tipcta.s2 .dbar{flex:none;display:flex;align-items:center;gap:6px;padding:4px 14px;border-top:1px solid rgba(242,193,78,.45);white-space:nowrap;overflow:hidden;}
+  #tipcta.s2 .dbar .td-n{font-size:17px;line-height:1.1;} #tipcta.s2 .dbar .td-a{font-size:13px;}
+  #tipcta.s3{gap:0;padding:0;justify-content:stretch;}
+  #tipcta.s3 .hd{display:flex;align-items:center;justify-content:center;gap:10px;padding:6px 10px;background:linear-gradient(180deg,#f2c14e,#c8902a);}
+  #tipcta.s3 .hd .dn{font-size:26px;color:#1a0c06;-webkit-text-stroke:.8px #1a0c06;text-shadow:none;letter-spacing:.22em;}
+  #tipcta.s3 .bd{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;padding:4px 10px 6px;text-align:center;}
+  #tipcta.s3 .cd{font-size:14px;} #tipcta.s3 .cp{font-size:22px;}
+  #tipcta.s3 .td-row{justify-content:center;margin-top:2px;background:rgba(127,196,234,.1);border:1px solid rgba(127,196,234,.35);border-radius:12px;padding:2px 10px;}
+  #tipcta.s3 .td-n{font-size:15px;} #tipcta.s3 .td-a{font-size:12px;}
   #tipcta.pulse{animation:ctapulse 1.6s ease-out;}
   @keyframes ctapulse{0%{box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 0 0 rgba(242,193,78,0)}
     25%{box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 0 3px rgba(242,193,78,.85),0 0 36px rgba(255,59,48,.7);transform:scale(1.03)}
@@ -1312,12 +1338,22 @@ function setTipCta(d, on) {
   const raw = String((d && d.tip_url) || "").trim().replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/\/+$/, "");
   if (layoutName !== "queue" || !on || !raw || !B("tipcta")) { el.classList.add("hidden"); return; }
   const cut = raw.indexOf("/");
-  el.querySelector(".ckt").textContent = String((d && d.tip_cta) || "TIP").toUpperCase();
-  el.querySelector(".cd").textContent = cut > 0 ? raw.slice(0, cut + 1) : "";
-  el.querySelector(".cpt").textContent = cut > 0 ? raw.slice(cut + 1) : raw;
+  const word = String((d && d.tip_cta) || "DONATE").toUpperCase();
+  const dom = cut > 0 ? raw.slice(0, cut + 1) : "", path = cut > 0 ? raw.slice(cut + 1) : raw;
+  const dn = d && d.top_donor ? String(d.top_donor).trim() : "";
+  const da = d && d.top_donor_amount != null && Number.isFinite(+d.top_donor_amount) ? fmtMoney(+d.top_donor_amount) : "";
+  const donor = dn ? `<div class="td-row"><span class="td-l">&#128081; TOP DONOR</span><span class="td-n">${esc(dn)}</span>${da ? `<span class="td-a">${esc(da)}</span>` : ""}</div>` : "";
+  const st = Math.min(3, Math.max(1, Math.floor(N("tipcta_style", +(d && d.tipcta_style) || 1))));
+  el.classList.remove("s1", "s2", "s3"); el.classList.add("s" + st);
+  const link = `<div class="cd">${esc(dom)}</div><div class="cp"><b>&#9656;</b><span class="cpt">${esc(path)}</span></div>`;
+  if (st === 1) el.innerHTML = `<div class="dn">${esc(word)}</div>${link}${donor}`;
+  else if (st === 2) el.innerHTML = `<div class="band"><span class="dn">${esc(word)}</span><span class="lk">${dom ? `<span class="ld">${esc(dom)}</span>` : ""}<span class="lp">&#9656; ${esc(path)}</span></span></div>${dn ? `<div class="dbar"><span class="td-l">&#128081; TOP DONOR</span><span class="td-n">${esc(dn)}</span>${da ? `<span class="td-a">${esc(da)}</span>` : ""}</div>` : ""}`;
+  else el.innerHTML = `<div class="hd"><span class="dn">${esc(word)}</span></div><div class="bd">${link}${donor}</div>`;
   place(el, { x: pos("tipctax", TIPCTA_BOX.x), y: pos("tipctay", TIPCTA_BOX.y), w: pos("tipctaw", TIPCTA_BOX.w), h: TIPCTA_BOX.h }, true);
-  const cp = el.querySelector(".cp"); cp.style.fontSize = ""; let fs = 34;
-  while (fs > 20 && cp.scrollWidth > cp.clientWidth) { fs -= 1; cp.style.fontSize = fs + "px"; }   // long links shrink to fit
+  const cp = el.querySelector(".cp"); if (cp) { cp.style.fontSize = ""; let fs = parseFloat(getComputedStyle(cp).fontSize) || 34;
+  while (fs > 14 && cp.scrollWidth > cp.clientWidth) { fs -= 1; cp.style.fontSize = fs + "px"; } }   // long links shrink to fit
+  el.querySelectorAll(".lk .lp").forEach(n => { let fs = parseFloat(getComputedStyle(n).fontSize); const w = n.closest(".band").clientWidth - 28; while (fs > 12 && n.scrollWidth > w) { fs -= 1; n.style.fontSize = fs + "px"; } });
+  el.querySelectorAll(".td-n").forEach(n => { let fs = parseFloat(getComputedStyle(n).fontSize); const row = n.parentNode; while (fs > 10 && row.scrollWidth > row.clientWidth) { fs -= 1; n.style.fontSize = fs + "px"; } });
   const every = N("tipcta_pulse", 45);
   if (!ctaPulse && every > 0 && !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches))
     ctaPulse = setInterval(() => { el.classList.remove("pulse"); void el.offsetWidth; el.classList.add("pulse"); }, Math.max(10, every) * 1000);
@@ -1338,12 +1374,7 @@ function queueTipSpace(on) {   // queue only: grow the goal strip and push the c
 function renderTopDonor(d) {
   const el = $("topdonor"); if (!el) return;
   const name = d && d.top_donor ? String(d.top_donor).trim() : "";
-  if (layoutName === "queue") {
-    const tm = document.querySelector("#status .timer");
-    if (!tm || tm.classList.contains("hidden")) { el.classList.add("hidden"); return; }
-    if (el.parentNode !== tm) { tm.appendChild(el); el.classList.add("queue"); }
-  }
-  if (!name) { el.classList.add("hidden"); return; }
+  if (!name || layoutName === "queue") { el.classList.add("hidden"); return; }
   el.querySelector(".tn").textContent = name;
   const a = d.top_donor_amount != null && Number.isFinite(+d.top_donor_amount) ? +d.top_donor_amount : null;
   const ta = el.querySelector(".ta"); ta.textContent = a !== null ? fmtMoney(a) : ""; ta.style.display = a !== null ? "" : "none";
