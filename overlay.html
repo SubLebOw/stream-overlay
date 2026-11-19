@@ -446,13 +446,17 @@
   #tipcta.s1 .td-row{margin-top:5px;padding-top:5px;border-top:1px solid rgba(242,193,78,.3);}
   #tipcta.s1 .td-n{font-size:16px;} #tipcta.s1 .td-a{font-size:13px;}
   #tipcta.s2{gap:0;padding:0;justify-content:stretch;}
-  #tipcta.s2 .band{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;gap:3px;padding:8px 14px;background:linear-gradient(90deg,rgba(212,20,31,.88),rgba(120,10,16,.62));}
-  #tipcta.s2 .band .dn{font-size:30px;line-height:1;color:#fff;-webkit-text-stroke:.8px #fff;text-shadow:0 2px 6px rgba(0,0,0,.7);}
+  #tipcta.s2 .band{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;gap:2px;padding:6px 14px;background:linear-gradient(90deg,rgba(212,20,31,.88),rgba(120,10,16,.62));}
+  #tipcta.s2 .band .dn{font-size:24px;line-height:1;color:#fff;-webkit-text-stroke:.7px #fff;text-shadow:0 2px 6px rgba(0,0,0,.7);}
   #tipcta.s2 .band .lk{display:flex;flex-direction:column;line-height:1.05;white-space:nowrap;}
-  #tipcta.s2 .band .lk .ld{font-size:15px;font-weight:600;color:rgba(255,255,255,.85);text-shadow:0 1px 3px rgba(0,0,0,.8);}
-  #tipcta.s2 .band .lk .lp{font-size:24px;font-weight:800;color:#fff;text-shadow:0 2px 5px rgba(0,0,0,.9);}
-  #tipcta.s2 .dbar{flex:none;display:flex;align-items:center;gap:5px;padding:5px 10px;border-top:1px solid rgba(242,193,78,.45);white-space:nowrap;overflow:hidden;}
-  #tipcta.s2 .dbar .td-n{font-size:21px;line-height:1.1;} #tipcta.s2 .dbar .td-a{font-size:14px;} #tipcta.s2 .dbar .td-l{font-size:10px;letter-spacing:.12em;}
+  #tipcta.s2 .band .lk .ld{font-size:13px;font-weight:600;color:rgba(255,255,255,.85);text-shadow:0 1px 3px rgba(0,0,0,.8);}
+  #tipcta.s2 .band .lk .lp{font-size:20px;font-weight:800;color:#fff;text-shadow:0 2px 5px rgba(0,0,0,.9);}
+  #tipcta.s2 .dbar{flex:none;display:flex;flex-direction:column;gap:2px;padding:6px 14px 7px;border-top:1px solid rgba(242,193,78,.45);white-space:nowrap;overflow:hidden;}
+  #tipcta.s2 .dbar .dtop{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  #tipcta.s2 .dbar .td-l{font-size:16px;letter-spacing:.14em;}
+  #tipcta.s2 .dbar .td-a{font-size:20px;padding:0 7px;border-radius:4px;}
+  #tipcta.s2 .dbar .td-row{overflow:hidden;}
+  #tipcta.s2 .dbar .td-n{font-size:36px;line-height:1.05;}
   #tipcta.s3{gap:0;padding:0;justify-content:stretch;}
   #tipcta.s3 .hd{display:flex;align-items:center;justify-content:center;gap:10px;padding:6px 10px;background:linear-gradient(180deg,#f2c14e,#c8902a);}
   #tipcta.s3 .hd .dn{font-size:26px;color:#1a0c06;-webkit-text-stroke:.8px #1a0c06;text-shadow:none;letter-spacing:.22em;}
@@ -1331,7 +1335,7 @@ function setTip(d) {
   return true;
 }
 /* queue only: big "TIP TOWARD STARLINK" card in the free space right of the title (status block ends x794; lobby frame starts y222) */
-const TIPCTA_BOX = { x: 944, y: 56, w: 284, h: 148 };
+const TIPCTA_BOX = { x: 944, y: 50, w: 284, h: 166 };   // tall enough for the donate band + big top donor strip; lobby frame starts y222
 let ctaPulse = null;
 function setTipCta(d, on) {
   const el = $("tipcta");
@@ -1347,7 +1351,7 @@ function setTipCta(d, on) {
   el.classList.remove("s1", "s2", "s3"); el.classList.add("s" + st);
   const link = `<div class="cd">${esc(dom)}</div><div class="cp"><b>&#9656;</b><span class="cpt">${esc(path)}</span></div>`;
   if (st === 1) el.innerHTML = `<div class="dn">${esc(word)}</div>${link}${donor}`;
-  else if (st === 2) el.innerHTML = `<div class="band"><span class="dn">${esc(word)}</span><span class="lk">${dom ? `<span class="ld">${esc(dom)}</span>` : ""}<span class="lp">&#9656; ${esc(path)}</span></span></div>${dn ? `<div class="dbar"><span class="td-l">&#128081; TOP DONOR</span><span class="td-n">${esc(dn)}</span>${da ? `<span class="td-a">${esc(da)}</span>` : ""}</div>` : ""}`;
+  else if (st === 2) el.innerHTML = `<div class="band"><span class="dn">${esc(word)}</span><span class="lk">${dom ? `<span class="ld">${esc(dom)}</span>` : ""}<span class="lp">&#9656; ${esc(path)}</span></span></div>${dn ? `<div class="dbar"><div class="dtop"><span class="td-l">&#128081; TOP DONOR</span>${da ? `<span class="td-a">${esc(da)}</span>` : ""}</div><div class="td-row"><span class="td-n">${esc(dn)}</span></div></div>` : ""}`;
   else el.innerHTML = `<div class="hd"><span class="dn">${esc(word)}</span></div><div class="bd">${link}${donor}</div>`;
   place(el, { x: pos("tipctax", TIPCTA_BOX.x), y: pos("tipctay", TIPCTA_BOX.y), w: pos("tipctaw", TIPCTA_BOX.w), h: TIPCTA_BOX.h }, true);
   const cp = el.querySelector(".cp"); if (cp) { cp.style.fontSize = ""; let fs = parseFloat(getComputedStyle(cp).fontSize) || 34;
